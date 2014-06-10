@@ -7,6 +7,7 @@
  #include <opencv2/imgproc/imgproc.hpp>
  #include <string.h>
 #include "findEdges.h"
+#include "DetectContours.h"
  
  
  using namespace cv;
@@ -30,18 +31,32 @@ using namespace ppc;
      
  cvtColor(testImg, testImgGrayscale, COLOR_BGR2GRAY);
  blur(testImgGrayscale, testImgGrayscale, Size(3,3));
-     Mat cannyClassResult;
+     Mat cannyClassResult,contourClass;
      
      FindEdges fe;
      //FindEdges fe(testImg);
      //testImg = fe.cannyEdges();
      cannyClassResult = fe.cannyEdges(testImgGrayscale);
+     
+
+     vector<vector<Point>> cntrs;
+      vector<Vec4i> hrchy;
+     DetectContours dc(cannyClassResult);
+    //DetectContours dc(cannyClassResult,cntrs,hrchy);
+//     cntrs = dc.findContours(cannyClassResult, cntrs, hrchy);
+     cntrs = dc.findContours();
+     contourClass = dc.drawRotatedRects();
+     //contourClass = dc.drawContours();
+     cout<< "cntrs Size - "<<cntrs.size() << endl;
  
      namedWindow("testImg",CV_WINDOW_AUTOSIZE);
      imshow("testImg", cannyClassResult);
      
+     namedWindow("testImg2",CV_WINDOW_AUTOSIZE);
+     imshow("testImg2", contourClass);
+     
  String queryWindow = "Query";
- namedWindow(queryWindow,CV_WINDOW_AUTOSIZE);
+// namedWindow(queryWindow,CV_WINDOW_AUTOSIZE);
  //imshow(queryWindow, query);
  //createTrackbar( "Threshold",queryWindow, &thresh,maxThreshold, detectRegions );
  
