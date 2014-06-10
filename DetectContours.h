@@ -17,12 +17,38 @@ namespace ppc{
     class DetectContours{
         
     private:
+        cv::Mat query,result;
+        //std::vector<cv::Vec4i> hierarchy;
+        //std::vector<std::vector<cv::Point>> contours;
+        
+         static std::vector<std::vector<cv::Point>> contours;
+         static std::vector<cv::Vec4i> hierarchy;
+        
+        std::vector<std::vector<cv::Point>> nonStaticContours;
+        std::vector<cv::Vec4i> nonStaticHierarchy;
+        std::vector<cv::RotatedRect> minRect;
+        void formRectangles();
 
         
     public:
-        cv::Mat findContours(cv::Mat src, std::vector<std::vector<cv::Point>> contours,std::vector<cv::Vec4i> hierarchy);
+        DetectContours(cv::Mat src, std::vector<std::vector<cv::Point>> cntrs = contours,std::vector<cv::Vec4i> hrchy = hierarchy){
+            
+            query = src;
+            nonStaticContours = cntrs;
+            nonStaticHierarchy = hrchy;
+            
+        }
         
-        cv::Mat findContoursAndDrawRotatedRects(cv::Mat src, std::vector<std::vector<cv::Point>> contours,std::vector<cv::Vec4i> hierarchy);
+        cv::vector<std::vector<cv::Point>> findContours();
+        cv::Mat drawContours();
+        cv::Mat drawRotatedRects();
+
+        
+        
+        //cv::vector<std::vector<cv::Point>> findContours(cv::Mat src, std::vector<std::vector<cv::Point>> cntrs,std::vector<cv::Vec4i> hrchy);
+//        cv::vector<std::vector<cv::Point>> findContours(cv::Mat src, std::vector<std::vector<cv::Point>> cntrs = contours,std::vector<cv::Vec4i> hrchy = hierarchy);
+        
+//        cv::Mat findContoursAndDrawRotatedRects(cv::Mat src, std::vector<std::vector<cv::Point>> contours,std::vector<cv::Vec4i> hierarchy);
         
     };
 }
