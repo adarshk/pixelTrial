@@ -70,6 +70,8 @@
 		859ADC611946151700F5C586 /* contoursWorking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 859ADC601946151700F5C586 /* contoursWorking.cpp */; };
 		85A24CB719475CFB00784F91 /* findEdges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CB519475CFB00784F91 /* findEdges.cpp */; };
 		85A24CBA1947965100784F91 /* DetectContours.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CB81947965100784F91 /* DetectContours.cpp */; };
+		85A24CC0194894DF00784F91 /* kNearestNeighbor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CBE194894DF00784F91 /* kNearestNeighbor.cpp */; };
+		85A24CC319489AB300784F91 /* ExtractDescriptors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CC119489AB300784F91 /* ExtractDescriptors.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -152,6 +154,10 @@
 		85A24CB619475CFB00784F91 /* findEdges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = findEdges.h; sourceTree = "<group>"; };
 		85A24CB81947965100784F91 /* DetectContours.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DetectContours.cpp; path = ../DetectContours.cpp; sourceTree = "<group>"; };
 		85A24CB91947965100784F91 /* DetectContours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetectContours.h; path = ../DetectContours.h; sourceTree = "<group>"; };
+		85A24CBE194894DF00784F91 /* kNearestNeighbor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kNearestNeighbor.cpp; path = ../kNearestNeighbor.cpp; sourceTree = "<group>"; };
+		85A24CBF194894DF00784F91 /* kNearestNeighbor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kNearestNeighbor.h; path = ../kNearestNeighbor.h; sourceTree = "<group>"; };
+		85A24CC119489AB300784F91 /* ExtractDescriptors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExtractDescriptors.cpp; sourceTree = "<group>"; };
+		85A24CC219489AB300784F91 /* ExtractDescriptors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtractDescriptors.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +245,8 @@
 		859576A4193E2A2000B33C5C /* pixelTrial */ = {
 			isa = PBXGroup;
 			children = (
+				85A24CBE194894DF00784F91 /* kNearestNeighbor.cpp */,
+				85A24CBF194894DF00784F91 /* kNearestNeighbor.h */,
 				85A24CB81947965100784F91 /* DetectContours.cpp */,
 				85A24CB91947965100784F91 /* DetectContours.h */,
 				859576A5193E2A2000B33C5C /* main.cpp */,
@@ -248,6 +256,8 @@
 				8595772319422F5A00B33C5C /* HomoGraphyWorking.cpp */,
 				859577251942333300B33C5C /* backup.cpp */,
 				8595771E193FA41E00B33C5C /* OrbOrbBFv2.cpp */,
+				85A24CC119489AB300784F91 /* ExtractDescriptors.cpp */,
+				85A24CC219489AB300784F91 /* ExtractDescriptors.h */,
 				859576A7193E2A2000B33C5C /* pixelTrial.1 */,
 				8595771C193E4F9000B33C5C /* FastFreak.cpp */,
 			);
@@ -366,9 +376,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85A24CC319489AB300784F91 /* ExtractDescriptors.cpp in Sources */,
 				8595772419422F5A00B33C5C /* HomoGraphyWorking.cpp in Sources */,
 				859576A6193E2A2000B33C5C /* main.cpp in Sources */,
 				8595771F193FA41F00B33C5C /* OrbOrbBFv2.cpp in Sources */,
+				85A24CC0194894DF00784F91 /* kNearestNeighbor.cpp in Sources */,
 				8595771D193E4F9000B33C5C /* FastFreak.cpp in Sources */,
 				859ADC611946151700F5C586 /* contoursWorking.cpp in Sources */,
 				859577261942333300B33C5C /* backup.cpp in Sources */,

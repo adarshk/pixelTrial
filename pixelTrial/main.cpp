@@ -6,13 +6,13 @@
  #include <opencv2/highgui/highgui.hpp>
  #include <opencv2/imgproc/imgproc.hpp>
  #include <string.h>
-#include "findEdges.h"
-#include "DetectContours.h"
+ #include "findEdges.h"
+ #include "DetectContours.h"
  
  
  using namespace cv;
  using namespace std;
-using namespace ppc;
+ using namespace ppc;
 
  Mat query,queryGreyscale,thresholdResult,testImg,testImgGrayscale;
  RNG rng(12345);
@@ -42,25 +42,25 @@ using namespace ppc;
      vector<vector<Point>> cntrs;
       vector<Vec4i> hrchy;
      DetectContours dc(cannyClassResult);
-    //DetectContours dc(cannyClassResult,cntrs,hrchy);
-//     cntrs = dc.findContours(cannyClassResult, cntrs, hrchy);
+     //DetectContours dc(cannyClassResult,cntrs,hrchy);
+     //cntrs = dc.findContours(cannyClassResult, cntrs, hrchy);
      cntrs = dc.findContours();
      contourClass = dc.drawRotatedRects();
      //contourClass = dc.drawContours();
      cout<< "cntrs Size - "<<cntrs.size() << endl;
  
      namedWindow("testImg",CV_WINDOW_AUTOSIZE);
-     imshow("testImg", cannyClassResult);
+     imshow("testImg", testImg);
      
-     namedWindow("testImg2",CV_WINDOW_AUTOSIZE);
-     imshow("testImg2", contourClass);
+     namedWindow("Contours",CV_WINDOW_AUTOSIZE);
+     imshow("Contours", contourClass);
      
  String queryWindow = "Query";
 // namedWindow(queryWindow,CV_WINDOW_AUTOSIZE);
  //imshow(queryWindow, query);
  //createTrackbar( "Threshold",queryWindow, &thresh,maxThreshold, detectRegions );
  
- detectRegions(0,0);
+// detectRegions(0,0);
  
  waitKey(0);
  cout<<"success"<<endl;
@@ -70,46 +70,18 @@ using namespace ppc;
  
  void detectRegions(int,void*){
  
- 
- Mat cannyResult,thresholdResult;
- vector<vector<Point>> contours;
- 
- vector<Vec4i> hierarchy;
-     
- Point2f rectPoints[4];
- 
- Canny(queryGreyscale, cannyResult, thresh, 255);
- //threshold(queryGreyscale, thresholdResult, thresh, 200, CV_THRESH_BINARY_INV);
- findContours(cannyResult, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE,Point(0,0));
- 
-     cout<< "contours Size - "<<contours.size() << endl;
-     
-     
-     vector<RotatedRect> minRect(contours.size());
-     
-     for (size_t i=0; i<contours.size(); i++) {
-         minRect[i]  = minAreaRect(Mat(contours[i]));
-     }
-     
-     Mat drawBoundries = Mat::zeros(cannyResult.size(), CV_8UC3);
- for (size_t i=0; i<contours.size(); i++) {
-    //Scalar color = Scalar(rng.uniform(0, 255),rng.uniform(0, 255),rng.uniform(0, 255));
-    drawContours(drawBoundries, contours, (int)i, Scalar(255),2,8,hierarchy,0,Point());
-     
-     minRect[i].points(rectPoints);
-     
-     for (int j=0; j<4; j++) {
-         line(drawBoundries, rectPoints[j], rectPoints[(j+1)%4], Scalar(0,0,255),1,8);
-     }
-     
- }
-     
-     for (vector<Vec4i>::iterator itr = hierarchy.begin(); itr!=hierarchy.end(); ++itr) {
-         
-         cout  << *itr << endl;
-     }
+
+
+// hierarchy
 
      
+//     for (vector<Vec4i>::iterator itr = hierarchy.begin(); itr!=hierarchy.end(); ++itr) {
+//            cout  << *itr << endl;
+//     }
+
+     //Warping image -- still work to do
+     
+     /*
      
      Point2f perspectiveOutput[4];
      Mat pOut = getPerspectiveTransform(rectPoints, perspectiveOutput);
@@ -121,6 +93,7 @@ using namespace ppc;
 //     
 //     namedWindow("unWarp",CV_WINDOW_AUTOSIZE);
 //     imshow("unWarp", unWarped);
+      */
  
  }
  
