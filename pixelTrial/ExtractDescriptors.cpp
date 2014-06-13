@@ -30,7 +30,7 @@ namespace ppc {
                 
             case FAST:
                 break;
-            
+                
             case SURF_F:
                 break;
                 

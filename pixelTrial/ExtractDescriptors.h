@@ -19,7 +19,7 @@ namespace ppc {
         ORB_F,
         FAST,
         SURF_F
-
+        
     };
     
     enum Descriptors{
