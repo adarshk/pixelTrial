@@ -29,6 +29,15 @@ namespace ppc {
      */
     
     
+    
+    void DetectContours::printHierarchy(){
+        
+        for (std::vector<cv::Vec4i>::iterator itr = nonStaticHierarchy.begin(); itr!=nonStaticHierarchy.end(); ++itr) {
+            std::cout  << *itr << std::endl;
+                 }
+    }
+    
+    
     cv::vector<std::vector<cv::Point>> DetectContours::findContours(){
         
         if (!query.data) {

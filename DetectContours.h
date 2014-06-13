@@ -42,6 +42,7 @@ namespace ppc{
         cv::vector<std::vector<cv::Point>> findContours();
         cv::Mat drawContours();
         cv::Mat drawRotatedRects();
+        void printHierarchy();
 
         
         
