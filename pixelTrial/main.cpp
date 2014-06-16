@@ -31,57 +31,6 @@ void HoughTransform(Mat dst);
 int main(int argc,char** argv){
     
     
-
-    //string dir = argv[2] + string("/layout4/") + "layout4.png";
-    string dir = argv[2] + string("/bootstrap2/") + "bootstrap2.png";
-    cout << "dir - " << dir << endl;
-    src_image = imread(dir);
-    if(!src_image.data){
-        cout << "No image data" <<endl;
-    }
-    namedWindow("Layout1",CV_WINDOW_AUTOSIZE);
-    imshow("Layout1", src_image);
-    
-    cvtColor(src_image, src_image_grayscale, COLOR_BGR2GRAY);
-    //blur(src_image_grayscale, src_image_grayscale, Size(3,3));
-    GaussianBlur(src_image_grayscale,src_image_grayscale,Size(3,3),0);
-    
-    
-    
-    
-    
-    namedWindow("Detected Contours",CV_WINDOW_AUTOSIZE);
-    createTrackbar( "Threshold","Detected Contours", &thresh,maxThreshold, ApplyThreshold );
-    ApplyThreshold(0, 0);
-    
-//    ShowImage(src_image_threshold);
-    /*
-    vector<vector<Point>> contours;
-    findContours(src_image_threshold, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-    
-    for (vector<vector<Point>>::iterator itr = contours.begin(); itr!=contours.end(); ++itr) {
-        Rect r = boundingRect(Mat(*itr));
-        rectangle(src_image_threshold, r, Scalar(255), 2);
-    }
-    
-//    imshow("Detected Contours", src_image_threshold);
-    
-//    imshow("Detected Contours", src_image_threshold);
-//    ShowImage(src_image_threshold);
-    
-    
-    
-    /*
-    DetectContours detect_contours(src_image_edges);
-    vector<vector<Point>> detected_contours;
-    detected_contours = detect_contours.findContours();
-    src_image_contours = detect_contours.drawRotatedRects();
-    
-    
-    
-    
-    
-    
     /*
     
     query = imread(argv[1],IMREAD_COLOR);
@@ -125,6 +74,55 @@ int main(int argc,char** argv){
     // detectRegions(0,0);
     
      */
+    
+    
+    
+    
+    //string dir = argv[2] + string("/layout4/") + "layout4.png";
+    string dir = argv[2] + string("/bootstrap2/") + "bootstrap2.png";
+    cout << "dir - " << dir << endl;
+    src_image = imread(dir);
+    if(!src_image.data){
+        cout << "No image data" <<endl;
+    }
+    namedWindow("Layout1",CV_WINDOW_AUTOSIZE);
+    imshow("Layout1", src_image);
+    
+    cvtColor(src_image, src_image_grayscale, COLOR_BGR2GRAY);
+    //blur(src_image_grayscale, src_image_grayscale, Size(3,3));
+    GaussianBlur(src_image_grayscale,src_image_grayscale,Size(3,3),0);
+    
+    
+    
+    
+    
+    namedWindow("Detected Contours",CV_WINDOW_AUTOSIZE);
+    createTrackbar( "Threshold","Detected Contours", &thresh,maxThreshold, ApplyThreshold );
+    ApplyThreshold(0, 0);
+    
+    //    ShowImage(src_image_threshold);
+    /*
+     vector<vector<Point>> contours;
+     findContours(src_image_threshold, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+     
+     for (vector<vector<Point>>::iterator itr = contours.begin(); itr!=contours.end(); ++itr) {
+     Rect r = boundingRect(Mat(*itr));
+     rectangle(src_image_threshold, r, Scalar(255), 2);
+     }
+     
+     //    imshow("Detected Contours", src_image_threshold);
+     
+     //    imshow("Detected Contours", src_image_threshold);
+     //    ShowImage(src_image_threshold);
+     */
+     
+     
+     /*
+     DetectContours detect_contours(src_image_edges);
+     vector<vector<Point>> detected_contours;
+     detected_contours = detect_contours.findContours();
+     src_image_contours = detect_contours.drawRotatedRects();
+    */
     waitKey(0);
     cout<<"success"<<endl;
     
