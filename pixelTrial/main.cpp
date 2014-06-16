@@ -30,11 +30,15 @@ void HoughTransform(Mat dst);
 
 int main(int argc,char** argv){
     
-    /*
+    
 
-    string dir = argv[2] + string("/layout4/") + "layout4.png";
+    //string dir = argv[2] + string("/layout4/") + "layout4.png";
+    string dir = argv[2] + string("/bootstrap2/") + "bootstrap2.png";
     cout << "dir - " << dir << endl;
     src_image = imread(dir);
+    if(!src_image.data){
+        cout << "No image data" <<endl;
+    }
     namedWindow("Layout1",CV_WINDOW_AUTOSIZE);
     imshow("Layout1", src_image);
     
@@ -76,9 +80,9 @@ int main(int argc,char** argv){
     
     
     
-    */
     
     
+    /*
     
     query = imread(argv[1],IMREAD_COLOR);
     testImg = imread(argv[1],IMREAD_COLOR);
@@ -120,7 +124,7 @@ int main(int argc,char** argv){
     
     // detectRegions(0,0);
     
-     
+     */
     waitKey(0);
     cout<<"success"<<endl;
     
