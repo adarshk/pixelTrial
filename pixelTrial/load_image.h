@@ -12,3 +12,14 @@
 #include <iostream>
 
 #endif /* defined(__pixelTrial__load_image__) */
+
+namespace ppc {
+    class LoadImage(){
+        
+    public:
+        LoadImage();
+        ~LoadImage();
+        
+    private:
+    }
+}
