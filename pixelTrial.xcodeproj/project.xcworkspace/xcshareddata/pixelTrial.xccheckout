@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>37BBD34B-CCB7-463F-B9B7-DCE4A63A60F3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>pixelTrial</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7783B835-0F2E-42CA-A75A-F417C831F551</key>
+		<string>https://gitus.frogdesign.com/scm/~adarsh.kosuru_frogdesign.com/ppcexperimental.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>pixelTrial.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7783B835-0F2E-42CA-A75A-F417C831F551</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://gitus.frogdesign.com/scm/~adarsh.kosuru_frogdesign.com/ppcexperimental.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7783B835-0F2E-42CA-A75A-F417C831F551</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7783B835-0F2E-42CA-A75A-F417C831F551</string>
+			<key>IDESourceControlWCCName</key>
+			<string>pixelTrial</string>
+		</dict>
+	</array>
+</dict>
+</plist>
