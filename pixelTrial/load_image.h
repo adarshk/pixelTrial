@@ -14,12 +14,13 @@
 #endif /* defined(__pixelTrial__load_image__) */
 
 namespace ppc {
-    class LoadImage(){
+    class LoadImage{
         
     public:
         LoadImage();
         ~LoadImage();
+        void test();
         
     private:
-    }
+    };
 }
