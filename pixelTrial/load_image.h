@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <string>
+#include <assert.h>
 #include <opencv2/opencv.hpp>
 
 namespace ppc {
@@ -29,12 +30,14 @@ namespace ppc {
         void show(const std::string& name,int window_size = cv::WINDOW_AUTOSIZE);
         void show(int window_size = cv::WINDOW_AUTOSIZE);
         void set_image_name(const std::string& name);
+        void set_window_size(int window_size);
         std::string get_image_name() const;
         
     private:
         cv::Mat source;
         std::string directory_path;
         std::string image_name;
+        int current_window_size;
     };
 }
 

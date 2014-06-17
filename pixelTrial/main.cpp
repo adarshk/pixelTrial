@@ -49,8 +49,12 @@ int main(int argc,char** argv){
         cout << "No image data" <<endl;
     }
 
-    li.show();
+    //li.show();
     
+    LoadImage li1;
+    li1.set_image(src_image);
+    li1.set_image_name("Layout1");
+    li1.show();
     
     //DisplayWindow dw("Layout1", src_image,CV_WINDOW_AUTOSIZE);
     //dw.show();

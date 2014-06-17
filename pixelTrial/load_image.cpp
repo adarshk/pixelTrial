@@ -55,12 +55,18 @@ namespace ppc {
     }
     
     void LoadImage::show(int window_size){
+        
+        assert(image_name!="" && "Set window name before displaying image");
         cv::namedWindow(image_name,window_size);
         cv::imshow(image_name, source);
     }
     
     void LoadImage::set_image_name(const std::string& name){
         image_name = name;
+    }
+    
+    void LoadImage::set_window_size(int window_size){
+        current_window_size = window_size;
     }
     
     std::string LoadImage::get_image_name() const{
