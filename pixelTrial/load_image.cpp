@@ -16,4 +16,8 @@ namespace ppc {
     LoadImage::~LoadImage(){
         
     }
+    
+    void LoadImage::test(){
+        
+    }
 }
