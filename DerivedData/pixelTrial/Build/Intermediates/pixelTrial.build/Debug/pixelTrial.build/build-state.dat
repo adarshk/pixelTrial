@@ -4,6 +4,7 @@ r1
 cCheck dependencies
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/ExtractDescriptors.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/ExtractDescriptors.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/HomoGraphyWorking.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/HomoGraphyWorking.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/OrbOrbBFv2.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/OrbOrbBFv2.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/kNearestNeighbor.o /Users/adarsh.kosuru/Desktop/pixelTrial/kNearestNeighbor.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
@@ -11,9 +12,9 @@ cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixe
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/display_window.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/display_window.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/contoursWorking.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/contoursWorking.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/backup.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/backup.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/findEdges.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/findEdges.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/DetectContours.o /Users/adarsh.kosuru/Desktop/pixelTrial/DetectContours.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/pixelTrial normal x86_64
 
 N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk
 c00000000530295C100000000000000AA
@@ -246,12 +247,12 @@ t1402499801
 s2036
 
 N/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o
-t1403041256
-s96744
+t1403043547
+s98696
 
 N/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o
-t2
-s0
+t1403043548
+s262056
 
 N/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/pixelTrial.LinkFileList
 c0000000053A08AD9000000000000077E
@@ -259,8 +260,8 @@ t1403030233
 s1918
 
 N/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/pixelTrial
-t1403041258
-s112476
+t1403043454
+s112908
 
 N/Users/adarsh.kosuru/Desktop/pixelTrial/DetectContours.cpp
 c00000000539B06C90000000000000A40
@@ -348,19 +349,19 @@ t1402414319
 s517
 
 N/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp
-c0000000053A0B5BA00000000000006D4
-t1403041210
-s1748
+c0000000053A0BE7B0000000000000796
+t1403043451
+s1942
 
 N/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.h
-c0000000053A0B5960000000000000454
-t1403041174
-s1108
+c0000000053A0BED900000000000004B8
+t1403043545
+s1208
 
 N/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp
-c0000000053A0B7C5000000000000134E
-t1403041733
-s4942
+c0000000053A0BE6300000000000013AB
+t1403043427
+s5035
 
 N/usr/local/include/opencv2/calib3d/calib3d.hpp
 c000000005347968E0000000000009303
@@ -644,7 +645,7 @@ r0
 
 CCheck dependencies
 r0
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependencies9c6ee146ef50b941^041cf246ef50b941^---0#1#1#--18"Check dependencies36"3F3B6BD5-8799-4593-ADCE-94A6B53B699F-
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependenciesecdf055af650b941^27de155af650b941^---0#1#1#--18"Check dependencies36"65B93BE5-2656-43A1-A463-BD890E57171C-
 
 CCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/DetectContours.o /Users/adarsh.kosuru/Desktop/pixelTrial/DetectContours.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
 s424361572.908592
@@ -959,8 +960,8 @@ lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection68"Compile
 b3DD3D201-7482-4752-BD83-C1BFE664E80B
 
 CCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s424734054.100451
-e424734056.858679
+s424736346.089214
+e424736348.012499
 r1
 xCompileC
 xDerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o
@@ -998,13 +999,13 @@ d/usr/local/include/opencv2/highgui/highgui.hpp
 d/usr/local/include/opencv2/contrib/contrib.hpp
 d/usr/local/include/opencv2/contrib/retina.hpp
 d/usr/local/include/opencv2/contrib/openfabmap.hpp
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection73"Compile /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp214"CompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o pixelTrial/load_image.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler05de1966ed50b941^639be068ed50b941^---0#0#1#-19%DVTDocumentLocation2@72"file:///Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp0000000000000000^4244"CompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o pixelTrial/load_image.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/adarsh.kosuru/Desktop/pixelTrial    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -std=gnu++11 -stdlib=libc++ -fmodules -fmodules-cache-path=/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/ModuleCache -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Werror=return-type -Werror=deprecated-objc-isa-usage -Werror=objc-root-class -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wunused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wconditional-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wconstant-conversion -Wint-conversion -Wbool-conversion -Wenum-conversion -Wshorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-generated-files.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-own-target-headers.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-all-target-headers.hmap -iquote /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-project-headers.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/local/include -I/usr/local/include/libpng16 -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/usr/local/include/opencv2/calib3d -I/usr/local/include/opencv2/contrib -I/usr/local/include/opencv2/core -I/usr/local/include/opencv2/features2d -I/usr/local/include/opencv2/flann -I/usr/local/include/opencv2/gpu -I/usr/local/include/opencv2/highgui -I/usr/local/include/opencv2/imgproc -I/usr/local/include/opencv2/legacy -I/usr/local/include/opencv2/ml -I/usr/local/include/opencv2/nonfree -I/usr/local/include/opencv2/objdetect -I/usr/local/include/opencv2/ocl -I/usr/local/include/opencv2/photo -I/usr/local/include/opencv2/stitching -I/usr/local/include/opencv2/superres -I/usr/local/include/opencv2/ts -I/usr/local/include/opencv2/video -I/usr/local/include/opencv2/videostab -I/usr/local/include/opencv2/gpu/device -I/usr/local/include/opencv2/stitching/detail -I/usr/local/include/opencv2/gpu/device/detail -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/DerivedSources/x86_64 -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/DerivedSources -F/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug -MMD -MT dependencies -MF /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.d --serialize-diagnostics /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.dia -c /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp -o /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o36"114E22CC-2467-4127-9C65-0F583ACAB586-
-b0973BCC3-F0AC-4848-A6A7-6D223D09169F
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection73"Compile /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp214"CompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o pixelTrial/load_image.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler4cff165af650b941^6134035cf650b941^---0#0#1#-19%DVTDocumentLocation2@72"file:///Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp0000000000000000^4244"CompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o pixelTrial/load_image.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/adarsh.kosuru/Desktop/pixelTrial    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -std=gnu++11 -stdlib=libc++ -fmodules -fmodules-cache-path=/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/ModuleCache -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Werror=return-type -Werror=deprecated-objc-isa-usage -Werror=objc-root-class -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wunused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wconditional-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wconstant-conversion -Wint-conversion -Wbool-conversion -Wenum-conversion -Wshorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-generated-files.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-own-target-headers.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-all-target-headers.hmap -iquote /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-project-headers.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/local/include -I/usr/local/include/libpng16 -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/usr/local/include/opencv2/calib3d -I/usr/local/include/opencv2/contrib -I/usr/local/include/opencv2/core -I/usr/local/include/opencv2/features2d -I/usr/local/include/opencv2/flann -I/usr/local/include/opencv2/gpu -I/usr/local/include/opencv2/highgui -I/usr/local/include/opencv2/imgproc -I/usr/local/include/opencv2/legacy -I/usr/local/include/opencv2/ml -I/usr/local/include/opencv2/nonfree -I/usr/local/include/opencv2/objdetect -I/usr/local/include/opencv2/ocl -I/usr/local/include/opencv2/photo -I/usr/local/include/opencv2/stitching -I/usr/local/include/opencv2/superres -I/usr/local/include/opencv2/ts -I/usr/local/include/opencv2/video -I/usr/local/include/opencv2/videostab -I/usr/local/include/opencv2/gpu/device -I/usr/local/include/opencv2/stitching/detail -I/usr/local/include/opencv2/gpu/device/detail -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/DerivedSources/x86_64 -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/DerivedSources -F/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug -MMD -MT dependencies -MF /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.d --serialize-diagnostics /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.dia -c /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.cpp -o /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/load_image.o36"5DA41B8D-BEC0-4905-896B-B2569247714D-
+b5E4C8B12-91D9-487E-9EE4-19D5F5C87A3D
 
 CCompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s424734534.951884
-e424734537.532841
-r0
+s424736346.087736
+e424736348.222982
+r1
 xCompileC
 xDerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o
 x/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp
@@ -1012,16 +1013,44 @@ xnormal
 xx86_64
 xc++
 xcom.apple.compilers.llvm.clang.1_0.compiler
-o/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp:6:10: fatal error: 'stl_hash_map' file not found
-o#include <stl_hash_map>
-o         ^
-o1 error generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection67"Compile /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp202"CompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o pixelTrial/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler55d9f346ef50b941^5e668849ef50b941^-163"/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp:6:10: fatal error: 'stl_hash_map' file not found#include <stl_hash_map>         ^1 error generated.1(36%IDEClangDiagnosticActivityLogMessage2@29"'stl_hash_map' file not found-424734537#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@66"file:///Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp0000000000000000^5#9#5#9#89#0#29"Lexical or Preprocessor Issue--0#0#1#-19%DVTDocumentLocation4@66"file:///Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp0000000000000000^4208"CompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o pixelTrial/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/adarsh.kosuru/Desktop/pixelTrial    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -std=gnu++11 -stdlib=libc++ -fmodules -fmodules-cache-path=/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/ModuleCache -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Werror=return-type -Werror=deprecated-objc-isa-usage -Werror=objc-root-class -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wunused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wconditional-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wconstant-conversion -Wint-conversion -Wbool-conversion -Wenum-conversion -Wshorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-generated-files.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-own-target-headers.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-all-target-headers.hmap -iquote /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-project-headers.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/local/include -I/usr/local/include/libpng16 -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/usr/local/include/opencv2/calib3d -I/usr/local/include/opencv2/contrib -I/usr/local/include/opencv2/core -I/usr/local/include/opencv2/features2d -I/usr/local/include/opencv2/flann -I/usr/local/include/opencv2/gpu -I/usr/local/include/opencv2/highgui -I/usr/local/include/opencv2/imgproc -I/usr/local/include/opencv2/legacy -I/usr/local/include/opencv2/ml -I/usr/local/include/opencv2/nonfree -I/usr/local/include/opencv2/objdetect -I/usr/local/include/opencv2/ocl -I/usr/local/include/opencv2/photo -I/usr/local/include/opencv2/stitching -I/usr/local/include/opencv2/superres -I/usr/local/include/opencv2/ts -I/usr/local/include/opencv2/video -I/usr/local/include/opencv2/videostab -I/usr/local/include/opencv2/gpu/device -I/usr/local/include/opencv2/stitching/detail -I/usr/local/include/opencv2/gpu/device/detail -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/DerivedSources/x86_64 -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/DerivedSources -F/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug -MMD -MT dependencies -MF /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.d --serialize-diagnostics /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.dia -c /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp -o /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o36"113C1892-97EC-4327-827E-4760B0CD1866-
-b7C1BEF04-0531-4605-BC98-AC3BDB56DEC0
+d/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp
+d/usr/local/include/opencv2/opencv.hpp
+d/usr/local/include/opencv2/core/core_c.h
+d/usr/local/include/opencv2/core/types_c.h
+d/usr/local/include/opencv2/core/core.hpp
+d/usr/local/include/opencv2/core/version.hpp
+d/usr/local/include/opencv2/core/operations.hpp
+d/usr/local/include/opencv2/core/mat.hpp
+d/usr/local/include/opencv2/flann/miniflann.hpp
+d/usr/local/include/opencv2/flann/defines.h
+d/usr/local/include/opencv2/flann/config.h
+d/usr/local/include/opencv2/imgproc/imgproc_c.h
+d/usr/local/include/opencv2/imgproc/types_c.h
+d/usr/local/include/opencv2/imgproc/imgproc.hpp
+d/usr/local/include/opencv2/photo/photo.hpp
+d/usr/local/include/opencv2/photo/photo_c.h
+d/usr/local/include/opencv2/video/video.hpp
+d/usr/local/include/opencv2/video/tracking.hpp
+d/usr/local/include/opencv2/video/background_segm.hpp
+d/usr/local/include/opencv2/features2d/features2d.hpp
+d/usr/local/include/opencv2/objdetect/objdetect.hpp
+d/usr/local/include/opencv2/calib3d/calib3d.hpp
+d/usr/local/include/opencv2/ml/ml.hpp
+d/usr/local/include/opencv2/highgui/highgui_c.h
+d/usr/local/include/opencv2/highgui/highgui.hpp
+d/usr/local/include/opencv2/contrib/contrib.hpp
+d/usr/local/include/opencv2/contrib/retina.hpp
+d/usr/local/include/opencv2/contrib/openfabmap.hpp
+d/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/findEdges.h
+d/Users/adarsh.kosuru/Desktop/pixelTrial/DetectContours.h
+d/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/display_window.h
+d/Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.h
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection67"Compile /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp202"CompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o pixelTrial/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler9e97165af650b941^1216395cf650b941^---0#0#1#-19%DVTDocumentLocation2@66"file:///Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp0000000000000000^4208"CompileC DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o pixelTrial/main.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/adarsh.kosuru/Desktop/pixelTrial    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -std=gnu++11 -stdlib=libc++ -fmodules -fmodules-cache-path=/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/ModuleCache -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Werror=return-type -Werror=deprecated-objc-isa-usage -Werror=objc-root-class -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wunused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wconditional-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wconstant-conversion -Wint-conversion -Wbool-conversion -Wenum-conversion -Wshorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -fvisibility-inlines-hidden -Wno-sign-conversion -iquote /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-generated-files.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-own-target-headers.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-all-target-headers.hmap -iquote /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/pixelTrial-project-headers.hmap -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/local/include -I/usr/local/include/libpng16 -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/usr/local/include/opencv2/calib3d -I/usr/local/include/opencv2/contrib -I/usr/local/include/opencv2/core -I/usr/local/include/opencv2/features2d -I/usr/local/include/opencv2/flann -I/usr/local/include/opencv2/gpu -I/usr/local/include/opencv2/highgui -I/usr/local/include/opencv2/imgproc -I/usr/local/include/opencv2/legacy -I/usr/local/include/opencv2/ml -I/usr/local/include/opencv2/nonfree -I/usr/local/include/opencv2/objdetect -I/usr/local/include/opencv2/ocl -I/usr/local/include/opencv2/photo -I/usr/local/include/opencv2/stitching -I/usr/local/include/opencv2/superres -I/usr/local/include/opencv2/ts -I/usr/local/include/opencv2/video -I/usr/local/include/opencv2/videostab -I/usr/local/include/opencv2/gpu/device -I/usr/local/include/opencv2/stitching/detail -I/usr/local/include/opencv2/gpu/device/detail -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/DerivedSources/x86_64 -I/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/DerivedSources -F/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug -MMD -MT dependencies -MF /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.d --serialize-diagnostics /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.dia -c /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp -o /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/main.o36"AA312D77-27F2-4ED1-96C2-0FA2AB87EF9D-
+b5E4C8B12-91D9-487E-9EE4-19D5F5C87A3D
 
 CLd /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/pixelTrial normal x86_64
-s424734283.549140
-e424734283.605956
+s424736348.225658
+e424736348.271570
 r1
 xLd
 x/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/pixelTrial
@@ -1091,6 +1120,6 @@ d/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/
 d/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib/system/libunc.dylib
 d/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib/system/libunwind.dylib
 d/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib/system/libxpc.dylib
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Link /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/pixelTrial71"Ld DerivedData/pixelTrial/Build/Products/Debug/pixelTrial normal x86_648db88c4bee50b941^74ea9e4bee50b941^---0#0#1#--2302"Ld DerivedData/pixelTrial/Build/Products/Debug/pixelTrial normal x86_64    cd /Users/adarsh.kosuru/Desktop/pixelTrial    export MACOSX_DEPLOYMENT_TARGET=10.9    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -L/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug -L/usr/local/lib -F/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug -filelist /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/pixelTrial.LinkFileList -mmacosx-version-min=10.9 -stdlib=libc++ -lopencv_video.2.4.9 -lopencv_features2d.2.4.9 -lopencv_video.2.4.9 -lopencv_photo.2.4.9 -lopencv_videostab.2.4.9 -lopencv_highgui.2.4.9 -lopencv_superres.2.4.9 -lopencv_gpu.2.4.9 -lopencv_highgui.2.4.9 -lopencv_imgproc.2.4.9 -lopencv_calib3d.2.4.9 -lopencv_features2d.2.4.9 -lopencv_ocl.2.4.9 -lopencv_stitching.2.4.9 -lopencv_objdetect.2.4.9 -lopencv_calib3d.2.4.9 -lopencv_flann.2.4.9 -lopencv_contrib.2.4.9 -lopencv_photo.2.4.9 -lopencv_imgproc.2.4.9 -lopencv_legacy.2.4.9 -lopencv_videostab.2.4.9 -lopencv_nonfree.2.4.9 -lopencv_core.2.4.9 -lopencv_photo.2.4.9 -lopencv_features2d.2.4.9 -lopencv_core.2.4.9 -lopencv_legacy.2.4.9 -lopencv_legacy.2.4.9 -lopencv_ml.2.4.9 -lopencv_ml.2.4.9 -lopencv_contrib.2.4.9 -lopencv_flann.2.4.9 -lopencv_stitching.2.4.9 -lopencv_nonfree.2.4.9 -lopencv_nonfree.2.4.9 -lopencv_ml.2.4.9 -lopencv_contrib.2.4.9 -lopencv_stitching.2.4.9 -lopencv_objdetect.2.4.9 -lopencv_superres.2.4.9 -lopencv_gpu.2.4.9 -lopencv_imgproc.2.4.9 -lopencv_video.2.4.9 -lopencv_gpu.2.4.9 -lopencv_ocl.2.4.9 -lopencv_objdetect.2.4.9 -lopencv_ocl.2.4.9 -lopencv_videostab.2.4.9 -lopencv_superres.2.4.9 -lopencv_calib3d.2.4.9 -lopencv_core.2.4.9 -lopencv_flann.2.4.9 -lopencv_highgui.2.4.9 -Xlinker -dependency_info -Xlinker /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/pixelTrial_dependency_info.dat -o /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/pixelTrial36"804802AA-EA69-48EB-9E9C-21DDF2E73715-
-bA862047D-400A-4AFD-B3DD-C9EFF3E1E279
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Link /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/pixelTrial71"Ld DerivedData/pixelTrial/Build/Products/Debug/pixelTrial normal x86_649aee395cf650b941^9886455cf650b941^---0#0#1#--2302"Ld DerivedData/pixelTrial/Build/Products/Debug/pixelTrial normal x86_64    cd /Users/adarsh.kosuru/Desktop/pixelTrial    export MACOSX_DEPLOYMENT_TARGET=10.9    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -L/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug -L/usr/local/lib -F/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug -filelist /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/pixelTrial.LinkFileList -mmacosx-version-min=10.9 -stdlib=libc++ -lopencv_video.2.4.9 -lopencv_features2d.2.4.9 -lopencv_video.2.4.9 -lopencv_photo.2.4.9 -lopencv_videostab.2.4.9 -lopencv_highgui.2.4.9 -lopencv_superres.2.4.9 -lopencv_gpu.2.4.9 -lopencv_highgui.2.4.9 -lopencv_imgproc.2.4.9 -lopencv_calib3d.2.4.9 -lopencv_features2d.2.4.9 -lopencv_ocl.2.4.9 -lopencv_stitching.2.4.9 -lopencv_objdetect.2.4.9 -lopencv_calib3d.2.4.9 -lopencv_flann.2.4.9 -lopencv_contrib.2.4.9 -lopencv_photo.2.4.9 -lopencv_imgproc.2.4.9 -lopencv_legacy.2.4.9 -lopencv_videostab.2.4.9 -lopencv_nonfree.2.4.9 -lopencv_core.2.4.9 -lopencv_photo.2.4.9 -lopencv_features2d.2.4.9 -lopencv_core.2.4.9 -lopencv_legacy.2.4.9 -lopencv_legacy.2.4.9 -lopencv_ml.2.4.9 -lopencv_ml.2.4.9 -lopencv_contrib.2.4.9 -lopencv_flann.2.4.9 -lopencv_stitching.2.4.9 -lopencv_nonfree.2.4.9 -lopencv_nonfree.2.4.9 -lopencv_ml.2.4.9 -lopencv_contrib.2.4.9 -lopencv_stitching.2.4.9 -lopencv_objdetect.2.4.9 -lopencv_superres.2.4.9 -lopencv_gpu.2.4.9 -lopencv_imgproc.2.4.9 -lopencv_video.2.4.9 -lopencv_gpu.2.4.9 -lopencv_ocl.2.4.9 -lopencv_objdetect.2.4.9 -lopencv_ocl.2.4.9 -lopencv_videostab.2.4.9 -lopencv_superres.2.4.9 -lopencv_calib3d.2.4.9 -lopencv_core.2.4.9 -lopencv_flann.2.4.9 -lopencv_highgui.2.4.9 -Xlinker -dependency_info -Xlinker /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Intermediates/pixelTrial.build/Debug/pixelTrial.build/Objects-normal/x86_64/pixelTrial_dependency_info.dat -o /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/pixelTrial36"4357C46C-2B83-400E-963A-0FDB8628C1C1-
+b5E4C8B12-91D9-487E-9EE4-19D5F5C87A3D
 
