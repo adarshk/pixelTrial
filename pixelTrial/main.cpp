@@ -2,13 +2,17 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <map>
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <string.h>
+
 #include "findEdges.h"
 #include "DetectContours.h"
 #include "display_window.h"
+#include "load_image.h"
 
 
 using namespace cv;
@@ -36,13 +40,20 @@ int main(int argc,char** argv){
     //string dir = argv[2] + string("/layout4/") + "layout4.png";
     string dir = argv[2] + string("/bootstrap1/") + "bootstrap1.png";
     cout << "dir - " << dir << endl;
-    src_image = imread(dir);
+    
+    
+    LoadImage li(dir,"Layout1");
+    src_image = li.get_image();
+    //    src_image = imread(dir);
     if(!src_image.data){
         cout << "No image data" <<endl;
     }
+
+    li.show();
     
-    DisplayWindow dw("Layout1", src_image,CV_WINDOW_AUTOSIZE);
-    dw.show();
+    
+    //DisplayWindow dw("Layout1", src_image,CV_WINDOW_AUTOSIZE);
+    //dw.show();
     
     cvtColor(src_image, src_image_grayscale, COLOR_BGR2GRAY);
     //blur(src_image_grayscale, src_image_grayscale, Size(3,3));
