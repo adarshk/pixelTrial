@@ -15,4 +15,16 @@ namespace ppc {
         cv::imshow(window_name, query_img);
     }
     
+    DisplayWindow::~DisplayWindow(){
+        
+    }
+    
+    void DisplayWindow::set_window_name(const std::string& swn){
+        window_name = swn;
+    }
+    
+    std::string DisplayWindow::get_window_name() const{
+        return window_name;
+    }
+    
 }

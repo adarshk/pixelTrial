@@ -41,10 +41,8 @@ int main(int argc,char** argv){
         cout << "No image data" <<endl;
     }
     
-    DisplayWindow dw = DisplayWindow("Layout1", src_image,CV_WINDOW_AUTOSIZE);
+    DisplayWindow dw("Layout1", src_image,CV_WINDOW_AUTOSIZE);
     dw.show();
-    //namedWindow("Layout1",CV_WINDOW_AUTOSIZE);
-    //imshow("Layout1", src_image);
     
     cvtColor(src_image, src_image_grayscale, COLOR_BGR2GRAY);
     //blur(src_image_grayscale, src_image_grayscale, Size(3,3));
