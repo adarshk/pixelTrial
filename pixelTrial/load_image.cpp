@@ -7,3 +7,13 @@
 //
 
 #include "load_image.h"
+
+namespace ppc {
+    LoadImage::LoadImage(){
+        
+    }
+    
+    LoadImage::~LoadImage(){
+        
+    }
+}
