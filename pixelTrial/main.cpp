@@ -8,6 +8,7 @@
 #include <string.h>
 #include "findEdges.h"
 #include "DetectContours.h"
+#include "display_window.h"
 
 
 using namespace cv;
@@ -31,62 +32,19 @@ void HoughTransform(Mat dst);
 int main(int argc,char** argv){
     
     
-    /*
-    
-    query = imread(argv[1],IMREAD_COLOR);
-    testImg = imread(argv[1],IMREAD_COLOR);
-    
-    cvtColor(query, queryGreyscale, COLOR_BGR2GRAY);
-    blur(queryGreyscale, queryGreyscale, Size(3,3));
-    
-    cvtColor(testImg, testImgGrayscale, COLOR_BGR2GRAY);
-    blur(testImgGrayscale, testImgGrayscale, Size(3,3));
-    Mat cannyClassResult,contour_result;
-    
-    FindEdges fe;
-    //FindEdges fe(testImg);
-    //testImg = fe.cannyEdges();
-    cannyClassResult = fe.cannyEdges(testImgGrayscale);
-    
-    
-    vector<vector<Point>> cntrs;
-    vector<Vec4i> hrchy;
-    DetectContours dc(cannyClassResult);
-    //DetectContours dc(cannyClassResult,cntrs,hrchy);
-    //cntrs = dc.findContours(cannyClassResult, cntrs, hrchy);
-    cntrs = dc.findContours();
-    contour_result = dc.drawRotatedRects();
-    dc.printHierarchy();
-    //contourClass = dc.drawContours();
-    cout<< "cntrs Size - "<<cntrs.size() << endl;
-    
-    namedWindow("testImg",CV_WINDOW_AUTOSIZE);
-    imshow("testImg", testImg);
-    
-    namedWindow("Contours",CV_WINDOW_AUTOSIZE);
-    imshow("Contours", contour_result);
-    
-    String queryWindow = "Query";
-    // namedWindow(queryWindow,CV_WINDOW_AUTOSIZE);
-    //imshow(queryWindow, query);
-    //createTrackbar( "Threshold",queryWindow, &thresh,maxThreshold, detectRegions );
-    
-    // detectRegions(0,0);
-    
-     */
-    
-    
-    
     
     //string dir = argv[2] + string("/layout4/") + "layout4.png";
-    string dir = argv[2] + string("/bootstrap2/") + "bootstrap2.png";
+    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1.png";
     cout << "dir - " << dir << endl;
     src_image = imread(dir);
     if(!src_image.data){
         cout << "No image data" <<endl;
     }
-    namedWindow("Layout1",CV_WINDOW_AUTOSIZE);
-    imshow("Layout1", src_image);
+    
+    DisplayWindow dw = DisplayWindow("Layout1", src_image,CV_WINDOW_AUTOSIZE);
+    dw.show();
+    //namedWindow("Layout1",CV_WINDOW_AUTOSIZE);
+    //imshow("Layout1", src_image);
     
     cvtColor(src_image, src_image_grayscale, COLOR_BGR2GRAY);
     //blur(src_image_grayscale, src_image_grayscale, Size(3,3));
