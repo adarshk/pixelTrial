@@ -23,12 +23,12 @@ namespace ppc {
         void set_maximum_threshold(const int& set_max);
         int  get_maximum_threshold() const;
         void set_min_max(const int& set_min,const int& set_max);
-        void set_image(cv::Mat query);
+        void set_source_image(cv::Mat query);
         void set_threshold_image(cv::Mat thresholded);
         void set_threshold_type(int set_type);
         int  get_threshold_type() const;
         cv::Mat get_thresholded_image() const;
-        cv::Mat get_image() const;
+        cv::Mat get_source_image() const;
         cv::Mat apply(cv::Mat thresholded);
         cv::Mat apply();
         cv::Mat apply(cv::Mat query, cv::Mat thresholded,int set_min,int set_max,int set_type);
