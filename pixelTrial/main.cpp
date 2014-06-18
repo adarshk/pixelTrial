@@ -27,7 +27,7 @@ int maxThreshold(255);
 
 Mat src_image,src_image_grayscale,src_image_threshold,src_image_edges,src_image_contours;
 const bool showImg = true;
-FindEdges find_edges;
+Edges fe;
 
 void detectRegions(int,void*);
 void ApplyThreshold(int,void*);
@@ -70,7 +70,7 @@ int main(int argc,char** argv){
     GaussianBlur(src_image_grayscale,src_image_grayscale,Size(3,3),0);
     
     
-    th.set_image(src_image_grayscale);
+    th.set_source_image(src_image_grayscale);
 
     
     
@@ -117,7 +117,9 @@ void ApplyThreshold(int,void*){
     
     //threshold(src_image_grayscale, src_image_threshold, thresh, maxThreshold, CV_THRESH_BINARY_INV);
     
-    src_image_edges = find_edges.cannyEdges(src_image_threshold,thresh);
+    fe.set_lower_threshold(thresh);
+    fe.set_source_image(src_image_threshold);
+    src_image_edges = fe.applyCanny();
     
     HoughTransform(src_image_edges);
     

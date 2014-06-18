@@ -121,7 +121,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "35"
             endingLineNumber = "35"
-            landmarkName = "Threshold::set_minimum_threshold(int set_min)"
+            landmarkName = "Threshold::set_minimum_threshold(const int&amp; set_min)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

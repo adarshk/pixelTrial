@@ -73,11 +73,11 @@ namespace ppc {
     int Threshold::get_maximum_threshold() const{
         return maximum_threshold;
     }
-    void Threshold::set_image(cv::Mat query){
+    void Threshold::set_source_image(cv::Mat query){
         source = query;
     }
     
-    cv::Mat Threshold::get_image() const{
+    cv::Mat Threshold::get_source_image() const{
         return source;
     }
     
