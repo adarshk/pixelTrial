@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Frog. All rights reserved.
 //
 
-#ifndef __pixelTrial__findEdges__
-#define __pixelTrial__findEdges__
+#pragma once
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
@@ -24,4 +23,4 @@ namespace ppc {
     };
 }
 
-#endif /* defined(__pixelTrial__findEdges__) */
+
