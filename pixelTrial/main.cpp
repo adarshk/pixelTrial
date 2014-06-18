@@ -9,10 +9,11 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "findEdges.h"
+#include "find_edges.h"
 #include "DetectContours.h"
 #include "display_window.h"
 #include "load_image.h"
+#include "apply_threshold.h"
 
 
 using namespace cv;
@@ -33,6 +34,9 @@ void ApplyThreshold(int,void*);
 void ShowImage(Mat im);
 void HoughTransform(Mat dst);
 
+Threshold th(thresh,maxThreshold,1);
+//Threshold th;
+
 int main(int argc,char** argv){
     
     
@@ -49,12 +53,14 @@ int main(int argc,char** argv){
         cout << "No image data" <<endl;
     }
 
-    //li.show();
+    li.show();
     
-    LoadImage li1;
-    li1.set_image(src_image);
-    li1.set_image_name("Layout1");
-    li1.show();
+    
+//     or use this method if theres no need to pass in the directory or if theres only an image and no directory
+//    LoadImage li1;
+//    li1.set_image(src_image);
+//    li1.set_image_name("Layout1");
+//    li1.show();
     
     //DisplayWindow dw("Layout1", src_image,CV_WINDOW_AUTOSIZE);
     //dw.show();
@@ -64,6 +70,8 @@ int main(int argc,char** argv){
     GaussianBlur(src_image_grayscale,src_image_grayscale,Size(3,3),0);
     
     
+    th.set_image(src_image_grayscale);
+
     
     
     
@@ -103,7 +111,11 @@ void ApplyThreshold(int,void*){
     
     cout << "thresh - " << thresh<<endl;
     
-    threshold(src_image_grayscale, src_image_threshold, thresh, maxThreshold, CV_THRESH_BINARY_INV);
+    
+    th.set_minimum_threshold(thresh);
+    src_image_threshold = th.apply();
+    
+    //threshold(src_image_grayscale, src_image_threshold, thresh, maxThreshold, CV_THRESH_BINARY_INV);
     
     src_image_edges = find_edges.cannyEdges(src_image_threshold,thresh);
     

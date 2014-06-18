@@ -29,4 +29,5 @@ dependencies: /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/findEdges.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/../DetectContours.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/display_window.h \
-  /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.h
+  /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.h \
+  /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/apply_threshold.h
