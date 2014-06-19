@@ -27,7 +27,7 @@ dependencies: /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp \
   /usr/local/include/opencv2/contrib/retina.hpp \
   /usr/local/include/opencv2/contrib/openfabmap.hpp \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/find_edges.h \
-  /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/../DetectContours.h \
+  /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/../detect_contours.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/display_window.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/apply_threshold.h

@@ -25,9 +25,9 @@ namespace ppc {
         Edges(cv::Mat query,cv::Mat result_image,const int& set_lower,const int& set_upper);
         ~Edges();
         void set_source_image(cv::Mat query);
-        cv::Mat get_source_image() const;
+        const cv::Mat get_source_image() const;
         void set_result_image(cv::Mat result_image);
-        cv::Mat get_result_image() const;
+        const cv::Mat get_result_image() const;
         void set_lower_threshold(const int& set_lower);
         int get_lower_threshold() const;
         void set_upper_threshold(const int& set_upper);

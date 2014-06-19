@@ -27,13 +27,13 @@ namespace ppc {
     void Edges::set_source_image(cv::Mat query){
         source = query;
     }
-    cv::Mat Edges::get_source_image() const{
+    const cv::Mat Edges::get_source_image() const{
         return source;
     }
     void Edges::set_result_image(cv::Mat result_image){
         result = result_image;
     }
-    cv::Mat Edges::get_result_image() const{
+    const cv::Mat Edges::get_result_image() const{
         return result;
     }
     void Edges::set_lower_threshold(const int& set_lower){
