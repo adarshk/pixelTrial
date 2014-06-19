@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include <string>
-#include <assert.h>
 #include <opencv2/opencv.hpp>
 
 namespace ppc {

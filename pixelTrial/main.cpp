@@ -10,7 +10,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include "find_edges.h"
-#include "DetectContours.h"
+#include "detect_contours.h"
 #include "display_window.h"
 #include "load_image.h"
 #include "apply_threshold.h"
@@ -27,7 +27,7 @@ int maxThreshold(255);
 
 Mat src_image,src_image_grayscale,src_image_threshold,src_image_edges,src_image_contours;
 const bool showImg = true;
-Edges fe;
+
 
 void detectRegions(int,void*);
 void ApplyThreshold(int,void*);
@@ -36,6 +36,9 @@ void HoughTransform(Mat dst);
 
 Threshold th(thresh,maxThreshold,1);
 //Threshold th;
+Edges fe;
+Contours ct,sit;
+Mat contour_test;
 
 int main(int argc,char** argv){
     
@@ -71,12 +74,17 @@ int main(int argc,char** argv){
     
     
     th.set_source_image(src_image_grayscale);
+    ct.set_contour_mode(CV_RETR_TREE);
+    ct.set_approximaiton_type(CV_CHAIN_APPROX_SIMPLE);
+    sit.set_contour_mode(CV_RETR_EXTERNAL);
+    sit.set_approximaiton_type(CV_CHAIN_APPROX_NONE);
 
     
     
     
     namedWindow("Detected Contours",CV_WINDOW_AUTOSIZE);
-    createTrackbar( "Threshold","Detected Contours", &thresh,maxThreshold, ApplyThreshold );
+    namedWindow("contourTest",CV_WINDOW_AUTOSIZE);
+    createTrackbar( "Threshold","contourTest", &thresh,maxThreshold, ApplyThreshold );
     ApplyThreshold(0, 0);
     
     //    ShowImage(src_image_threshold);
@@ -109,7 +117,7 @@ int main(int argc,char** argv){
 
 void ApplyThreshold(int,void*){
     
-    cout << "thresh - " << thresh<<endl;
+    cout << "thresh - " << thresh << endl;
     
     
     th.set_minimum_threshold(thresh);
@@ -123,15 +131,24 @@ void ApplyThreshold(int,void*){
     
     HoughTransform(src_image_edges);
     
-    vector<vector<Point>> contours;
-    findContours(src_image_edges, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
     
-    for (vector<vector<Point>>::iterator itr = contours.begin(); itr!=contours.end(); ++itr) {
-        Rect r = boundingRect(Mat(*itr));
-        rectangle(src_image_edges, r, Scalar(255), 2);
+    contour_test = ct.set_source_image(src_image_edges).find().draw().draw_rotated_rectangles().get_result_image();
+    
+    vector<cv::Vec4i> contour_hierarchy;
+    contour_hierarchy = ct.get_hierarchy();
+    for (std::vector<cv::Vec4i>::iterator itr = contour_hierarchy.begin(); itr!=contour_hierarchy.end(); ++itr) {
+        std::cout  << *itr << std::endl;
+        
     }
     
-//    namedWindow("Detected Contours",CV_WINDOW_AUTOSIZE);
+    cout << "new hierarchy - " << endl;
+    
+    
+    imshow("contourTest", contour_test);
+    
+    src_image_edges = sit.set_source_image(src_image_edges).find_without_hierarchy().draw_rectangles().get_result_image();
+
+
     imshow("Detected Contours", src_image_edges);
     
     namedWindow("Thresh",CV_WINDOW_AUTOSIZE);

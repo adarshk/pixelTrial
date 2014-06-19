@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Frog. All rights reserved.
 //
 
+#ifndef NDEBUG
+#define Check(x) assert(x)
+#define CheckWithMessage(str,x) assert((str,x))
+#endif
+
 #include "load_image.h"
 
 namespace ppc {
@@ -56,7 +61,8 @@ namespace ppc {
     
     void LoadImage::show(int window_size){
         
-        assert(image_name!="" && "Set window name before displaying image");
+        CheckWithMessage(std::string("Set window name before displaying image"), image_name!="");
+        
         cv::namedWindow(image_name,window_size);
         cv::imshow(image_name, source);
     }

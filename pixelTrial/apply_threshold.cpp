@@ -66,11 +66,11 @@ namespace ppc {
         return thresholded_image;
     }
     
-    int Threshold::get_minimum_threshold() const{
+    const int Threshold::get_minimum_threshold() const{
         return minimum_threshold;
     }
     
-    int Threshold::get_maximum_threshold() const{
+    const int Threshold::get_maximum_threshold() const{
         return maximum_threshold;
     }
     void Threshold::set_source_image(cv::Mat query){
@@ -92,7 +92,7 @@ namespace ppc {
     void Threshold::set_threshold_type(int set_type){
         type = set_type;
     }
-    int Threshold::get_threshold_type() const{
+    const int Threshold::get_threshold_type() const{
         return type;
     }
     
