@@ -14,6 +14,7 @@
 #include "display_window.h"
 #include "load_image.h"
 #include "apply_threshold.h"
+#include "feature_extractor.h"
 
 
 using namespace cv;
@@ -22,8 +23,8 @@ using namespace ppc;
 
 Mat query,queryGreyscale,thresholdResult,testImg,testImgGrayscale;
 RNG rng(12345);
-int thresh(100);
-int maxThreshold(255);
+int thresh(20);
+int maxThreshold(200);
 
 Mat src_image,src_image_grayscale,src_image_threshold,src_image_edges,src_image_contours;
 const bool showImg = true;
@@ -37,15 +38,23 @@ void HoughTransform(Mat dst);
 Threshold th(thresh,maxThreshold,1);
 //Threshold th;
 Edges fe;
-Contours ct,sit;
-Mat contour_test;
+Contours ct(CV_RETR_TREE,CV_CHAIN_APPROX_SIMPLE),sit(CV_RETR_EXTERNAL,CV_CHAIN_APPROX_NONE);
+Mat contour_test,contour_result;
+std::vector<cv::RotatedRect> min_rectangles;
+FeatureExtractor features;
+int flag=0;
+Mat copied;
+int area(10000),width(500),height(500);
+int window_size = CV_WINDOW_NORMAL;
 
 int main(int argc,char** argv){
     
     
     
     //string dir = argv[2] + string("/layout4/") + "layout4.png";
-    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1.png";
+//    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1.png";
+//    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1_2.png";
+    string dir = argv[2] + string("/tearsheet/") + "Tearsheet.png";
     cout << "dir - " << dir << endl;
     
     
@@ -74,34 +83,14 @@ int main(int argc,char** argv){
     
     
     th.set_source_image(src_image_grayscale);
-    ct.set_contour_mode(CV_RETR_TREE);
-    ct.set_approximaiton_type(CV_CHAIN_APPROX_SIMPLE);
-    sit.set_contour_mode(CV_RETR_EXTERNAL);
-    sit.set_approximaiton_type(CV_CHAIN_APPROX_NONE);
 
-    
-    
-    
-    namedWindow("Detected Contours",CV_WINDOW_AUTOSIZE);
-    namedWindow("contourTest",CV_WINDOW_AUTOSIZE);
-    createTrackbar( "Threshold","contourTest", &thresh,maxThreshold, ApplyThreshold );
+    namedWindow("Edges",window_size);
+    namedWindow("contourTest",window_size);
+    namedWindow("ContourResult",window_size);
+    createTrackbar( "Threshold","ContourResult", &thresh,maxThreshold, ApplyThreshold );
     ApplyThreshold(0, 0);
     
-    //    ShowImage(src_image_threshold);
-    /*
-     vector<vector<Point>> contours;
-     findContours(src_image_threshold, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-     
-     for (vector<vector<Point>>::iterator itr = contours.begin(); itr!=contours.end(); ++itr) {
-     Rect r = boundingRect(Mat(*itr));
-     rectangle(src_image_threshold, r, Scalar(255), 2);
-     }
-     
-     //    imshow("Detected Contours", src_image_threshold);
-     
-     //    imshow("Detected Contours", src_image_threshold);
-     //    ShowImage(src_image_threshold);
-     */
+    
      
      
      /*
@@ -121,27 +110,131 @@ void ApplyThreshold(int,void*){
     
     
     th.set_minimum_threshold(thresh);
-    src_image_threshold = th.apply();
+    th.apply();
+    src_image_threshold = th.get_thresholded_image();
     
     //threshold(src_image_grayscale, src_image_threshold, thresh, maxThreshold, CV_THRESH_BINARY_INV);
     
     fe.set_lower_threshold(thresh);
-    fe.set_source_image(src_image_threshold);
+    fe.set_upper_threshold(thresh*3);
+    fe.set_source_image(src_image_grayscale);
     src_image_edges = fe.applyCanny();
     
-    HoughTransform(src_image_edges);
+    //HoughTransform(src_image_edges);
     
     
-    contour_test = ct.set_source_image(src_image_edges).find().draw().draw_rotated_rectangles().get_result_image();
+    contour_test = ct.set_source_image(src_image_edges).find().draw_rotated_rectangles().get_result_image();
     
-    vector<cv::Vec4i> contour_hierarchy;
-    contour_hierarchy = ct.get_hierarchy();
-    for (std::vector<cv::Vec4i>::iterator itr = contour_hierarchy.begin(); itr!=contour_hierarchy.end(); ++itr) {
-        std::cout  << *itr << std::endl;
+    vector<cv::Vec4i> hierarchy;
+    vector<cv::Vec4i> parent_hierarchy;
+    vector<int> indexes;
+    vector<vector<cv::Point>> contours;
+    contours = ct.get_contours();
+    hierarchy = ct.get_hierarchy();
+    contour_result = cv::Mat::zeros(src_image_edges.size(), CV_8UC3);
+    min_rectangles.resize(contours.size());
+    
+    for (int i=0; i<hierarchy.size(); i++) {
+//        std::cout  << hierarchy[i] << std::endl;
+        if (hierarchy[i][3] == -1) {
+            parent_hierarchy.push_back(hierarchy[i]);
+            indexes.push_back(i);
+//            cout << "parent here - " << endl;
+//            std::cout  << hierarchy[i] << std::endl;
+        }
+    }
+    
+        for (int i=0; i<parent_hierarchy.size(); i++) {
+//         std::cout  << parent_hierarchy[i] << "index - " << indexes[i] <<std::endl;
+        }
+    
+    for (vector<int>::iterator itr =indexes.begin(); itr!=indexes.end();++itr) {
+        cv::Rect r = cv::boundingRect(cv::Mat(contours[*itr]));
+//        cout << "rect width & height - " << itr - indexes.begin() << r.width << " , " << r.height << endl;
+        cout << "rect area - " << itr - indexes.begin() << r.area()  << endl;
+        
+        if (r.area() > area || r.width > width || r.height > height) {
+            rectangle(contour_result, r, cv::Scalar(255), 2);
+            
+            if (flag == 0) {
+//                src_image.copyTo(copied(Rect(r.tl().x,r.tl().y,r.width,r.height)));
+                
+                flag =1;
+            }
+        }
         
     }
     
-    cout << "new hierarchy - " << endl;
+    
+//    namedWindow("copiedImage",CV_WINDOW_AUTOSIZE);
+//    imshow("copiedImage", copied);
+    
+//    for (std::vector<cv::Vec4i>::iterator itr = hierarchy.begin(); itr!=hierarchy.end(); ++itr) {
+//            std::cout  << *itr << std::endl;
+//        }
+    
+    //contour_result = ct.draw_rectangles().get_result_image();
+    
+    
+    
+//    for (size_t i=0; i<contours.size(); i++) {
+//        min_rectangles[i]  = cv::minAreaRect(cv::Mat(contours[i]));
+//        Rect r = min_rectangles[i].boundingRect();
+//        rectangle(contour_result, r, cv::Scalar(255), 2);
+//    }
+    
+    
+    cout << "no of contours - " << contours.size() << endl;
+  
+    /*
+    for (std::vector<std::vector<cv::Point>>::iterator itr = contours.begin(); itr!=contours.end(); ++itr) {
+//        cout << "itr num - " << itr - contours.begin() << endl;
+//        min_rectangles[itr - contours.begin()]  = cv::minAreaRect(cv::Mat(*itr));
+        cv::Rect r = cv::boundingRect(cv::Mat(*itr));
+        rectangle(contour_result, r, cv::Scalar(255), 2);
+        
+    }
+    */
+    
+    
+    imshow("ContourResult", contour_result);
+    
+    
+    
+    
+    
+//    for (std::vector<vector<cv::Point>>::iterator itr = contours.begin(); itr!=contours.end(); ++itr) {
+//        std::cout  << *itr << std::endl;
+//        
+//    }
+    
+    
+//    hierarchy = ct.get_hierarchy();
+//    for (std::vector<cv::Vec4i>::iterator itr = hierarchy.begin(); itr!=hierarchy.end(); ++itr) {
+//        std::cout  << *itr << std::endl;
+//        
+//    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     imshow("contourTest", contour_test);
@@ -149,10 +242,10 @@ void ApplyThreshold(int,void*){
     src_image_edges = sit.set_source_image(src_image_edges).find_without_hierarchy().draw_rectangles().get_result_image();
 
 
-    imshow("Detected Contours", src_image_edges);
+    imshow("Edges", src_image_edges);
     
-    namedWindow("Thresh",CV_WINDOW_AUTOSIZE);
-    imshow("Thresh", src_image_threshold);
+    //namedWindow("Thresh",CV_WINDOW_AUTOSIZE);
+    //imshow("Thresh", src_image_threshold);
 }
 
 void HoughTransform(Mat dst){
@@ -178,9 +271,21 @@ void HoughTransform(Mat dst){
         line( cdst, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
     }
     
-    namedWindow("HoughLines",CV_WINDOW_AUTOSIZE);
+    namedWindow("HoughLines",window_size);
     imshow("HoughLines", cdst);
 }
+
+
+
+void setup(){
+    
+}
+
+
+
+
+
+
 
 void ShowImage(Mat im){
     

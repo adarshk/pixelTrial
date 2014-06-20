@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/main.cpp"
-            timestampString = "424878105.217752"
+            timestampString = "424962635.540864"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
             landmarkName = "main(int argc,char** argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -132,12 +132,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/apply_threshold.cpp"
-            timestampString = "424806658.030296"
+            timestampString = "424900906.504385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
             landmarkName = "Threshold::set_min_max(const int&amp; set_min,const int&amp; set_max)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/feature_extractor.cpp"
+            timestampString = "424956105.88873"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "FeatureExtractor::detect_orb()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
