@@ -70,11 +70,12 @@
 		859ADC611946151700F5C586 /* contoursWorking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 859ADC601946151700F5C586 /* contoursWorking.cpp */; };
 		85A24CB719475CFB00784F91 /* find_edges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CB519475CFB00784F91 /* find_edges.cpp */; };
 		85A24CBA1947965100784F91 /* detect_contours.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CB81947965100784F91 /* detect_contours.cpp */; };
-		85A24CC0194894DF00784F91 /* kNearestNeighbor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CBE194894DF00784F91 /* kNearestNeighbor.cpp */; };
+		85A24CC0194894DF00784F91 /* k_nearest_neighbor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CBE194894DF00784F91 /* k_nearest_neighbor.cpp */; };
 		85A24CC319489AB300784F91 /* ExtractDescriptors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24CC119489AB300784F91 /* ExtractDescriptors.cpp */; };
 		85A24D8A194F847A00784F91 /* display_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85A24D88194F847900784F91 /* display_window.cpp */; };
 		85CFA84D1950AED9005D027B /* load_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85CFA84B1950AED9005D027B /* load_image.cpp */; };
 		85CFABC31951E9C0005D027B /* apply_threshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85CFABC11951E9C0005D027B /* apply_threshold.cpp */; };
+		85CFABC619544987005D027B /* feature_extractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85CFABC419544987005D027B /* feature_extractor.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -157,8 +158,8 @@
 		85A24CB619475CFB00784F91 /* find_edges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = find_edges.h; sourceTree = "<group>"; };
 		85A24CB81947965100784F91 /* detect_contours.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = detect_contours.cpp; path = ../detect_contours.cpp; sourceTree = "<group>"; };
 		85A24CB91947965100784F91 /* detect_contours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detect_contours.h; path = ../detect_contours.h; sourceTree = "<group>"; };
-		85A24CBE194894DF00784F91 /* kNearestNeighbor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kNearestNeighbor.cpp; path = ../kNearestNeighbor.cpp; sourceTree = "<group>"; };
-		85A24CBF194894DF00784F91 /* kNearestNeighbor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kNearestNeighbor.h; path = ../kNearestNeighbor.h; sourceTree = "<group>"; };
+		85A24CBE194894DF00784F91 /* k_nearest_neighbor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = k_nearest_neighbor.cpp; path = ../k_nearest_neighbor.cpp; sourceTree = "<group>"; };
+		85A24CBF194894DF00784F91 /* k_nearest_neighbor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = k_nearest_neighbor.h; path = ../k_nearest_neighbor.h; sourceTree = "<group>"; };
 		85A24CC119489AB300784F91 /* ExtractDescriptors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExtractDescriptors.cpp; sourceTree = "<group>"; };
 		85A24CC219489AB300784F91 /* ExtractDescriptors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtractDescriptors.h; sourceTree = "<group>"; };
 		85A24D88194F847900784F91 /* display_window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = display_window.cpp; sourceTree = "<group>"; };
@@ -167,6 +168,8 @@
 		85CFA84C1950AED9005D027B /* load_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = load_image.h; sourceTree = "<group>"; };
 		85CFABC11951E9C0005D027B /* apply_threshold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apply_threshold.cpp; sourceTree = "<group>"; };
 		85CFABC21951E9C0005D027B /* apply_threshold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apply_threshold.h; sourceTree = "<group>"; };
+		85CFABC419544987005D027B /* feature_extractor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = feature_extractor.cpp; sourceTree = "<group>"; };
+		85CFABC519544987005D027B /* feature_extractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = feature_extractor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,8 +257,10 @@
 		859576A4193E2A2000B33C5C /* pixelTrial */ = {
 			isa = PBXGroup;
 			children = (
-				85A24CBE194894DF00784F91 /* kNearestNeighbor.cpp */,
-				85A24CBF194894DF00784F91 /* kNearestNeighbor.h */,
+				85A24CBE194894DF00784F91 /* k_nearest_neighbor.cpp */,
+				85A24CBF194894DF00784F91 /* k_nearest_neighbor.h */,
+				85CFABC419544987005D027B /* feature_extractor.cpp */,
+				85CFABC519544987005D027B /* feature_extractor.h */,
 				85A24CB81947965100784F91 /* detect_contours.cpp */,
 				85A24CB91947965100784F91 /* detect_contours.h */,
 				859576A5193E2A2000B33C5C /* main.cpp */,
@@ -395,13 +400,14 @@
 				8595772419422F5A00B33C5C /* HomoGraphyWorking.cpp in Sources */,
 				859576A6193E2A2000B33C5C /* main.cpp in Sources */,
 				8595771F193FA41F00B33C5C /* OrbOrbBFv2.cpp in Sources */,
-				85A24CC0194894DF00784F91 /* kNearestNeighbor.cpp in Sources */,
+				85A24CC0194894DF00784F91 /* k_nearest_neighbor.cpp in Sources */,
 				85CFA84D1950AED9005D027B /* load_image.cpp in Sources */,
 				8595771D193E4F9000B33C5C /* FastFreak.cpp in Sources */,
 				85A24D8A194F847A00784F91 /* display_window.cpp in Sources */,
 				859ADC611946151700F5C586 /* contoursWorking.cpp in Sources */,
 				85CFABC31951E9C0005D027B /* apply_threshold.cpp in Sources */,
 				859577261942333300B33C5C /* backup.cpp in Sources */,
+				85CFABC619544987005D027B /* feature_extractor.cpp in Sources */,
 				85A24CB719475CFB00784F91 /* find_edges.cpp in Sources */,
 				85A24CBA1947965100784F91 /* detect_contours.cpp in Sources */,
 			);

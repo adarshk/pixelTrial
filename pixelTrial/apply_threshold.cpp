@@ -43,27 +43,19 @@ namespace ppc {
         maximum_threshold = set_max;
     }
     
-    cv::Mat Threshold::apply(cv::Mat thresholded){
-        Check(source.data);
-        cv::threshold(source, thresholded, minimum_threshold, maximum_threshold, type);
-        return thresholded;
-    }
     
-    cv::Mat Threshold::apply(){
+    void Threshold::apply(){
         CheckWithMessage(std::string("Source image data not available"), source.data);
         //        assert(("Image data not available", !source.data ));
         cv::threshold(source, thresholded_image, minimum_threshold, maximum_threshold, type);
-        return thresholded_image;
     }
     
-    cv::Mat Threshold::apply(cv::Mat query, cv::Mat thresholded,int set_min,int set_max,int set_type){
+    void Threshold::apply(cv::Mat query,int set_min,int set_max,int set_type){
         CheckWithMessage(std::string("Source image data not available"), source.data);
-        thresholded_image = thresholded;
         minimum_threshold = set_min;
         maximum_threshold = set_max;
         type = set_type;
         cv::threshold(source, thresholded_image, minimum_threshold, maximum_threshold, type);
-        return thresholded_image;
     }
     
     const int Threshold::get_minimum_threshold() const{
@@ -79,10 +71,6 @@ namespace ppc {
     
     cv::Mat Threshold::get_source_image() const{
         return source;
-    }
-    
-    void Threshold::set_threshold_image(cv::Mat thresholded){
-        thresholded_image = thresholded;
     }
     
     cv::Mat Threshold::get_thresholded_image() const{
