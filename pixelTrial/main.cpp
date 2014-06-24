@@ -26,7 +26,7 @@ RNG rng(12345);
 int thresh(20);
 int maxThreshold(200);
 
-Mat src_image,src_image_grayscale,src_image_threshold,src_image_edges,src_image_contours;
+Mat src_image_temp,src_image,src_image_grayscale,src_image_threshold,src_image_edges,src_image_contours,src_image_adaptive_threshold,src_image_grayscale2;
 const bool showImg = true;
 
 
@@ -34,6 +34,7 @@ void detectRegions(int,void*);
 void ApplyThreshold(int,void*);
 void ShowImage(Mat im);
 void HoughTransform(Mat dst);
+void allImshows();
 
 Threshold th(thresh,maxThreshold,1);
 //Threshold th;
@@ -44,8 +45,9 @@ std::vector<cv::RotatedRect> min_rectangles;
 FeatureExtractor features;
 int flag=0;
 Mat copied;
-int area(10000),width(500),height(500);
-int window_size = CV_WINDOW_NORMAL;
+//int area(10000),width(500),height(500);
+int area(0),width(0),height(0);
+int window_size = CV_WINDOW_AUTOSIZE;
 
 int main(int argc,char** argv){
     
@@ -59,11 +61,13 @@ int main(int argc,char** argv){
     
     
     LoadImage li(dir,"Layout1");
-    src_image = li.get_image();
+    src_image_temp = li.get_image();
+    resize(src_image_temp, src_image, Size(0,0), 0.75,0.75 );
     //    src_image = imread(dir);
     if(!src_image.data){
         cout << "No image data" <<endl;
     }
+    li.set_image(src_image);
 
     li.show();
     
@@ -87,6 +91,8 @@ int main(int argc,char** argv){
     namedWindow("Edges",window_size);
     namedWindow("contourTest",window_size);
     namedWindow("ContourResult",window_size);
+    namedWindow("AdativeThresh",window_size);
+    namedWindow("Thresh",window_size);
     createTrackbar( "Threshold","ContourResult", &thresh,maxThreshold, ApplyThreshold );
     ApplyThreshold(0, 0);
     
@@ -109,19 +115,26 @@ void ApplyThreshold(int,void*){
     cout << "thresh - " << thresh << endl;
     
     
-    th.set_minimum_threshold(thresh);
-    th.apply();
-    src_image_threshold = th.get_thresholded_image();
+//    th.set_minimum_threshold(thresh);
+//    th.apply();
+//    src_image_threshold = th.get_thresholded_image();
     
-    //threshold(src_image_grayscale, src_image_threshold, thresh, maxThreshold, CV_THRESH_BINARY_INV);
+    adaptiveThreshold(src_image_grayscale, src_image_adaptive_threshold, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 3, 5);
     
-    fe.set_lower_threshold(thresh);
-    fe.set_upper_threshold(thresh*3);
+    double otsu = threshold(src_image_grayscale, src_image_threshold, thresh, maxThreshold, CV_THRESH_BINARY_INV);
+    
+    cout << "otsu - " << otsu << endl;
+    
+    fe.set_lower_threshold(0.5 * otsu);
+    fe.set_upper_threshold(otsu);
+//    fe.set_lower_threshold(thresh);
+//    fe.set_upper_threshold(thresh*3);
     fe.set_source_image(src_image_grayscale);
     src_image_edges = fe.applyCanny();
     
     //HoughTransform(src_image_edges);
     
+    src_image_grayscale.copyTo(src_image_grayscale2);
     
     contour_test = ct.set_source_image(src_image_edges).find().draw_rotated_rectangles().get_result_image();
     
@@ -151,7 +164,7 @@ void ApplyThreshold(int,void*){
     for (vector<int>::iterator itr =indexes.begin(); itr!=indexes.end();++itr) {
         cv::Rect r = cv::boundingRect(cv::Mat(contours[*itr]));
 //        cout << "rect width & height - " << itr - indexes.begin() << r.width << " , " << r.height << endl;
-        cout << "rect area - " << itr - indexes.begin() << r.area()  << endl;
+//        cout << "rect area - " << itr - indexes.begin() << r.area()  << endl;
         
         if (r.area() > area || r.width > width || r.height > height) {
             rectangle(contour_result, r, cv::Scalar(255), 2);
@@ -196,10 +209,7 @@ void ApplyThreshold(int,void*){
     }
     */
     
-    
-    imshow("ContourResult", contour_result);
-    
-    
+
     
     
     
@@ -237,15 +247,25 @@ void ApplyThreshold(int,void*){
     
     
     
+    
+    
+    //src_image_edges = sit.set_source_image(src_image_edges).find_without_hierarchy().draw_rectangles().get_result_image();
+
+
+    allImshows();
+  
+}
+
+void allImshows(){
+    
+    imshow("ContourResult", contour_result);
+    
     imshow("contourTest", contour_test);
-    
-    src_image_edges = sit.set_source_image(src_image_edges).find_without_hierarchy().draw_rectangles().get_result_image();
-
-
     imshow("Edges", src_image_edges);
+    imshow("AdativeThresh", src_image_adaptive_threshold);
     
-    //namedWindow("Thresh",CV_WINDOW_AUTOSIZE);
-    //imshow("Thresh", src_image_threshold);
+//    imshow("Thresh", src_image_threshold);
+    
 }
 
 void HoughTransform(Mat dst){
