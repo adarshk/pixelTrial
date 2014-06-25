@@ -35,6 +35,7 @@ void ApplyThreshold(int,void*);
 void ShowImage(Mat im);
 void HoughTransform(Mat dst);
 void allImshows();
+void namedWindows();
 
 Threshold th(thresh,maxThreshold,1);
 //Threshold th;
@@ -45,24 +46,156 @@ std::vector<cv::RotatedRect> min_rectangles;
 FeatureExtractor features;
 int flag=0;
 Mat copied;
-//int area(10000),width(500),height(500);
-int area(0),width(0),height(0);
+int area(500),width(500),height(500);
+//int area(0),width(0),height(0);
 int window_size = CV_WINDOW_AUTOSIZE;
 
+
+
+
+
+
+
+
+
+//Squares method
+
+
+Mat source_img,source_image_resized,blurred_image;
+const int no_of_threshold_levels = 20;
+int lower_thresh = 0,upper_thresh=255;
+Edges edge_image(lower_thresh,upper_thresh);
+Contours contours_image(CV_RETR_TREE,CV_CHAIN_APPROX_SIMPLE);
+vector<vector<Point>> squares;
+vector<cv::Vec4i> squares_hierarchy;
+int counter = 0;
+
+
+static double angle( Point pt1, Point pt2, Point pt0 )
+{
+    double dx1 = pt1.x - pt0.x;
+    double dy1 = pt1.y - pt0.y;
+    double dx2 = pt2.x - pt0.x;
+    double dy2 = pt2.y - pt0.y;
+    return (dx1*dx2 + dy1*dy2)/sqrt((dx1*dx1 + dy1*dy1)*(dx2*dx2 + dy2*dy2) + 1e-10);
+}
+
+
 int main(int argc,char** argv){
+    
+    
+    /*
+//    string path = argv[2] + string("/tearsheet/") + "Tearsheet.png";
+    string path = argv[2] + string("/tearsheet/") + "printedTearsheetVertical.JPG";
+    
+    cout << "dir - " << path << endl;
+    
+    
+    LoadImage load_source_image(path,"SquaresImage");
+    source_img = load_source_image.get_image();
+    resize(source_img, source_image_resized, Size(0,0), 0.50,0.50 );
+    //    src_image = imread(dir);
+    if(!source_image_resized.data){
+        cout << "No image data" <<endl;
+    }
+    load_source_image.set_image(source_image_resized);
+    
+    load_source_image.show();
+    
+    Mat gray0(source_image_resized.size(), CV_8U),gray;
+    
+    medianBlur(source_image_resized, blurred_image, 3);
+    vector<vector<Point>> contours;
+    
+    squares.clear();
+    
+    for(int channels=0;channels < 3; channels++){
+        
+        int mixChannelsArray[] = {channels,0};
+        
+        mixChannels(&blurred_image, 1, &gray0, 1, mixChannelsArray, 1);
+        
+        for (int threshold_level =0 ; threshold_level<no_of_threshold_levels; threshold_level++) {
+            if (threshold_level ==0 ) {
+                gray = edge_image.set_source_image(gray0).set_aperture_size(5).applyCanny().get_result_image();
+                dilate(gray, gray, Mat(),Point(-1,-1));
+            }
+            else{
+                gray = gray0 >= (threshold_level + 1) * 255 / no_of_threshold_levels;
+            }
+            
+            namedWindow("Gray",CV_WINDOW_AUTOSIZE);
+            imshow("Gray", gray);
+            
+            contours = contours_image.set_source_image(gray).find().get_contours();
+            squares_hierarchy = contours_image.get_hierarchy();
+            
+            
+            for (vector<vector<Point>>::iterator itr = contours.begin(); itr!=contours.end(); ++itr) {
+                //cout << "contours - " << *itr << endl;
+            }
+            
+            for (vector<cv::Vec4i>::iterator itr = squares_hierarchy.begin(); itr!=squares_hierarchy.end(); ++itr) {
+                cout << "square_hierarchy - " << threshold_level << " - "<<*itr << endl;
+                counter++;
+            }
+            
+            cout << "counter - " << counter << endl;
+            counter = 0;
+            
+            vector<Point> approx;
+            
+            for (size_t i=0; i < contours.size(); i++) {
+                approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.02, true);
+                
+                
+                if (approx.size() == 4 && fabs(contourArea(Mat(approx))) > 100 && isContourConvex(Mat(approx))) {
+                    double maxCosine = 0;
+                    
+                    for (int j=2; j<5; j++) {
+                        double cosine = fabs(angle(approx[j%4],approx[j-2],approx[j-1]));
+                        maxCosine = MAX(maxCosine, cosine);
+                        
+                        if (maxCosine < 0.3) {
+                            squares.push_back(approx);
+                        }
+                    }
+                }
+                
+            }
+            
+            
+        }
+    }
+
+    
+    namedWindow("Grayscale",CV_WINDOW_AUTOSIZE);
+    imshow("Grayscale", gray);
+    
+    
+    
+    for (size_t i=0; i<squares.size(); i++) {
+        const Point* p = &squares[i][0];
+        int n = (int)squares[i].size();
+        polylines(source_image_resized, &p, &n, 1, true, Scalar(0,255,0),3,CV_AA);
+    }
+    
+    namedWindow("WithLines",CV_WINDOW_AUTOSIZE);
+    imshow("WithLines", source_image_resized);
+    */
     
     
     
     //string dir = argv[2] + string("/layout4/") + "layout4.png";
 //    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1.png";
 //    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1_2.png";
-    string dir = argv[2] + string("/tearsheet/") + "Tearsheet.png";
+    string dir = argv[2] + string("/tearsheet/") + "printedTearsheetVertical.JPG";
     cout << "dir - " << dir << endl;
     
     
     LoadImage li(dir,"Layout1");
     src_image_temp = li.get_image();
-    resize(src_image_temp, src_image, Size(0,0), 0.75,0.75 );
+    resize(src_image_temp, src_image, Size(0,0), 0.50,0.50 );
     //    src_image = imread(dir);
     if(!src_image.data){
         cout << "No image data" <<endl;
@@ -71,13 +204,7 @@ int main(int argc,char** argv){
 
     li.show();
     
-    
-//     or use this method if theres no need to pass in the directory or if theres only an image and no directory
-//    LoadImage li1;
-//    li1.set_image(src_image);
-//    li1.set_image_name("Layout1");
-//    li1.show();
-    
+
     //DisplayWindow dw("Layout1", src_image,CV_WINDOW_AUTOSIZE);
     //dw.show();
     
@@ -88,11 +215,8 @@ int main(int argc,char** argv){
     
     th.set_source_image(src_image_grayscale);
 
-    namedWindow("Edges",window_size);
-    namedWindow("contourTest",window_size);
-    namedWindow("ContourResult",window_size);
-    namedWindow("AdativeThresh",window_size);
-    namedWindow("Thresh",window_size);
+    namedWindows();
+    
     createTrackbar( "Threshold","ContourResult", &thresh,maxThreshold, ApplyThreshold );
     ApplyThreshold(0, 0);
     
@@ -125,12 +249,13 @@ void ApplyThreshold(int,void*){
     
     cout << "otsu - " << otsu << endl;
     
-    fe.set_lower_threshold(0.5 * otsu);
-    fe.set_upper_threshold(otsu);
-//    fe.set_lower_threshold(thresh);
-//    fe.set_upper_threshold(thresh*3);
+//    fe.set_lower_threshold(0.5 * otsu);
+//    fe.set_upper_threshold(otsu);
+    fe.set_lower_threshold(thresh);
+    fe.set_upper_threshold(thresh*3);
     fe.set_source_image(src_image_grayscale);
-    src_image_edges = fe.applyCanny();
+     fe.applyCanny();
+    src_image_edges = fe.get_result_image();
     
     //HoughTransform(src_image_edges);
     
@@ -146,6 +271,38 @@ void ApplyThreshold(int,void*){
     hierarchy = ct.get_hierarchy();
     contour_result = cv::Mat::zeros(src_image_edges.size(), CV_8UC3);
     min_rectangles.resize(contours.size());
+    
+    vector<vector<Point> >hull( contours.size() );
+    for( int i = 0; i < contours.size(); i++ )
+    {  convexHull( Mat(contours[i]), hull[i], false ); }
+    
+    /// Draw contours + hull results
+    Mat drawing = Mat::zeros( src_image_edges.size(), CV_8UC3 );
+    for( int i = 0; i< contours.size(); i++ )
+    {
+        
+        Scalar color(0,255,0);
+        //Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+        drawContours( drawing, hull, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+    }
+    
+    for (int i=0; i<hull.size(); i++) {
+        cout << "hull - " << i << " - " << hull[i] << endl;
+    }
+    
+    Mat rect_hull = cv::Mat::zeros(src_image_edges.size(), CV_8UC3);
+    for (vector<vector<Point>>::iterator it=hull.begin(); it!=hull.end(); ++it) {
+        Rect rh = boundingRect(Mat(*it));
+        rectangle(rect_hull, rh, cv::Scalar(255), 2);
+        
+    }
+    
+    /// Show in a window
+    namedWindow( "Hull demo", CV_WINDOW_AUTOSIZE );
+    imshow( "Hull demo", drawing );
+    namedWindow( "HullRect", CV_WINDOW_AUTOSIZE );
+    imshow( "HullRect", rect_hull );
+
     
     for (int i=0; i<hierarchy.size(); i++) {
 //        std::cout  << hierarchy[i] << std::endl;
@@ -254,6 +411,14 @@ void ApplyThreshold(int,void*){
 
     allImshows();
   
+}
+
+void namedWindows(){
+    namedWindow("Edges",window_size);
+    namedWindow("contourTest",window_size);
+    namedWindow("ContourResult",window_size);
+    namedWindow("AdativeThresh",window_size);
+    namedWindow("Thresh",window_size);
 }
 
 void allImshows(){
