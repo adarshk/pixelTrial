@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <map>
 
 #include <opencv2/opencv.hpp>
@@ -15,6 +16,7 @@
 #include "load_image.h"
 #include "apply_threshold.h"
 #include "feature_extractor.h"
+#include "find_components.h"
 
 
 using namespace cv;
@@ -32,6 +34,8 @@ const bool showImg = true;
 
 void detectRegions(int,void*);
 void ApplyThreshold(int,void*);
+void SquaresMethod(Mat gray0,Mat gray,vector<vector<Point>> contours);
+void changeThresh(int,void*);
 void ShowImage(Mat im);
 void HoughTransform(Mat dst);
 void allImshows();
@@ -61,14 +65,18 @@ int window_size = CV_WINDOW_AUTOSIZE;
 //Squares method
 
 
-Mat source_img,source_image_resized,blurred_image;
-const int no_of_threshold_levels = 20;
+Mat source_img,source_image_resized,blurred_image,source_image_output,source_image_hull;;
+int no_of_threshold_levels = 2;
 int lower_thresh = 0,upper_thresh=255;
 Edges edge_image(lower_thresh,upper_thresh);
 Contours contours_image(CV_RETR_TREE,CV_CHAIN_APPROX_SIMPLE);
 vector<vector<Point>> squares;
+vector<vector<Point>> needed_contours;
+vector<Rect> all_rectangles,hull_rectangles;
 vector<cv::Vec4i> squares_hierarchy;
-int counter = 0;
+int counter = 0,extracted_images_counter=0;
+vector<Mat>extracted_images;
+bool display_extracted_images = false;
 
 
 static double angle( Point pt1, Point pt2, Point pt0 )
@@ -182,14 +190,15 @@ int main(int argc,char** argv){
     
     namedWindow("WithLines",CV_WINDOW_AUTOSIZE);
     imshow("WithLines", source_image_resized);
+    waitKey(0);
     */
     
     
-    
+    /*
     //string dir = argv[2] + string("/layout4/") + "layout4.png";
 //    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1.png";
 //    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1_2.png";
-    string dir = argv[2] + string("/tearsheet/") + "printedTearsheetVertical.JPG";
+    string dir = argv[2] + string("/tearsheet/") + "printedTearsheetSeat.JPG";
     cout << "dir - " << dir << endl;
     
     
@@ -220,19 +229,48 @@ int main(int argc,char** argv){
     createTrackbar( "Threshold","ContourResult", &thresh,maxThreshold, ApplyThreshold );
     ApplyThreshold(0, 0);
     
-    
-     
-     
-     /*
-     DetectContours detect_contours(src_image_edges);
-     vector<vector<Point>> detected_contours;
-     detected_contours = detect_contours.findContours();
-     src_image_contours = detect_contours.drawRotatedRects();
+    waitKey(0);
+    cout<<"success"<<endl;
     */
+    
+    
+    
+    
+    
+    
+    // Method 3 - Hybrid
+    
+    
+    char * dir = getcwd(NULL, 0);
+    //    printf("Current dir: %s", dir);
+//    string path =  string(dir) + "/Tearsheet.png";
+    string path =  string(dir) + "/printedTearsheetSeat.JPG";
+    Components com(path);
+    com.find_watershed();
+    //com.find();
+    //com.save_image(string(dir));
     waitKey(0);
     cout<<"success"<<endl;
     
+    
+    
+    //Test
+    /*
+    Mat markerMask(300,300,CV_8U,Scalar::all(0));
+    namedWindow("Marker",CV_WINDOW_AUTOSIZE);
+    imshow("Marker", markerMask);
+    waitKey(0);
+    */
 }
+
+void changeThresh(int,void*){
+    
+}
+
+
+
+
+
 
 void ApplyThreshold(int,void*){
     
@@ -287,7 +325,7 @@ void ApplyThreshold(int,void*){
     }
     
     for (int i=0; i<hull.size(); i++) {
-        cout << "hull - " << i << " - " << hull[i] << endl;
+//        cout << "hull - " << i << " - " << hull[i] << endl;
     }
     
     Mat rect_hull = cv::Mat::zeros(src_image_edges.size(), CV_8UC3);
@@ -417,7 +455,7 @@ void namedWindows(){
     namedWindow("Edges",window_size);
     namedWindow("contourTest",window_size);
     namedWindow("ContourResult",window_size);
-    namedWindow("AdativeThresh",window_size);
+    namedWindow("AdaptiveThresh",window_size);
     namedWindow("Thresh",window_size);
 }
 
@@ -427,7 +465,7 @@ void allImshows(){
     
     imshow("contourTest", contour_test);
     imshow("Edges", src_image_edges);
-    imshow("AdativeThresh", src_image_adaptive_threshold);
+    imshow("AdaptiveThresh", src_image_adaptive_threshold);
     
 //    imshow("Thresh", src_image_threshold);
     
