@@ -76,6 +76,8 @@
 		85CFA84D1950AED9005D027B /* load_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85CFA84B1950AED9005D027B /* load_image.cpp */; };
 		85CFABC31951E9C0005D027B /* apply_threshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85CFABC11951E9C0005D027B /* apply_threshold.cpp */; };
 		85CFABC619544987005D027B /* feature_extractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85CFABC419544987005D027B /* feature_extractor.cpp */; };
+		85F159FB196305AF0088725E /* find_components.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85F159F9196305AF0088725E /* find_components.cpp */; };
+		85F654CB1965E8BC00DE2AD9 /* watershed_marker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85F654C91965E8BB00DE2AD9 /* watershed_marker.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -170,6 +172,10 @@
 		85CFABC21951E9C0005D027B /* apply_threshold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apply_threshold.h; sourceTree = "<group>"; };
 		85CFABC419544987005D027B /* feature_extractor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = feature_extractor.cpp; sourceTree = "<group>"; };
 		85CFABC519544987005D027B /* feature_extractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = feature_extractor.h; sourceTree = "<group>"; };
+		85F159F9196305AF0088725E /* find_components.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = find_components.cpp; path = ../find_components.cpp; sourceTree = "<group>"; };
+		85F159FA196305AF0088725E /* find_components.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = find_components.h; path = ../find_components.h; sourceTree = "<group>"; };
+		85F654C91965E8BB00DE2AD9 /* watershed_marker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = watershed_marker.cpp; path = ../watershed_marker.cpp; sourceTree = "<group>"; };
+		85F654CA1965E8BC00DE2AD9 /* watershed_marker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = watershed_marker.h; path = ../watershed_marker.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,13 +263,17 @@
 		859576A4193E2A2000B33C5C /* pixelTrial */ = {
 			isa = PBXGroup;
 			children = (
+				859576A5193E2A2000B33C5C /* main.cpp */,
+				85F654C91965E8BB00DE2AD9 /* watershed_marker.cpp */,
+				85F654CA1965E8BC00DE2AD9 /* watershed_marker.h */,
+				85F159F9196305AF0088725E /* find_components.cpp */,
+				85F159FA196305AF0088725E /* find_components.h */,
 				85A24CBE194894DF00784F91 /* k_nearest_neighbor.cpp */,
 				85A24CBF194894DF00784F91 /* k_nearest_neighbor.h */,
 				85CFABC419544987005D027B /* feature_extractor.cpp */,
 				85CFABC519544987005D027B /* feature_extractor.h */,
 				85A24CB81947965100784F91 /* detect_contours.cpp */,
 				85A24CB91947965100784F91 /* detect_contours.h */,
-				859576A5193E2A2000B33C5C /* main.cpp */,
 				85CFA84B1950AED9005D027B /* load_image.cpp */,
 				85CFA84C1950AED9005D027B /* load_image.h */,
 				85CFABC11951E9C0005D027B /* apply_threshold.cpp */,
@@ -398,6 +408,7 @@
 			files = (
 				85A24CC319489AB300784F91 /* ExtractDescriptors.cpp in Sources */,
 				8595772419422F5A00B33C5C /* HomoGraphyWorking.cpp in Sources */,
+				85F159FB196305AF0088725E /* find_components.cpp in Sources */,
 				859576A6193E2A2000B33C5C /* main.cpp in Sources */,
 				8595771F193FA41F00B33C5C /* OrbOrbBFv2.cpp in Sources */,
 				85A24CC0194894DF00784F91 /* k_nearest_neighbor.cpp in Sources */,
@@ -408,6 +419,7 @@
 				85CFABC31951E9C0005D027B /* apply_threshold.cpp in Sources */,
 				859577261942333300B33C5C /* backup.cpp in Sources */,
 				85CFABC619544987005D027B /* feature_extractor.cpp in Sources */,
+				85F654CB1965E8BC00DE2AD9 /* watershed_marker.cpp in Sources */,
 				85A24CB719475CFB00784F91 /* find_edges.cpp in Sources */,
 				85A24CBA1947965100784F91 /* detect_contours.cpp in Sources */,
 			);
