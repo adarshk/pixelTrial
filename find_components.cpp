@@ -319,6 +319,9 @@ namespace ppc {
     }
     
     void Components::find_watershed() throw(cv::Exception){
+        
+        bool show_windows = true;
+        
         CheckWithMessage(std::string("Set path during initialization before finding components"), path != "");
         LoadImage load_source_image(this->path,"SquaresImage");
         source_image = load_source_image.get_image();
@@ -328,24 +331,38 @@ namespace ppc {
         load_source_image.set_image(source_image_resized);
         source_image_resized = load_source_image.get_image();
         
-        load_source_image.show();
+        if (show_windows) {
+            load_source_image.show();
+        }
+        
         
         Mat binary;
         cvtColor(source_image_resized, binary, CV_BGR2GRAY);
         threshold(binary, binary, 100, 255, CV_THRESH_BINARY);
-        imshow("binary", binary);
+        
+        if (show_windows) {
+            imshow("binary", binary);
+        }
+        
         
         Mat fg,bg;
         erode(binary, fg, Mat(),Point(-1,-1),3);
-        imshow("fg", fg);
+        if (show_windows) {
+            imshow("fg", fg);
+        }
         
         dilate(binary, bg, Mat(),Point(-1,-1),3);
         threshold(bg, bg, 1, 128, CV_THRESH_BINARY_INV);
-        imshow("bg", bg);
+        if (show_windows) {
+            imshow("bg", bg);
+        }
+        
         
         Mat markers(binary.size(),CV_8U,Scalar(0));
         markers = fg + bg;
-        imshow("markers", markers);
+        if (show_windows) {
+            imshow("markers", markers);
+        }
         
         WatershedMarker wm;
         wm.set_markers(markers);
@@ -353,13 +370,19 @@ namespace ppc {
         Mat res,temp_res;
         res = wm.apply_watershed(source_image_resized);
         res.convertTo(res, CV_8U);
-        imshow("res", res);
+        if (show_windows) {
+            imshow("res", res);
+        }
+        
 //        imwrite("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/res.jpg",res);
         
         
-        Mat res_canny;
-        Canny(res, res_canny, 0, 255);
-        imshow("resCanny", res_canny);
+        Mat res_canny,res_copy,res_output;
+        res.copyTo(res_copy);
+        Canny(res_copy, res_canny, 100, 255);
+        if (show_windows) {
+            imshow("resCanny", res_canny);
+        }
         
         
         
@@ -373,10 +396,22 @@ namespace ppc {
         vector<cv::Vec4i> hierar;
         vector<int> indexes;
         Scalar color(0,255,0);
-        findContours(res, main_contours, squares_hierarchy, 0, CV_CHAIN_APPROX_SIMPLE);
-        drawContours(res, main_contours, -1, color);
+        findContours(res_canny, main_contours, squares_hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+        res_output = Mat::zeros(res_canny.size(), CV_8UC3);
         
-        imshow("contour", res);
+//        for (int draw_contours=0; draw_contours<main_contours.size(); draw_contours++) {
+//            drawContours(res_output, main_contours, draw_contours, color,2,8,hierar,0,Point());
+//        }
+        
+        drawContours(res_output, main_contours, -1, color,2,8,hierar,0,Point());
+        
+        if (show_windows) {
+            imshow("contour", res_output);
+        }
+
+        
+//        for (vector<vector<Point>>::iterator itr=main_contours.begin(); itr!=main_contours.end(); ++itr) {
+//        }
         
         //main_contours = contours_image.set_source_image(res).find().get_contours();
         //squares_hierarchy = contours_image.get_hierarchy();
@@ -393,24 +428,274 @@ namespace ppc {
             needed_contours.push_back(main_contours[*itt]);
         }
         
-        int area = 0;
-        Rect main_rect;
+        int highest_area = 0,second_highest_area=0;
+        Rect main_rect,second_highest_area_rect;
+        vector<int> areas;
+        vector<int> inserted_areas;
+        vector<Rect> sorted_rectangles;
         for (vector<int>::iterator itt = indexes.begin();itt!=indexes.end();++itt) {
             Rect r = boundingRect(Mat(main_contours[*itt]));
-            if (r.area() > area) {
-                area = r.area();
+//            cout << "area[" << *itt << "] - "<<r.area() <<endl;
+            areas.push_back(r.area());
+            all_rectangles.push_back(r);
+            
+            /*
+            if (all_rectangles.size()==0) {
+                all_rectangles.push_back(r);
+            }
+            else {
+            for (vector<Rect>::iterator rect_iterator = all_rectangles.begin(); rect_iterator!=all_rectangles.end(); ++rect_iterator) {
+                if (r.area() >  rect_iterator->area()) {
+                    continue;
+                }
+                else{
+                    all_rectangles.insert(all_rectangles.begin(), r);
+                }
+            }
+            }
+             */
+            
+            
+//            if(*itt == 0){
+//            main_rect = r;
+//            }
+            
+            if (r.area() > highest_area) {
+                second_highest_area=highest_area;
+                highest_area = r.area();
+                second_highest_area_rect = main_rect;
                 main_rect = r;
+            }
+            
+        }
+        
+        
+        for (vector<Rect>::iterator rect_iterator = all_rectangles.begin(); rect_iterator!=all_rectangles.end(); ++rect_iterator) {
+            
+            if (inserted_areas.size()==0) {
+                inserted_areas.push_back(rect_iterator->area());
+                sorted_rectangles.push_back(*rect_iterator);
+            }
+            
+            else{
+                
+                
+                for (int sr=0; sr<sorted_rectangles.size(); sr++) {
+                    if (rect_iterator->area() > sorted_rectangles[sr].area() && sr!=sorted_rectangles.size()-1) {
+                        continue;
+                    }
+                    
+                    else{
+                        sorted_rectangles.insert(sorted_rectangles.begin() + sr, *rect_iterator);
+                        break;
+                    }
+                }
+                
+            }
+            
+        }
+        
+        
+        
+        sort(areas.begin(), areas.end());
+        sort(all_rectangles.begin(),all_rectangles.end(),mysortfunction);
+        
+        
+        for (vector<Rect>::iterator sr=sorted_rectangles.begin(); sr!=sorted_rectangles.end(); ++sr) {
+            cout << "sorted_rectangles_area[" << sr-sorted_rectangles.begin() <<"] - " <<sr->area() <<endl;
+        }
+        
+        for (vector<Rect>::iterator ar=all_rectangles.begin(); ar!=all_rectangles.end(); ++ar) {
+            cout << "all_rectangles_area[" << ar-all_rectangles.begin() <<"] - " <<ar->area() <<endl;
+        }
+        
+        for (vector<int>::iterator areas_vector = areas.begin(); areas_vector!=areas.end(); ++areas_vector) {
+            cout << "areas[" << areas_vector-areas.begin() <<"]- " << *areas_vector <<endl;
+        }
+        
+        
+        cout << "all_rectangles_size - " <<all_rectangles.size()<<endl;
+        Mat cop = source_image_resized(second_highest_area_rect);
+//        Mat cop = source_image_resized(all_rectangles[all_rectangles.size()-2]);
+//        Mat cop = source_image_resized(main_rect);
+//        resize(cop,cop,cv::Size(0,0),main_rect.width,main_rect.height);
+        
+        if (show_windows) {
+            imshow("cop", cop);
+        }
+        
+        bool houghp=true;
+        
+        
+        
+        if (!houghp) {
+            vector<Vec2f> lines;
+            Mat hough_image,hough_image_grayscale,hough_image_canny;
+            cop.copyTo(hough_image);
+            cvtColor(hough_image, hough_image_grayscale, CV_BGR2GRAY);
+            Canny(hough_image_grayscale, hough_image_canny, 100, 255);
+            
+            HoughLines(hough_image_canny, lines, 1, CV_PI/180, 150);
+            
+            for( size_t i = 0; i < lines.size(); i++ )
+            {
+                float rho = lines[i][0], theta = lines[i][1];
+                Point pt1, pt2;
+                double a = cos(theta), b = sin(theta);
+                double x0 = a*rho, y0 = b*rho;
+                pt1.x = cvRound(x0 + 1000*(-b));
+                pt1.y = cvRound(y0 + 1000*(a));
+                pt2.x = cvRound(x0 - 1000*(-b));
+                pt2.y = cvRound(y0 - 1000*(a));
+                line( hough_image_grayscale, pt1, pt2, Scalar(255,0,0), 3, CV_AA);
+            }
+            
+            imshow("houghResult", hough_image_grayscale);
+            
+            
+            
+            
+            
+        }
+        else{
+            vector<cv::Vec4i> lines;
+            Mat hough_image,hough_image_grayscale,hough_image_canny;
+//            source_image_resized.copyTo(hough_image);
+            cop.copyTo(hough_image);
+            cvtColor(hough_image, hough_image_grayscale, CV_BGR2GRAY);
+            Canny(hough_image_grayscale, hough_image_canny, 100, 255);
+        //        hough_image.convertTo(hough_image, CV_8UC1);
+            HoughLinesP(hough_image_canny, lines, 1, CV_PI/180, 150);
+            
+            Scalar hough_color = Scalar(255,0,0);
+            
+            
+            
+            //Expanded lines
+            for (int el = 0; el<lines.size(); el++) {
+                Vec4i v = lines[el];
+                lines[el][0] = 0;
+                lines[el][1] = ((float)v[1] - v[3]) / (v[0] - v[2]) * -v[0] + v[1];
+                lines[el][2] = hough_image.cols;
+                lines[el][3] = ((float)v[1] - v[3]) / (v[0] - v[2]) * (hough_image.cols - v[2]) + v[3];
+            }
+            
+            vector<Vec4i>::const_iterator hough_iterator = lines.begin();
+            while (hough_iterator!=lines.end()) {
+                Point pt1((*hough_iterator)[0],(*hough_iterator)[1]);
+                Point pt2((*hough_iterator)[2],(*hough_iterator)[3]);
+                
+                line(hough_image_grayscale, pt1, pt2, hough_color);
+                
+                ++hough_iterator;
+            }
+            
+            imshow("houghResult",hough_image_grayscale);
+            
+            vector<Point2f> corners;
+            cout << "corners size - " << corners.size() << endl;
+            
+            for (int cr1=0; cr1<lines.size(); cr1++) {
+                for (int cr2=cr1+1; cr2<lines.size(); cr2++) {
+                    Point2f pt = find_intersection(lines[cr1],lines[cr2]);
+                    
+                    if (pt.x>=0 && pt.y>=0) {
+                        corners.push_back(pt);
+                    }
+                }
+            }
+            
+            cout << "corners size2 - " << corners.size() << endl;
+            vector<Point2f> approx;
+            Point2f center(0,0);
+            approxPolyDP(Mat(corners), approx, arcLength(Mat(corners), true) * 0.02, true);
+            
+            if (approx.size() != 4) {
+                cout << "Object doesnt have 4 corners" << endl;
+            }
+         
+            else{
+            for (int mass_center=0; mass_center<corners.size(); mass_center++) {
+                center+=corners[mass_center];
+            }
+            center *= (1./corners.size());
+            sort_corners(corners, center);
+            
+            Mat hough_image_destination = cop.clone();
+            
+            for (int l=0; l<lines.size(); l++) {
+                Vec4i v = lines[l];
+                line(hough_image_destination,Point(v[0],v[1]), Point(v[2],v[3]),CV_RGB(0,255,0));
+            }
+            
+            Scalar color_pts(255,0,0);
+            circle(hough_image_destination, corners[0], 3, color_pts,2);
+            circle(hough_image_destination, corners[1], 3, color_pts,2);
+            circle(hough_image_destination, corners[2], 3, color_pts,2);
+            circle(hough_image_destination, corners[3], 3, color_pts,2);
+            
+            circle(hough_image_destination,center,3,color_pts,2);
+            Size s = hough_image_destination.size();
+            cout << "size - " << s.width << ","<<s.height<<endl;
+            imshow("pts",hough_image_destination);
+            
+            Mat quad = Mat::zeros(300, 220, CV_8UC3);
+            
+            std::vector<cv::Point2f> quad_pts;
+            quad_pts.push_back(cv::Point2f(0, 0));
+            quad_pts.push_back(cv::Point2f(quad.cols, 0));
+            quad_pts.push_back(cv::Point2f(quad.cols, quad.rows));
+            quad_pts.push_back(cv::Point2f(0, quad.rows));
+            
             }
         }
         
-        all_rectangles.push_back(main_rect);
+    }
+    
+    
+     bool Components::mysortfunction(Rect r1, Rect r2){
         
-        Mat cop(res,main_rect);
-        imshow("cop", cop);
+         
+         return r1.area()<r2.area();
+    }
+    
+    Point2f Components::find_intersection(Vec4i a,Vec4i b){
         
+        int x1 = a[0], y1 = a[1], x2 = a[2], y2 = a[3], x3 = b[0], y3 = b[1], x4 = b[2], y4 = b[3];
+
+        if (float d = ((float)(x1 - x2) * (y3 - y4)) - ((y1 - y2) * (x3 - x4)))
+        {
+            cv::Point2f pt;
+            pt.x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
+            pt.y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
+            return pt;
+        }
+        else
+            return cv::Point2f(-1, -1);
         
-//        cv::Mat gray0(source_image_resized.size(), CV_8U),gray;
-//        cv::medianBlur(source_image_resized, source_image_blurred, 0);
-//        std::vector<std::vector<cv::Point>> contours;
+    }
+    
+    void Components::sort_corners(vector<Point2f>& corners, Point2f center){
+        vector<Point2f> top, bot;
+        
+        for (int i=0; i<corners.size(); i++) {
+            if (corners[i].y < center.y) {
+                top.push_back(corners[i]);
+            }
+            else{
+                bot.push_back(corners[i]);
+            }
+        }
+        
+        cv::Point2f tl = top[0].x > top[1].x ? top[1] : top[0];
+        cv::Point2f tr = top[0].x > top[1].x ? top[0] : top[1];
+        cv::Point2f bl = bot[0].x > bot[1].x ? bot[1] : bot[0];
+        cv::Point2f br = bot[0].x > bot[1].x ? bot[0] : bot[1];
+        
+        corners.clear();
+        corners.push_back(tl);
+        corners.push_back(tr);
+        corners.push_back(br);
+        corners.push_back(bl);
     }
 }

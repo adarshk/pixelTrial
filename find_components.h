@@ -9,6 +9,7 @@
 #pragma once
 
 #include <iostream>
+#include <map>
 #include <opencv2/opencv.hpp>
 #include "load_image.h"
 #include "find_edges.h"
@@ -32,6 +33,9 @@ namespace ppc {
         void print_values();
         void show_image_windows();
         void save_image(string dir);
+        static bool mysortfunction(Rect r1,Rect r2);
+        Point2f find_intersection(Vec4i a,Vec4i b);
+        void sort_corners(vector<Point2f>& corners, Point2f center);
         
     private:
         std::string path;
