@@ -26,6 +26,48 @@ dependencies: /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp \
   /usr/local/include/opencv2/contrib/contrib.hpp \
   /usr/local/include/opencv2/contrib/retina.hpp \
   /usr/local/include/opencv2/contrib/openfabmap.hpp \
+  /opt/local/include/tesseract/baseapi.h \
+  /opt/local/include/tesseract/platform.h \
+  /opt/local/include/tesseract/apitypes.h \
+  /opt/local/include/tesseract/publictypes.h \
+  /opt/local/include/tesseract/thresholder.h \
+  /opt/local/include/tesseract/unichar.h \
+  /opt/local/include/tesseract/tesscallback.h \
+  /opt/local/include/tesseract/host.h \
+  /opt/local/include/tesseract/pageiterator.h \
+  /opt/local/include/tesseract/resultiterator.h \
+  /opt/local/include/tesseract/ltrresultiterator.h \
+  /opt/local/include/tesseract/unicharset.h \
+  /opt/local/include/tesseract/errcode.h \
+  /opt/local/include/tesseract/helpers.h \
+  /opt/local/include/tesseract/strngs.h \
+  /opt/local/include/tesseract/memry.h \
+  /opt/local/include/tesseract/unicharmap.h \
+  /opt/local/include/tesseract/genericvector.h \
+  /opt/local/include/tesseract/ndminx.h \
+  /usr/local/include/leptonica/allheaders.h \
+  /usr/local/include/leptonica/alltypes.h \
+  /usr/local/include/leptonica/environ.h \
+  /usr/local/include/leptonica/array.h \
+  /usr/local/include/leptonica/bbuffer.h \
+  /usr/local/include/leptonica/heap.h \
+  /usr/local/include/leptonica/list.h \
+  /usr/local/include/leptonica/ptra.h \
+  /usr/local/include/leptonica/queue.h \
+  /usr/local/include/leptonica/stack.h \
+  /usr/local/include/leptonica/arrayaccess.h \
+  /usr/local/include/leptonica/bmf.h \
+  /usr/local/include/leptonica/ccbord.h \
+  /usr/local/include/leptonica/dewarp.h \
+  /usr/local/include/leptonica/gplot.h \
+  /usr/local/include/leptonica/imageio.h \
+  /usr/local/include/leptonica/jbclass.h \
+  /usr/local/include/leptonica/morph.h \
+  /usr/local/include/leptonica/pix.h \
+  /usr/local/include/leptonica/recog.h \
+  /usr/local/include/leptonica/regutils.h \
+  /usr/local/include/leptonica/sudoku.h \
+  /usr/local/include/leptonica/watershed.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/find_edges.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/../detect_contours.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/display_window.h \

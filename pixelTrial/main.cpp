@@ -9,6 +9,8 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <tesseract/baseapi.h>
+#include <leptonica/allheaders.h>
 
 #include "find_edges.h"
 #include "detect_contours.h"
@@ -19,9 +21,12 @@
 #include "find_components.h"
 
 
+
+
 using namespace cv;
 using namespace std;
 using namespace ppc;
+using namespace tesseract;
 
 Mat query,queryGreyscale,thresholdResult,testImg,testImgGrayscale;
 RNG rng(12345);
@@ -77,17 +82,6 @@ vector<cv::Vec4i> squares_hierarchy;
 int counter = 0,extracted_images_counter=0;
 vector<Mat>extracted_images;
 bool display_extracted_images = false;
-
-
-static double angle( Point pt1, Point pt2, Point pt0 )
-{
-    double dx1 = pt1.x - pt0.x;
-    double dy1 = pt1.y - pt0.y;
-    double dx2 = pt2.x - pt0.x;
-    double dy2 = pt2.y - pt0.y;
-    return (dx1*dx2 + dy1*dy2)/sqrt((dx1*dx1 + dy1*dy1)*(dx2*dx2 + dy2*dy2) + 1e-10);
-}
-
 
 int main(int argc,char** argv){
     
@@ -240,18 +234,18 @@ int main(int argc,char** argv){
     
     // Method 3 - Hybrid
     
-    
+    /*
     char * dir = getcwd(NULL, 0);
     //    printf("Current dir: %s", dir);
 //    string path =  string(dir) + "/Tearsheet.png";
-    string path =  string(dir) + "/printedTearsheetSeat.JPG";
+    string path =  string(dir) + "/red1.JPG";
     Components com(path);
     com.find_watershed();
     //com.find();
     //com.save_image(string(dir));
     waitKey(0);
     cout<<"success"<<endl;
-    
+    */
     
     
     //Test
@@ -261,6 +255,31 @@ int main(int argc,char** argv){
     imshow("Marker", markerMask);
     waitKey(0);
     */
+    
+    
+    
+    // Testing tesseract
+    
+    
+    char *outText;
+    tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+    
+    if (api->Init(NULL,"eng")) {
+        fprintf(stderr, "Coult not initialize tesseract. \n");
+        exit(1);
+    }
+    
+    
+    Pix *image = pixRead("/Users/adarsh.kosuru/Desktop/tesseracttest/tearsheetBroken/buttons.png");
+    api->SetImage(image);
+    outText = api->GetUTF8Text();
+    printf("Output - %s",outText);
+    
+    api->End();
+    delete [] outText;
+    pixDestroy(&image);
+    return 0;
+    
 }
 
 void changeThresh(int,void*){
