@@ -326,7 +326,10 @@ namespace ppc {
         LoadImage load_source_image(this->path,"SquaresImage");
         source_image = load_source_image.get_image();
         CheckWithMessage(std::string("Image loaded incorrectly"), source_image.data);
+        Mat rotated_image;
         cv::resize(source_image, source_image_resized, cv::Size(0,0), 0.50,0.50 );
+//        rotate_image(source_image, -90, rotated_image);
+//        cv::resize(rotated_image, source_image_resized, cv::Size(0,0), 0.50,0.50 );
         
         load_source_image.set_image(source_image_resized);
         source_image_resized = load_source_image.get_image();
@@ -564,8 +567,8 @@ namespace ppc {
             cop.copyTo(hough_image);
             cvtColor(hough_image, hough_image_grayscale, CV_BGR2GRAY);
             Canny(hough_image_grayscale, hough_image_canny, 100, 255);
-        //        hough_image.convertTo(hough_image, CV_8UC1);
-            HoughLinesP(hough_image_canny, lines, 1, CV_PI/180, 150);
+//            HoughLinesP(hough_image_canny, lines, 1, CV_PI/180, 50);
+            HoughLinesP(hough_image_canny, lines, 1, CV_PI/180, 50);
             
             Scalar hough_color = Scalar(255,0,0);
             
@@ -595,6 +598,39 @@ namespace ppc {
             vector<Point2f> corners;
             cout << "corners size - " << corners.size() << endl;
             
+            Size hough_size = hough_image.size();
+            Point2f pt1(0,0);
+//            Point2f pt2(200,0);
+//            Point2f pt3(200,200);
+//            Point2f pt4(0,200);
+            Point2f pt2(hough_size.height,0);
+            Point2f pt3(hough_size.height,hough_size.width);
+            Point2f pt4(0,hough_size.width);
+            corners.push_back(pt1);
+            corners.push_back(pt2);
+            corners.push_back(pt3);
+            corners.push_back(pt4);
+            
+            cout << "quad size - " << hough_size.width << "," << hough_size.height <<endl;
+//            Mat quad = Mat::zeros(200, 200, CV_8UC3);
+            Mat quad = Mat::zeros(hough_size.height, hough_size.width, CV_8UC3);
+            
+            std::vector<cv::Point2f> quad_pts;
+            quad_pts.push_back(cv::Point2f(0, 0));
+            quad_pts.push_back(cv::Point2f(quad.cols, 0));
+            quad_pts.push_back(cv::Point2f(quad.cols, quad.rows));
+            quad_pts.push_back(cv::Point2f(0, quad.rows));
+            
+            Mat transpose_matrix = getPerspectiveTransform(corners, quad_pts);
+            warpPerspective(hough_image, quad, transpose_matrix, quad.size());
+            
+            imshow("Quad", quad);
+            
+            
+            
+            
+            
+            /*
             for (int cr1=0; cr1<lines.size(); cr1++) {
                 for (int cr2=cr1+1; cr2<lines.size(); cr2++) {
                     Point2f pt = find_intersection(lines[cr1],lines[cr2]);
@@ -647,7 +683,7 @@ namespace ppc {
             quad_pts.push_back(cv::Point2f(quad.cols, quad.rows));
             quad_pts.push_back(cv::Point2f(0, quad.rows));
             
-            }
+            }*/
         }
         
     }
@@ -697,5 +733,12 @@ namespace ppc {
         corners.push_back(tr);
         corners.push_back(br);
         corners.push_back(bl);
+    }
+    
+    void Components::rotate_image(Mat& input, double angle,Mat& rotated_image){
+        int length = std::max(input.cols, input.rows);
+        Point2f pt(length/2.,length/2.);
+        Mat rt = getRotationMatrix2D(pt, angle, 1.0);
+        warpAffine(input, rotated_image, rt, Size(length,length));
     }
 }

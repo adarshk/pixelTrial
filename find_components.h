@@ -36,6 +36,7 @@ namespace ppc {
         static bool mysortfunction(Rect r1,Rect r2);
         Point2f find_intersection(Vec4i a,Vec4i b);
         void sort_corners(vector<Point2f>& corners, Point2f center);
+        void rotate_image(Mat& input, double angle,Mat& rotated_image);
         
     private:
         std::string path;

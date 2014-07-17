@@ -1,0 +1,15 @@
+prefix=/opt/local
+exec_prefix=${prefix}
+bindir=${exec_prefix}/bin
+datarootdir = ${prefix}/share
+datadir=${datarootdir}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/tesseract
+
+Name: tesseract
+Description: An OCR Engine that was developed at HP Labs between 1985 and 1995... and now at Google.
+URL: https://code.google.com/p/tesseract-ocr
+Version: 3.02.02
+# Requires: lept  ## leptonica do not provide lept.pc
+Libs: -L${libdir} -ltesseract -L/opt/local/lib -Wl,-headerpad_max_install_names -arch x86_64 -L/opt/local/lib -llept 
+Cflags: -I${includedir} -pipe -Os -arch x86_64 -I/opt/local/include -I/opt/local/include -I/opt/local/include/leptonica/. -pipe -Os -arch x86_64 -stdlib=libc++ -DHAVE_CONFIG_H
