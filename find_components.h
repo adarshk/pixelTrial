@@ -37,6 +37,9 @@ namespace ppc {
         void do_image_magick();
         void ocr_image_magick();
         void test_method();
+        void mini_watershed_for_thresholding();
+        void find_test() throw(cv::Exception);
+        void chamfer_matching(string src_path,string matching_image) throw(cv::Exception);
         void find() throw(cv::Exception);
         void find_watershed() throw(cv::Exception);
         void find_grabcut() throw(cv::Exception);

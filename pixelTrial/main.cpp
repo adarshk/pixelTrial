@@ -83,8 +83,133 @@ int counter = 0,extracted_images_counter=0;
 vector<Mat>extracted_images;
 bool display_extracted_images = false;
 
+
+const char* keys =
+{
+    "{1| |logo_in_clutter.png|image edge map    }"
+    "{2| |logo.png               |template edge map}"
+};
+
 int main(int argc,char** argv){
     
+    
+    
+    // Method 3 - Hybrid
+    
+  
+    char * dir = getcwd(NULL, 0);
+    //    printf("Current dir: %s", dir);
+//    string path =  string(dir) + "/Tearsheet.png";
+      string path =  string(dir) + "/red2.JPG";
+//    string path =  string(dir) + "/printedTearsheet_mac.JPG";
+    Components com(path);
+    com.set_output_path(string(dir)+"/photoResults");
+    com.mini_watershed_for_thresholding();
+//        com.find_watershed();
+    //    com.find();
+    //    com.set_output_path(string(dir)+"/Components");
+//    com.set_output_path(string(dir)+"/photoResults");
+//    com.init();
+    com.save_image(string(dir));
+    
+    
+    
+    
+    waitKey(0);
+    //    cout<<"success"<<endl;
+    //    return 0;
+    
+
+    
+    
+    /*
+    char * dir = getcwd(NULL, 0);
+    string path2 =  string(dir) + "/logo.png";
+    string path1 =  string(dir) + "logo_in_clutter.png";
+//    string path1 =  string(dir) + "/FormElements.png";
+//    string path2 =  string(dir) + "/red1.JPG";
+    Components com(path1);
+    com.chamfer_matching(path1, path2);
+    waitKey();
+    
+    */
+    
+    
+    /*
+    
+    CommandLineParser parser(argc, argv, keys);
+    
+    string image = parser.get<string>("1");
+    string templ = parser.get<string>("2");
+    Mat img = imread(image.c_str(), 0);
+    Mat tpl = imread(templ.c_str(), 0);
+    
+    if (img.empty() || tpl.empty())
+    {
+        cout << "Could not read image file " << image << " or " << templ << "." << endl;
+        return -1;
+    }
+    
+    if (img.data ==0 || tpl.data==0) {
+        cout << "Images data zero" << endl;
+    }
+    Mat cimg;
+    cvtColor(img, cimg, COLOR_GRAY2BGR);
+    
+    // if the image and the template are not edge maps but normal grayscale images,
+    // you might want to uncomment the lines below to produce the maps. You can also
+    // run Sobel instead of Canny.
+    
+    // Canny(img, img, 5, 50, 3);
+    // Canny(tpl, tpl, 5, 50, 3);
+    
+    vector<vector<Point> > results;
+    vector<float> costs;
+    int best = chamerMatching( img, tpl, results, costs );
+    if( best < 0 )
+    {
+        cout << "matching not found" << endl;
+        return -1;
+    }
+    
+    size_t i, n = results[best].size();
+    for( i = 0; i < n; i++ )
+    {
+        Point pt = results[best][i];
+        if( pt.inside(Rect(0, 0, cimg.cols, cimg.rows)) )
+            cimg.at<Vec3b>(pt) = Vec3b(0, 255, 0);
+    }
+    
+    imshow("result", cimg);
+    
+    waitKey();
+    
+    return 0;
+    
+    
+    */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Method 1
     
     /*
 //    string path = argv[2] + string("/tearsheet/") + "Tearsheet.png";
@@ -188,6 +313,17 @@ int main(int argc,char** argv){
     */
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Method 2
+    
     /*
     //string dir = argv[2] + string("/layout4/") + "layout4.png";
 //    string dir = argv[2] + string("/bootstrap1/") + "bootstrap1.png";
@@ -232,31 +368,27 @@ int main(int argc,char** argv){
     
     
     
-    // Method 3 - Hybrid
     
     
-    char * dir = getcwd(NULL, 0);
-    //    printf("Current dir: %s", dir);
-    string path =  string(dir) + "/Tearsheet.png";
-//    string path =  string(dir) + "/red1.JPG";
-    Components com(path);
-//    com.find_watershed();
-//    com.find();
-    com.set_output_path(string(dir)+"/Components");
-    com.init();
-    com.save_image(string(dir));
-//    waitKey(0);
-//    cout<<"success"<<endl;
-//    return 0;
     
     
-    //Test
+    
+    //Test method
     /*
     Mat markerMask(300,300,CV_8U,Scalar::all(0));
     namedWindow("Marker",CV_WINDOW_AUTOSIZE);
     imshow("Marker", markerMask);
     waitKey(0);
     */
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -524,50 +656,10 @@ void HoughTransform(Mat dst){
 }
 
 
-
-void setup(){
-    
-}
-
-
-
-
-
-
-
 void ShowImage(Mat im){
     
     if (showImg) {
         imshow("Detected Contours", im);
     }
-    
-}
-
-void detectRegions(int,void*){
-    
-    
-    
-    // hierarchy
-    
-    
-    //     for (vector<Vec4i>::iterator itr = hierarchy.begin(); itr!=hierarchy.end(); ++itr) {
-    //            cout  << *itr << endl;
-    //     }
-    
-    //Warping image -- still work to do
-    
-    /*
-     
-     Point2f perspectiveOutput[4];
-     Mat pOut = getPerspectiveTransform(rectPoints, perspectiveOutput);
-     Mat unWarped;
-     warpPerspective(queryGreyscale, unWarped, pOut, cannyResult.size());
-     
-     // namedWindow("Contours",CV_WINDOW_AUTOSIZE);
-     // imshow("Contours", drawBoundries);
-     //
-     //     namedWindow("unWarp",CV_WINDOW_AUTOSIZE);
-     //     imshow("unWarp", unWarped);
-     */
     
 }
