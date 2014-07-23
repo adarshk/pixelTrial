@@ -11,6 +11,10 @@
 #include <iostream>
 #include <map>
 #include <opencv2/opencv.hpp>
+#include <tesseract/baseapi.h>
+#include <leptonica/allheaders.h>
+#include <ImageMagick-6/Magick++.h>
+
 #include "load_image.h"
 #include "find_edges.h"
 #include "detect_contours.h"
@@ -18,6 +22,8 @@
 
 using namespace std;
 using namespace cv;
+using namespace tesseract;
+using namespace Magick;
 
 namespace ppc {
     class Components{
@@ -26,6 +32,11 @@ namespace ppc {
         Components();
         Components(std::string& dir_path);
         ~Components();
+        void init();
+        void ocr();
+        void do_image_magick();
+        void ocr_image_magick();
+        void test_method();
         void find() throw(cv::Exception);
         void find_watershed() throw(cv::Exception);
         void find_grabcut() throw(cv::Exception);
@@ -33,13 +44,15 @@ namespace ppc {
         void print_values();
         void show_image_windows();
         void save_image(string dir);
+        void save_images();
+        void set_output_path(string dir);
         static bool mysortfunction(Rect r1,Rect r2);
         Point2f find_intersection(Vec4i a,Vec4i b);
         void sort_corners(vector<Point2f>& corners, Point2f center);
         void rotate_image(Mat& input, double angle,Mat& rotated_image);
         
     private:
-        std::string path;
+        std::string path,output_path;
         
         std::vector<std::vector<cv::Point>> squares;
         vector<cv::Vec4i> squares_hierarchy;
@@ -63,6 +76,9 @@ namespace ppc {
         Contours contours_image;
         
         static double angle(Point pt1, Point pt2, Point pt0);
+        
+        //Tesseract
+        char *output_text;
         
     };
 }
