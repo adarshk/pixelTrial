@@ -62,8 +62,205 @@ namespace ppc {
         Components::find();
         Components::ocr();
 //        Components::do_image_magick();
-        Components::ocr_image_magick();
+//        Components::ocr_image_magick();
         Components::test_method();
+    }
+    
+    void Components::mini_watershed_for_thresholding(){
+        
+        CheckWithMessage(std::string("Set path during initialization before finding components"), path != "");
+        LoadImage load_source_image(this->path,"SquaresImage");
+        source_image = load_source_image.get_image();
+        CheckWithMessage(std::string("Image loaded incorrectly"), source_image.data);
+        
+        source_image.copyTo(source_image_resized);
+        load_source_image.set_image(source_image_resized);
+        source_image_resized = load_source_image.get_image();
+        
+        Mat binary;
+        cvtColor(source_image_resized, binary, CV_BGR2GRAY);
+        threshold(binary, binary, 100, 255, CV_THRESH_BINARY);
+        
+        
+        Mat fg,bg;
+        erode(binary, fg, Mat(),Point(-1,-1),3);
+        
+        dilate(binary, bg, Mat(),Point(-1,-1),3);
+        threshold(bg, bg, 1, 128, CV_THRESH_BINARY_INV);
+        
+        
+        Mat markers(binary.size(),CV_8U,Scalar(0));
+        markers = fg + bg;
+        
+        WatershedMarker wm;
+        wm.set_markers(markers);
+        
+        Mat res,temp_res;
+        res = wm.apply_watershed(source_image_resized);
+        res.convertTo(res, CV_8U);
+        
+        
+        Mat res_canny,res_copy,res_output;
+        res.copyTo(res_copy);
+        Canny(res_copy, res_canny, 100, 255);
+        
+        Mat image_contours;
+        std::vector<std::vector<cv::Point>> main_contours;
+        vector<cv::Vec4i> hierar;
+        vector<int> indexes;
+        Scalar color(0,255,0);
+        findContours(res_canny, main_contours, squares_hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+        res_output = Mat::zeros(res_canny.size(), CV_8UC3);
+        
+        
+//        cout << "Num of watershed contours - " << main_contours.size() << endl;
+        
+        drawContours(res_output, main_contours, -1, color,2,8,hierar,0,Point());
+        
+        for (int i=0; i<squares_hierarchy.size(); i++) {
+            //        std::cout  << hierarchy[i] << std::endl;
+            if (squares_hierarchy[i][3] == -1) {
+                hierar.push_back(squares_hierarchy[i]);
+                indexes.push_back(i);
+            }
+        }
+        
+        for (vector<int>::iterator itt = indexes.begin();itt!=indexes.end();++itt) {
+            needed_contours.push_back(main_contours[*itt]);
+        }
+        
+        int highest_area = 0,second_highest_area=0;
+        Rect main_rect,second_highest_area_rect;
+        vector<int> areas;
+        vector<int> inserted_areas;
+        vector<Rect> sorted_rectangles;
+        for (vector<int>::iterator itt = indexes.begin();itt!=indexes.end();++itt) {
+            Rect r = boundingRect(Mat(main_contours[*itt]));
+            //            cout << "area[" << *itt << "] - "<<r.area() <<endl;
+            areas.push_back(r.area());
+            all_rectangles.push_back(r);
+            
+            
+            if (r.area() > highest_area) {
+                second_highest_area=highest_area;
+                highest_area = r.area();
+                second_highest_area_rect = main_rect;
+                main_rect = r;
+            }
+            
+        }
+        
+        
+        for (vector<Rect>::iterator rect_iterator = all_rectangles.begin(); rect_iterator!=all_rectangles.end(); ++rect_iterator) {
+            
+            if (inserted_areas.size()==0) {
+                inserted_areas.push_back(rect_iterator->area());
+                sorted_rectangles.push_back(*rect_iterator);
+            }
+            
+            else{
+                
+                
+                for (int sr=0; sr<sorted_rectangles.size(); sr++) {
+                    if (rect_iterator->area() > sorted_rectangles[sr].area() && sr!=sorted_rectangles.size()-1) {
+                        continue;
+                    }
+                    
+                    else{
+                        sorted_rectangles.insert(sorted_rectangles.begin() + sr, *rect_iterator);
+                        break;
+                    }
+                }
+                
+            }
+            
+        }
+        
+        
+        
+        sort(areas.begin(), areas.end());
+        sort(all_rectangles.begin(),all_rectangles.end(),mysortfunction);
+        
+        
+        for (vector<Rect>::iterator sr=sorted_rectangles.begin(); sr!=sorted_rectangles.end(); ++sr) {
+            cout << "sorted_rectangles_area[" << sr-sorted_rectangles.begin() <<"] - " <<sr->area() <<endl;
+        }
+        
+        for (vector<Rect>::iterator ar=all_rectangles.begin(); ar!=all_rectangles.end(); ++ar) {
+            cout << "all_rectangles_area[" << ar-all_rectangles.begin() <<"] - " <<ar->area() <<endl;
+        }
+        
+        for (vector<int>::iterator areas_vector = areas.begin(); areas_vector!=areas.end(); ++areas_vector) {
+            cout << "areas[" << areas_vector-areas.begin() <<"]- " << *areas_vector <<endl;
+        }
+        
+        
+        cout << "all_rectangles_size - " <<all_rectangles.size()<<endl;
+        Mat cop = source_image_resized(second_highest_area_rect);
+        imwrite(output_path + "/cop.jpg", cop);
+//        imshow("Cop", cop);
+        
+        cop.copyTo(source_image);
+        source_image.copyTo(source_image_resized);
+        source_image_resized.copyTo(source_image_output);
+        source_image_resized.copyTo(source_image_hull);
+        
+        this->find_test();
+    }
+    
+    void Components::chamfer_matching(string src_path,string matching_image) throw(cv::Exception){
+        Mat original_text = imread(src_path);
+        Mat matched_image = imread(matching_image);
+        
+        if (original_text.empty() || matched_image.empty() ) {
+            cout << "Images not found" << endl;
+        }
+        
+        Mat original_gray,matched_gray,cimg;
+        original_text.copyTo(original_gray);
+        matched_image.copyTo(matched_gray);
+        
+//        cvtColor(original_text, original_gray, COLOR_BGR2GRAY);
+//        cvtColor(matched_image, matched_gray, COLOR_BGR2GRAY);
+        cvtColor(original_gray, cimg, COLOR_GRAY2BGR);
+        
+        
+//        Canny(original_gray, original_gray, 5, 50,3);
+//        Canny(matched_gray, matched_gray, 5, 50,3);
+        
+        vector<vector<Point> > results;
+        vector<float> costs;
+        int best = chamerMatching(original_gray, matched_gray, results, costs);
+        
+        if (best<0) {
+            cout << "Matchcing not found" << endl;
+        }
+        
+        size_t i,n = results[best].size();
+        
+        for (i=0; i<n; i++) {
+            Point pt = results[best][i];
+            if (pt.inside(Rect(0,0,cimg.cols,cimg.rows))) {
+                cimg.at<Vec3b>(pt) = Vec3b(0,255,0);
+            }
+        }
+        
+        imshow("result", cimg);
+        
+    }
+    
+    
+    void Components::find_test() throw(cv::Exception){
+        
+        cv::Mat gray0(source_image_resized.size(), CV_8U),gray;
+        
+        cv::medianBlur(source_image_resized, source_image_blurred, 0);
+        
+        std::vector<std::vector<cv::Point>> contours;
+        
+        squares.clear();
+        
+        squares_method(gray0,gray,contours);
     }
     
     void Components::find() throw(cv::Exception){
@@ -351,7 +548,9 @@ namespace ppc {
         int expanded_size=10;  //7 works for Hello //10 for text //20 for box panel
         //        int i=3;
         
-        for (int i=0; i<20; i++) {
+//        for (int i=0; i<20; i++) {
+//        for (int i=0; i<3; i++) {
+          for (int i=0; i<extracted_images.size(); i++) {
         
         Mat gray_img;
             
@@ -372,7 +571,7 @@ namespace ppc {
         output_text = api.GetUTF8Text();
         printf("%s",output_text);
         api.End();
-        char *cstr = &output_path[0];
+//        char *cstr = &output_path[0];
         //        const char *cstr = output_path.c_str();
 //        printf("%s - char",cstr);
         //        Pix *image = pixRead(cstr);
@@ -539,6 +738,8 @@ namespace ppc {
 //        for (int draw_contours=0; draw_contours<main_contours.size(); draw_contours++) {
 //            drawContours(res_output, main_contours, draw_contours, color,2,8,hierar,0,Point());
 //        }
+        
+        cout << "Num of watershed contours - " << main_contours.size() << endl;
         
         drawContours(res_output, main_contours, -1, color,2,8,hierar,0,Point());
         
