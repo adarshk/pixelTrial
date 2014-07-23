@@ -18,12 +18,12 @@ namespace ppc {
     Components::Components(std::string& dir_path):
     
         path(dir_path),
-        no_of_threshold_levels(10),
+        no_of_threshold_levels(1),
         lower_thresh(0),
         upper_thresh(255),
         counter(0),
         extracted_images_counter(0),
-        area(500),
+        area(1000),
         width(500),
         height(500),
         edge_image(lower_thresh,upper_thresh),
@@ -48,16 +48,34 @@ namespace ppc {
         cout << "path - " << path << endl;
     }
     
+    void Components::set_output_path(string dir){
+        this->output_path = dir;
+    }
+    
+    void Components::test_method(){
+        Rect r(107,1006,236,36);
+        Mat new_img(source_image,r);
+        imwrite(output_path + "/testfunc.jpg", new_img);
+    }
+    
+    void Components::init(){
+        Components::find();
+        Components::ocr();
+//        Components::do_image_magick();
+        Components::ocr_image_magick();
+        Components::test_method();
+    }
+    
     void Components::find() throw(cv::Exception){
         CheckWithMessage(std::string("Set path during initialization before finding components"), path != "");
         LoadImage load_source_image(this->path,"SquaresImage");
         source_image = load_source_image.get_image();
         CheckWithMessage(std::string("Image loaded incorrectly"), source_image.data);
-        cv::resize(source_image, source_image_resized, cv::Size(0,0), 0.50,0.50 );
-        
+        //cv::resize(source_image, source_image_resized, cv::Size(0,0), 0.50,0.50 );
+        source_image.copyTo(source_image_resized);
         load_source_image.set_image(source_image_resized);
         
-        load_source_image.show();
+//        load_source_image.show();
         source_image_resized.copyTo(source_image_output);
         source_image_resized.copyTo(source_image_hull);
         
@@ -162,9 +180,9 @@ namespace ppc {
                         //                    rectangle(source_image_output, r, cv::Scalar(255), 2);
                         
                         //if (flag == 0) {
-                        Mat cop(source_image_resized,r);
-                        cop.copyTo(copied);
-                        extracted_images.push_back(copied);
+//                        Mat cop(source_image_resized,r);
+//                        cop.copyTo(copied);
+//                        extracted_images.push_back(copied);
                         //cout << "r.x - " << r.tl().x << ",  r.y - " << r.tl().y << ",  r.width - " << r.width << ",  r.height - " << r.height << endl;
                         //source_image_resized.copyTo(copied(Rect(r.tl().x,r.tl().y,r.width,r.height)));
                         
@@ -198,13 +216,18 @@ namespace ppc {
                 Mat rect_hull = cv::Mat::zeros(gray.size(), CV_8UC3);
                 for (vector<vector<Point>>::iterator it=hull.begin(); it!=hull.end(); ++it) {
                     Rect rh = boundingRect(Mat(*it));
-                    hull_rectangles.push_back(rh);
                     
-                    //                Mat cop(source_image_resized,rh);
-                    //                cop.copyTo(copied);
-                    //                extracted_images.push_back(copied);
+                    if (rh.area() > 100 && rh.area()<200000 && rh.width > 5 && rh.height > 5) {
+                    hull_rectangles.push_back(rh);
+                        cout << "rectangle - top left - " << rh.tl().x << endl;
+                        cout << "rectangle - width - " << rh.width << " height - "<< rh.height<< endl;
+                    
+                    Mat cop(source_image_resized,rh);
+                    cop.copyTo(copied);
+                    extracted_images.push_back(copied);
                     //                rectangle(rect_hull, rh, cv::Scalar(255), 2);
                     
+            }
                 }
                 
                 /// Show in a window
@@ -256,12 +279,13 @@ namespace ppc {
             polylines(source_image_resized, &p, &n, 1, true, Scalar(0,255,0),3,CV_AA);
         }
         
-        namedWindow("ParentContours",CV_WINDOW_AUTOSIZE);
-        imshow("ParentContours", source_image_resized);
+//        namedWindow("ParentContours",CV_WINDOW_AUTOSIZE);
+//        imshow("ParentContours", source_image_resized);
         
         
         
 //        cout << "all rectangles size - " << all_rectangles.size()<<endl;
+        cout << "extracted_images size - " << extracted_images.size()<<endl;
         
         for (vector<Rect>::iterator rec=all_rectangles.begin(); rec!=all_rectangles.end(); ++rec) {
             rectangle(source_image_output, *rec, cv::Scalar(255), 2);
@@ -271,6 +295,7 @@ namespace ppc {
             rectangle(source_image_hull, *rec, cv::Scalar(255), 2);
         }
         
+//        save_images();
         
         if (display_extracted_images) {
             
@@ -283,7 +308,7 @@ namespace ppc {
             }
         }
         
-        show_image_windows();
+//        show_image_windows();
         
         /*
         namedWindow("AllRectangles",CV_WINDOW_AUTOSIZE);
@@ -310,9 +335,118 @@ namespace ppc {
     }
     
     void Components::save_image(string dir){
-        imwrite( dir + "/image_result.jpg", source_image_output);
+        imwrite( dir + "/image_result_squarebased.jpg", source_image_output);
+        imwrite( dir + "/image_result_hull.jpg", source_image_hull);
     }
     
+    void Components::save_images(){
+        for (int i=0; i<extracted_images.size()-1; i++) {
+            string out_path = output_path + "/" + to_string(i) + ".jpg";
+            imwrite(out_path, extracted_images[i]);
+        }
+    }
+    
+    void Components::ocr(){
+        
+        int expanded_size=10;  //7 works for Hello //10 for text //20 for box panel
+        //        int i=3;
+        
+        for (int i=0; i<20; i++) {
+        
+        Mat gray_img;
+            
+        Mat resized_img(extracted_images[i].rows*expanded_size,extracted_images[i].cols*expanded_size,extracted_images[i].type());
+        cvtColor(extracted_images[i], gray_img, CV_BGR2GRAY);
+        resize(gray_img, resized_img, resized_img.size(),expanded_size,expanded_size,INTER_LINEAR);
+            
+        TessBaseAPI api;
+            
+        if (api.Init(NULL, "eng")) {
+            fprintf(stderr, "Tesseract API not initialised");
+            exit(1);
+        }
+        
+//        api.SetImage((uchar*)extracted_images[0].data, extracted_images[0].size().width, extracted_images[0].size().height, extracted_images[0].channels(), extracted_images[0].step1());
+        api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), resized_img.step1());
+        api.Recognize(0);
+        output_text = api.GetUTF8Text();
+        printf("%s",output_text);
+        api.End();
+        char *cstr = &output_path[0];
+        //        const char *cstr = output_path.c_str();
+//        printf("%s - char",cstr);
+        //        Pix *image = pixRead(cstr);
+            
+        }
+    }
+    
+    void Components::do_image_magick(){
+        InitializeMagick("");
+        string resized_size_300 = "300%";
+        string resized_size_500 = "500%";
+        
+        for(int i=0;i<13;i++){
+        
+        Magick::Image image;
+        
+        string images_path = output_path+ + "/" + to_string(i) + ".jpg";
+        //        const char *cstr = output_path.c_str();
+        //        printf("%s - char",cstr);
+        
+        try {
+            image.read(images_path);
+            image.type(GrayscaleType);
+            image.resize(resized_size_300);
+            image.write(output_path + "/" + to_string(i) + "_gray" + resized_size_300 + ".jpg");
+            image.resize(resized_size_500);
+            image.write(output_path + "/" + to_string(i) + "_gray" + resized_size_500 + ".jpg");
+            
+        } catch (Magick::Exception &err) {
+            cout << "Exception" << err.what() << endl;
+        }
+            
+        }
+    }
+    
+    void Components::ocr_image_magick(){
+        
+        string resized_size_300 = "300%";
+        string resized_size_500 = "500%";
+        
+        
+        cout << " ------------------- ------------------- Using ImageMagick ------------------- -------------------" << endl;
+        
+        for(int i=0;i<13;i++){
+        
+        
+        TessBaseAPI api,api2;
+        
+        if (api.Init(NULL, "eng") || api2.Init(NULL, "eng")) {
+            fprintf(stderr, "Tesseract API not initialised");
+            exit(1);
+        }
+        
+        string d_path_300 = output_path + "/" + to_string(i) + "_gray" + resized_size_300 + ".jpg";
+        string d_path_500 = output_path + "/" + to_string(i) + "_gray" + resized_size_300 + ".jpg";
+        const char *dir_path = &d_path_300[0];
+        
+        Pix *px = pixRead(dir_path);
+        api.SetImage(px);
+        api.Recognize(0);
+        output_text = api.GetUTF8Text();
+        printf("%s",output_text);
+        api.End();
+            
+            const char *dir_path2 = &d_path_500[0];
+            Pix *px2 = pixRead(dir_path2);
+            api2.SetImage(px2);
+            api2.Recognize(0);
+            output_text = api2.GetUTF8Text();
+            printf("%s",output_text);
+            api2.End();
+            
+        }
+    }
     
     void Components::find_grabcut() throw(cv::Exception){
         

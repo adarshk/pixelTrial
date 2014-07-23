@@ -234,18 +234,20 @@ int main(int argc,char** argv){
     
     // Method 3 - Hybrid
     
-    /*
+    
     char * dir = getcwd(NULL, 0);
     //    printf("Current dir: %s", dir);
-//    string path =  string(dir) + "/Tearsheet.png";
-    string path =  string(dir) + "/red1.JPG";
+    string path =  string(dir) + "/Tearsheet.png";
+//    string path =  string(dir) + "/red1.JPG";
     Components com(path);
-    com.find_watershed();
-    //com.find();
-    //com.save_image(string(dir));
-    waitKey(0);
-    cout<<"success"<<endl;
-    */
+//    com.find_watershed();
+//    com.find();
+    com.set_output_path(string(dir)+"/Components");
+    com.init();
+    com.save_image(string(dir));
+//    waitKey(0);
+//    cout<<"success"<<endl;
+//    return 0;
     
     
     //Test
@@ -260,6 +262,7 @@ int main(int argc,char** argv){
     
     // Testing tesseract
     
+    /*
     
     char *outText;
     tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
@@ -270,7 +273,8 @@ int main(int argc,char** argv){
     }
     
     
-    Pix *image = pixRead("/Users/adarsh.kosuru/Desktop/tesseracttest/tearsheetBroken/buttons.png");
+//    Pix *image = pixRead("/Users/adarsh.kosuru/Desktop/tesseracttest/tearsheetBroken/buttons.png");
+    Pix *image = pixRead("/Users/adarsh.kosuru/Desktop/tesseracttest/tearsheetBroken/gray_Tearsheet_big.png");
     api->SetImage(image);
     outText = api->GetUTF8Text();
     printf("Output - %s",outText);
@@ -279,6 +283,8 @@ int main(int argc,char** argv){
     delete [] outText;
     pixDestroy(&image);
     return 0;
+    */
+     
     
 }
 
