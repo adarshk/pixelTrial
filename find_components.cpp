@@ -59,11 +59,22 @@ namespace ppc {
     }
     
     void Components::init(){
+        
+        this->find();
+//        this->save_images();
+        //this->ocr();
+        //        Components::do_image_magick();
+        //        Components::ocr_image_magick();
+//        this->test_method();
+
+        
+        /*
         Components::find();
         Components::ocr();
 //        Components::do_image_magick();
 //        Components::ocr_image_magick();
         Components::test_method();
+         */
     }
     
     void Components::mini_watershed_for_thresholding(){
@@ -249,6 +260,61 @@ namespace ppc {
         
     }
     
+    void Components::basic_thresholding_method() throw(cv::Exception){
+        CheckWithMessage(std::string("Set path during initialization before finding components"), path != "");
+        LoadImage load_source_image(this->path,"SquaresImage");
+        source_image = load_source_image.get_image();
+        CheckWithMessage(std::string("Image loaded incorrectly"), source_image.data);
+        
+        Mat src_gray,resized_img;
+        source_image.copyTo(resized_img);
+        resize(resized_img, resized_img, Size(0,0),0.5,0.5);
+        
+        cvtColor(resized_img, src_gray, COLOR_BGR2GRAY);
+        blur(src_gray, src_gray, Size(3,3));
+        
+//        imshow("Blurred", src_gray);
+        
+        Mat threshold_output;
+        vector<vector<Point> >contours;
+        vector<Vec4i> hierarchy;
+        
+        cv::threshold(src_gray, threshold_output, 230, 255, THRESH_BINARY);
+        findContours(threshold_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE,Point(0,0));
+        
+        vector<RotatedRect> minRect(contours.size());
+        
+        for (size_t i=0; i<contours.size(); i++) {
+            minRect[i] = minAreaRect(Mat(contours[i]));
+        }
+        
+        //Mat drawing = Mat::zeros(threshold_output.size(), CV_8UC3);
+        Mat drawing;
+        resized_img.copyTo(drawing);
+        
+        RNG rng(12345);
+        Rect rt;
+        
+        for (size_t i=0; i<contours.size(); i++) {
+            Scalar color = Scalar(rng.uniform(0,255),rng.uniform(0,255),rng.uniform(0,255));
+            drawContours(drawing, contours, (int)i, color,1,8,vector<Vec4i>(),0,Point());
+            
+            Point2f rect_points[4];
+            minRect[i].points(rect_points);
+            rt = minRect[i].boundingRect();
+            Mat contours_cropped(resized_img,rt);
+            string out_path = this->output_path + "/" + to_string(i) + ".jpg";
+            imwrite(out_path, contours_cropped);
+            
+//            for (int j=0; j<4; j++) {
+//                line(drawing, rect_points[j], rect_points[(j+1)%4], color,1,8);
+//            }
+        }
+        
+        imwrite(this->output_path + "/drawing.jpg",drawing);
+//        imshow("Drawing", drawing);
+//        imshow("Cropped", contours_cropped);
+    }
     
     void Components::find_test() throw(cv::Exception){
         
@@ -268,7 +334,7 @@ namespace ppc {
         LoadImage load_source_image(this->path,"SquaresImage");
         source_image = load_source_image.get_image();
         CheckWithMessage(std::string("Image loaded incorrectly"), source_image.data);
-        //cv::resize(source_image, source_image_resized, cv::Size(0,0), 0.50,0.50 );
+//        cv::resize(source_image, source_image_resized, cv::Size(0,0), 0.50,0.50 );
         source_image.copyTo(source_image_resized);
         load_source_image.set_image(source_image_resized);
         
@@ -331,9 +397,19 @@ namespace ppc {
                     //cout << "contours - " << *itr << endl;
                 }
                 
+                Mat drawing_contours = Mat::zeros( gray.size(), CV_8UC3 );
+                RNG rng(12345);
+                for (size_t i=0; i<contours.size(); i++) {
+                    Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+                    // contour
+                    drawContours( drawing_contours, contours, (int)i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+                }
+                
+                imshow("DrawingContours",drawing_contours);
+                
                 for (vector<cv::Vec4i>::iterator itr = squares_hierarchy.begin(); itr!=squares_hierarchy.end(); ++itr) {
-                    //                cout << "square_hierarchy - " << threshold_level << " - "<<*itr << endl;
-                    counter++;
+                                    //cout << "square_hierarchy - "<< int(itr-squares_hierarchy.begin())<< "  th level - "<< threshold_level << " - "<<*itr << endl;
+                    //counter++;
                 }
                 
                 //            cout << "counter - " << counter << endl;
@@ -355,6 +431,19 @@ namespace ppc {
                 for (vector<int>::iterator itt = indexes.begin();itt!=indexes.end();++itt) {
                     needed_contours.push_back(contours[*itt]);
                 }
+                
+                
+                Mat drawing_needed_contours = Mat::zeros( gray.size(), CV_8UC3 );
+                RNG rng_needed(12345);
+                for (size_t i=0; i<needed_contours.size(); i++) {
+                    Scalar color = Scalar( rng_needed.uniform(0, 255), rng_needed.uniform(0,255), rng_needed.uniform(0,255) );
+                    // contour
+                    drawContours( drawing_needed_contours, needed_contours, (int)i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+                }
+                
+                
+                //imwrite(this->output_path + "/needed" +to_string(threshold_level) + ".jpg", drawing_needed_contours);
+                imshow("DrawingNeededContours",drawing_needed_contours);
                 
                 
                 //            cout << "indexes size - " << indexes.size() << endl;
@@ -414,17 +503,32 @@ namespace ppc {
                 for (vector<vector<Point>>::iterator it=hull.begin(); it!=hull.end(); ++it) {
                     Rect rh = boundingRect(Mat(*it));
                     
+                    /*
+                    hull_rectangles.push_back(rh);
+                    Mat cop(source_image_resized,rh);
+                    extracted_images.push_back(cop);
+                    string out_path = output_path + "/" + to_string((int)(it-hull.begin())) + ".jpg";
+//                    imwrite(out_path, cop);
+                     */
+                    
+                    
                     if (rh.area() > 100 && rh.area()<200000 && rh.width > 5 && rh.height > 5) {
                     hull_rectangles.push_back(rh);
-                        cout << "rectangle - top left - " << rh.tl().x << endl;
-                        cout << "rectangle - width - " << rh.width << " height - "<< rh.height<< endl;
-                    
+                        //cout << "rectangle - top left - " << rh.tl().x << endl;
+                        //cout << "rectangle - width - " << rh.width << " height - "<< rh.height<< endl;
+                    rectangle(source_image_hull, rh, cv::Scalar(255), 2);
                     Mat cop(source_image_resized,rh);
-                    cop.copyTo(copied);
-                    extracted_images.push_back(copied);
+//                    imshow("extracted"+to_string((int)(it-hull.begin())),cop);
+                    string out_path = output_path + "/" + to_string((int)(it-hull.begin())) + ".jpg";
+                    imwrite(out_path, cop);
+                    //cop.copyTo(copied);
+                    mini_ocr(cop, counter);
+                    counter++;
+                    extracted_images.push_back(cop);
                     //                rectangle(rect_hull, rh, cv::Scalar(255), 2);
                     
             }
+                    
                 }
                 
                 /// Show in a window
@@ -473,7 +577,7 @@ namespace ppc {
         for (size_t i=0; i<squares.size(); i++) {
             const Point* p = &squares[i][0];
             int n = (int)squares[i].size();
-            polylines(source_image_resized, &p, &n, 1, true, Scalar(0,255,0),3,CV_AA);
+            //polylines(source_image_resized, &p, &n, 1, true, Scalar(0,255,0),3,CV_AA);
         }
         
 //        namedWindow("ParentContours",CV_WINDOW_AUTOSIZE);
@@ -481,7 +585,7 @@ namespace ppc {
         
         
         
-//        cout << "all rectangles size - " << all_rectangles.size()<<endl;
+        //cout << "all rectangles size - " << all_rectangles.size()<<endl;
         cout << "extracted_images size - " << extracted_images.size()<<endl;
         
         for (vector<Rect>::iterator rec=all_rectangles.begin(); rec!=all_rectangles.end(); ++rec) {
@@ -489,10 +593,11 @@ namespace ppc {
         }
         
         for (vector<Rect>::iterator rec=hull_rectangles.begin(); rec!=hull_rectangles.end(); ++rec) {
-            rectangle(source_image_hull, *rec, cv::Scalar(255), 2);
+//            rectangle(source_image_hull, *rec, cv::Scalar(255), 2);
         }
         
-//        save_images();
+        save_images();
+        read_ocr();
         
         if (display_extracted_images) {
             
@@ -537,10 +642,91 @@ namespace ppc {
     }
     
     void Components::save_images(){
-        for (int i=0; i<extracted_images.size()-1; i++) {
+        for (int i=0; i<extracted_images.size(); i++) {
             string out_path = output_path + "/" + to_string(i) + ".jpg";
             imwrite(out_path, extracted_images[i]);
         }
+    }
+    
+    void Components::read_ocr(){
+        
+        cout << "\n----------------- Read ocr here -----------------\n" << endl;
+        
+        
+        
+        Mat resized_img;
+        
+        for (int r=0; r<extracted_images.size(); r++) {
+            char *tesseract_text;
+            string out_path = output_path + "/" + to_string(r) + ".jpg";
+            
+//            Mat input_img = imread(out_path);
+            char *tess_path = (char*)out_path.c_str();
+            Pix *read_image = pixRead(tess_path);
+            
+//            if (!input_img.data) {
+//                cout << "Error no input image" << endl;
+//            }
+//            
+//            input_img.copyTo(resized_img);
+            
+            //imshow("readOCR"+to_string(r),resized_img);
+            
+            TessBaseAPI api;
+            
+            if (api.Init(NULL, "eng")) {
+                fprintf(stderr, "Tesseract API not initialised");
+                exit(1);
+            }
+            
+            api.SetImage(read_image);
+            tesseract_text = api.GetUTF8Text();
+            printf("%d. - %s\n",r,tesseract_text);
+            api.End();
+            delete [] tesseract_text;
+            pixDestroy(&read_image);
+            
+//            api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), resized_img.step1());
+//            api.Recognize(0);
+//            output_text = api.GetUTF8Text();
+//            printf("%d. - %s\n",r,output_text);
+//            api.End();
+        }
+    }
+    
+    void Components::mini_ocr(cv::Mat& ocr_image,int j){
+        Mat grayscale_image, resized_img,thresholded_image,structure_img,sharpened_image;
+        char *tesseract_text;
+        
+        cvtColor(ocr_image, grayscale_image, CV_BGR2GRAY);
+//        adaptiveThreshold(grayscale_image, thresholded_image, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY,11, 2);
+        threshold(grayscale_image, thresholded_image, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+//        medianBlur(thresholded_image, thresholded_image, 0);
+        GaussianBlur(thresholded_image, sharpened_image, Size(0,0), 3);
+        addWeighted(thresholded_image, 1.5, sharpened_image, -0.5, 0, sharpened_image);
+        resize(sharpened_image, resized_img, resized_img.size(),5,5,INTER_LINEAR);
+        
+//        structure_img = getStructuringElement(MORPH_ELLIPSE, Size(3,3));
+//        morphologyEx(thresholded_image, resized_img, MORPH_OPEN, structure_img);
+//        thresholded_image.copyTo(resized_img);
+        //grayscale_image.copyTo(resized_img);
+//        ocr_image.copyTo(resized_img);
+        
+        //imshow("extracted"+to_string(j),resized_img);
+        
+        TessBaseAPI api;
+        
+        if (api.Init(NULL, "eng")) {
+            fprintf(stderr, "Tesseract API not initialised");
+            exit(1);
+        }
+        
+        api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), resized_img.step1());
+        api.Recognize(0);
+        tesseract_text = api.GetUTF8Text();
+        printf("%d. - %s\n",j,tesseract_text);
+        api.End();
+        delete [] tesseract_text;
     }
     
     void Components::ocr(){
@@ -548,16 +734,29 @@ namespace ppc {
         int expanded_size=10;  //7 works for Hello //10 for text //20 for box panel
         //        int i=3;
         
-//        for (int i=0; i<20; i++) {
-//        for (int i=0; i<3; i++) {
-          for (int i=0; i<extracted_images.size(); i++) {
         
-        Mat gray_img;
-            
+        for (int i=0; i<20; i++) {
+//        for (int i=0; i<14; i++) {
+//        for (int i=0; i<3; i++) {
+//          for (int i=0; i<extracted_images.size(); i++) {
+        
+            Mat gray_img,adapThresh,adapThresh8bit;
+            Mat resized_img;
+            /*
         Mat resized_img(extracted_images[i].rows*expanded_size,extracted_images[i].cols*expanded_size,extracted_images[i].type());
         cvtColor(extracted_images[i], gray_img, CV_BGR2GRAY);
         resize(gray_img, resized_img, resized_img.size(),expanded_size,expanded_size,INTER_LINEAR);
-            
+             */
+        
+//            gray_img.copyTo(resized_img);
+            extracted_images[i].copyTo(adapThresh);
+            cvtColor(adapThresh, gray_img, CV_BGR2GRAY);
+//            imshow("extracted"+to_string(i),resized_img);
+//            adapThresh.convertTo(adapThresh8bit, CV_8U);
+//            adaptiveThreshold(gray_img, resized_img, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 3, 1);
+            threshold(gray_img, resized_img, 0, 255, CV_THRESH_BINARY_INV | CV_THRESH_OTSU);
+            imshow("extracted"+to_string(i),resized_img);
+              
         TessBaseAPI api;
             
         if (api.Init(NULL, "eng")) {
@@ -569,7 +768,7 @@ namespace ppc {
         api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), resized_img.step1());
         api.Recognize(0);
         output_text = api.GetUTF8Text();
-        printf("%s",output_text);
+        printf("%d. - %s",i,output_text);
         api.End();
 //        char *cstr = &output_path[0];
         //        const char *cstr = output_path.c_str();
