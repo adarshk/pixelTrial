@@ -99,17 +99,28 @@ int main(int argc,char** argv){
   
     char * dir = getcwd(NULL, 0);
     //    printf("Current dir: %s", dir);
-//    string path =  string(dir) + "/Tearsheet.png";
-      string path =  string(dir) + "/red2.JPG";
+//      string path =  string(dir) + "/Tearsheet.png";
+//    string path =  string(dir) + "/Tearsheet_nav_textboxes.png";
+//    string path =  string(dir) + "/Tearsheet_no_blue.png";
+    string path =  string(dir) + "/Tearsheet_search_box.png";
+//      string path =  string(dir) + "/half.JPG";
+//    string path =  string(dir) + "/Tearsheet_world.png";
+//    string path =  string(dir) + "/Tearsheet_new.png";
+//    string path =  string(dir) + "/red2.JPG";
 //    string path =  string(dir) + "/printedTearsheet_mac.JPG";
+//    string path =  string(dir) + "/printedTearsheet_mac_cropped.png";
     Components com(path);
-    com.set_output_path(string(dir)+"/photoResults");
-    com.mini_watershed_for_thresholding();
+    com.set_output_path(string(dir)+"/Components");
+//    com.set_output_path(string(dir)+"/photoResults");
+//    com.set_output_path(string(dir)+"/basic_thresholding");
+//    com.basic_thresholding_method();
+    
+//    com.mini_watershed_for_thresholding();
 //        com.find_watershed();
-    //    com.find();
+//        com.find();
     //    com.set_output_path(string(dir)+"/Components");
 //    com.set_output_path(string(dir)+"/photoResults");
-//    com.init();
+    com.init();
     com.save_image(string(dir));
     
     
