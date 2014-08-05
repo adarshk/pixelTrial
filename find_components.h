@@ -35,6 +35,7 @@ namespace ppc {
         void init();
         void ocr();
         void mini_ocr(cv::Mat& ocr_image,int j);
+        void mini_mini_ocr();
         void read_ocr();
         void do_image_magick();
         void ocr_image_magick();

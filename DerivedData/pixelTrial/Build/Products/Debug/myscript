@@ -1,0 +1,1 @@
+convert -type grayscale -normalize -negate -lat 15x15+5% -contrast-stretch 0 -compose CopyOpacity -opaque none +matte -negate saved.jpg saved_f.jpg

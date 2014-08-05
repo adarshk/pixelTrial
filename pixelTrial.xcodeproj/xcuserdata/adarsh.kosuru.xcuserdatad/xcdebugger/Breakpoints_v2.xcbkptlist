@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/main.cpp"
-            timestampString = "428352065.46858"
+            timestampString = "428626711.27639"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "347"
-            endingLineNumber = "347"
+            startingLineNumber = "392"
+            endingLineNumber = "392"
             landmarkName = "main(int argc,char** argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -164,11 +164,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/main.cpp"
-            timestampString = "428352065.46858"
+            timestampString = "428626711.27639"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
+            startingLineNumber = "435"
+            endingLineNumber = "435"
             landmarkName = "main(int argc,char** argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -180,11 +180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "find_components.cpp"
-            timestampString = "428360797.303911"
+            timestampString = "428452635.068464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "904"
-            endingLineNumber = "904"
+            startingLineNumber = "941"
+            endingLineNumber = "941"
             landmarkName = "Components::find_watershed()"
             landmarkType = "5">
          </BreakpointContent>
@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "find_components.cpp"
-            timestampString = "428360797.303911"
+            timestampString = "428452635.068464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "916"
-            endingLineNumber = "916"
+            startingLineNumber = "953"
+            endingLineNumber = "953"
             landmarkName = "Components::find_watershed()"
             landmarkType = "5">
          </BreakpointContent>
@@ -212,11 +212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "find_components.cpp"
-            timestampString = "428360797.303911"
+            timestampString = "428452635.068464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1061"
-            endingLineNumber = "1061"
+            startingLineNumber = "1098"
+            endingLineNumber = "1098"
             landmarkName = "Components::find_watershed()"
             landmarkType = "5">
          </BreakpointContent>
@@ -228,11 +228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "find_components.cpp"
-            timestampString = "428360797.303911"
+            timestampString = "428428076.790154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "646"
-            endingLineNumber = "646"
+            startingLineNumber = "650"
+            endingLineNumber = "650"
             landmarkName = "Components::save_images()"
             landmarkType = "5">
          </BreakpointContent>
@@ -244,11 +244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "find_components.cpp"
-            timestampString = "428360797.303911"
+            timestampString = "428428076.790154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "647"
-            endingLineNumber = "647"
+            startingLineNumber = "651"
+            endingLineNumber = "651"
             landmarkName = "Components::save_images()"
             landmarkType = "5">
          </BreakpointContent>
@@ -260,11 +260,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "find_components.cpp"
-            timestampString = "428360797.303911"
+            timestampString = "428428076.790154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
+            startingLineNumber = "645"
+            endingLineNumber = "645"
             landmarkName = "Components::save_image(string dir)"
             landmarkType = "5">
          </BreakpointContent>
@@ -276,11 +276,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "find_components.cpp"
-            timestampString = "428360797.303911"
+            timestampString = "428428076.790154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "640"
-            endingLineNumber = "640"
+            startingLineNumber = "644"
+            endingLineNumber = "644"
             landmarkName = "Components::save_image(string dir)"
             landmarkType = "5">
          </BreakpointContent>
@@ -292,11 +292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "find_components.cpp"
-            timestampString = "428360797.303911"
+            timestampString = "428428076.790154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "502"
-            endingLineNumber = "502"
+            startingLineNumber = "506"
+            endingLineNumber = "506"
             landmarkName = "Components::squares_method(cv::Mat&amp; gray0,cv::Mat&amp; gray,std::vector&lt;std::vector&lt;cv::Point&gt;&gt;&amp; contours)"
             landmarkType = "5">
          </BreakpointContent>
