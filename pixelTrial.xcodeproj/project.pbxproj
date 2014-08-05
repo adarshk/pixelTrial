@@ -90,6 +90,7 @@
 		85CFABC619544987005D027B /* feature_extractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85CFABC419544987005D027B /* feature_extractor.cpp */; };
 		85F159FB196305AF0088725E /* find_components.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85F159F9196305AF0088725E /* find_components.cpp */; };
 		85F654CB1965E8BC00DE2AD9 /* watershed_marker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85F654C91965E8BB00DE2AD9 /* watershed_marker.cpp */; };
+		85F76B66198A7E6600D0DC38 /* splice_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85F76B64198A7E6600D0DC38 /* splice_image.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -204,6 +205,24 @@
 		85F159FA196305AF0088725E /* find_components.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = find_components.h; path = ../find_components.h; sourceTree = "<group>"; };
 		85F654C91965E8BB00DE2AD9 /* watershed_marker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = watershed_marker.cpp; path = ../watershed_marker.cpp; sourceTree = "<group>"; };
 		85F654CA1965E8BC00DE2AD9 /* watershed_marker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = watershed_marker.h; path = ../watershed_marker.h; sourceTree = "<group>"; };
+		85F76B64198A7E6600D0DC38 /* splice_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = splice_image.cpp; sourceTree = "<group>"; };
+		85F76B65198A7E6600D0DC38 /* splice_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = splice_image.h; sourceTree = "<group>"; };
+		85F76B68198BF86000D0DC38 /* animate */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = animate; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/animate"; sourceTree = "<group>"; };
+		85F76B69198BF86000D0DC38 /* compare */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = compare; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/compare"; sourceTree = "<group>"; };
+		85F76B6A198BF86000D0DC38 /* composite */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = composite; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/composite"; sourceTree = "<group>"; };
+		85F76B6B198BF86000D0DC38 /* conjure */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = conjure; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/conjure"; sourceTree = "<group>"; };
+		85F76B6C198BF86000D0DC38 /* convert */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = convert; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/convert"; sourceTree = "<group>"; };
+		85F76B6D198BF86000D0DC38 /* display */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = display; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/display"; sourceTree = "<group>"; };
+		85F76B6E198BF86000D0DC38 /* identify */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = identify; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/identify"; sourceTree = "<group>"; };
+		85F76B6F198BF86000D0DC38 /* import */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = import; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/import"; sourceTree = "<group>"; };
+		85F76B70198BF86000D0DC38 /* Magick-config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = "Magick-config"; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/Magick-config"; sourceTree = "<group>"; };
+		85F76B71198BF86000D0DC38 /* Magick++-config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = "Magick++-config"; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/Magick++-config"; sourceTree = "<group>"; };
+		85F76B72198BF86000D0DC38 /* MagickCore-config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = "MagickCore-config"; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/MagickCore-config"; sourceTree = "<group>"; };
+		85F76B73198BF86000D0DC38 /* MagickWand-config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = "MagickWand-config"; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/MagickWand-config"; sourceTree = "<group>"; };
+		85F76B74198BF86000D0DC38 /* mogrify */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = mogrify; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/mogrify"; sourceTree = "<group>"; };
+		85F76B75198BF86000D0DC38 /* montage */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = montage; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/montage"; sourceTree = "<group>"; };
+		85F76B76198BF86000D0DC38 /* stream */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = stream; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/stream"; sourceTree = "<group>"; };
+		85F76B77198BF86000D0DC38 /* Wand-config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = "Wand-config"; path = "../../../../usr/local/Cellar/imagemagick/6.8.9-1/bin/Wand-config"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +305,7 @@
 		85957699193E2A2000B33C5C = {
 			isa = PBXGroup;
 			children = (
+				85F76B67198BF83000D0DC38 /* imageMagick */,
 				85A22443197EF525009348BA /* imageMagicklibs */,
 				85A2209D197DABDB009348BA /* tesseractlibs */,
 				8595771A193E2AC600B33C5C /* dylibs */,
@@ -306,6 +326,8 @@
 			isa = PBXGroup;
 			children = (
 				859576A5193E2A2000B33C5C /* main.cpp */,
+				85F76B64198A7E6600D0DC38 /* splice_image.cpp */,
+				85F76B65198A7E6600D0DC38 /* splice_image.h */,
 				85F654C91965E8BB00DE2AD9 /* watershed_marker.cpp */,
 				85F654CA1965E8BC00DE2AD9 /* watershed_marker.h */,
 				85F159F9196305AF0088725E /* find_components.cpp */,
@@ -427,6 +449,29 @@
 			name = imageMagicklibs;
 			sourceTree = "<group>";
 		};
+		85F76B67198BF83000D0DC38 /* imageMagick */ = {
+			isa = PBXGroup;
+			children = (
+				85F76B68198BF86000D0DC38 /* animate */,
+				85F76B69198BF86000D0DC38 /* compare */,
+				85F76B6A198BF86000D0DC38 /* composite */,
+				85F76B6B198BF86000D0DC38 /* conjure */,
+				85F76B6C198BF86000D0DC38 /* convert */,
+				85F76B6D198BF86000D0DC38 /* display */,
+				85F76B6E198BF86000D0DC38 /* identify */,
+				85F76B6F198BF86000D0DC38 /* import */,
+				85F76B70198BF86000D0DC38 /* Magick-config */,
+				85F76B71198BF86000D0DC38 /* Magick++-config */,
+				85F76B72198BF86000D0DC38 /* MagickCore-config */,
+				85F76B73198BF86000D0DC38 /* MagickWand-config */,
+				85F76B74198BF86000D0DC38 /* mogrify */,
+				85F76B75198BF86000D0DC38 /* montage */,
+				85F76B76198BF86000D0DC38 /* stream */,
+				85F76B77198BF86000D0DC38 /* Wand-config */,
+			);
+			name = imageMagick;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -491,6 +536,7 @@
 				85CFABC31951E9C0005D027B /* apply_threshold.cpp in Sources */,
 				859577261942333300B33C5C /* backup.cpp in Sources */,
 				85CFABC619544987005D027B /* feature_extractor.cpp in Sources */,
+				85F76B66198A7E6600D0DC38 /* splice_image.cpp in Sources */,
 				85F654CB1965E8BC00DE2AD9 /* watershed_marker.cpp in Sources */,
 				85A24CB719475CFB00784F91 /* find_edges.cpp in Sources */,
 				85A24CBA1947965100784F91 /* detect_contours.cpp in Sources */,

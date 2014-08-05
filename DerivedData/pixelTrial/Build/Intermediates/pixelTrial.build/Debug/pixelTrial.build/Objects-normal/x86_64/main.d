@@ -203,4 +203,6 @@ dependencies: /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/main.cpp \
   /usr/local/Cellar/imagemagick/6.8.9-1/include/ImageMagick-6/Magick++/STL.h \
   /usr/local/Cellar/imagemagick/6.8.9-1/include/ImageMagick-6/Magick++/CoderInfo.h \
   /usr/local/Cellar/imagemagick/6.8.9-1/include/ImageMagick-6/Magick++/Montage.h \
-  /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/../watershed_marker.h
+  /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/../watershed_marker.h \
+  /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/splice_image.h \
+  /usr/local/include/opencv2/nonfree/features2d.hpp

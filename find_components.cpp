@@ -88,6 +88,8 @@ namespace ppc {
         load_source_image.set_image(source_image_resized);
         source_image_resized = load_source_image.get_image();
         
+        resize(source_image_resized,source_image_resized,Size(0,0),0.5,0.5);
+        
         Mat binary;
         cvtColor(source_image_resized, binary, CV_BGR2GRAY);
         threshold(binary, binary, 100, 255, CV_THRESH_BINARY);
@@ -127,6 +129,8 @@ namespace ppc {
 //        cout << "Num of watershed contours - " << main_contours.size() << endl;
         
         drawContours(res_output, main_contours, -1, color,2,8,hierar,0,Point());
+        
+        imshow("resOutput", res_output);
         
         for (int i=0; i<squares_hierarchy.size(); i++) {
             //        std::cout  << hierarchy[i] << std::endl;
@@ -209,14 +213,14 @@ namespace ppc {
         cout << "all_rectangles_size - " <<all_rectangles.size()<<endl;
         Mat cop = source_image_resized(second_highest_area_rect);
         imwrite(output_path + "/cop.jpg", cop);
-//        imshow("Cop", cop);
+        imshow("Cop", cop);
         
         cop.copyTo(source_image);
         source_image.copyTo(source_image_resized);
         source_image_resized.copyTo(source_image_output);
         source_image_resized.copyTo(source_image_hull);
         
-        this->find_test();
+        //this->find_test();
     }
     
     void Components::chamfer_matching(string src_path,string matching_image) throw(cv::Exception){
@@ -694,6 +698,39 @@ namespace ppc {
         }
     }
     
+    void Components::mini_mini_ocr(){
+        
+        for (int i=0; i<164; i++) {
+            Mat image = imread("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/" + to_string(i) + ".jpg");
+            
+            
+            Mat grayscale_image, resized_img,thresholded_image,structure_img,sharpened_image;
+            
+            cvtColor(image, grayscale_image, CV_BGR2GRAY);
+            threshold(grayscale_image, thresholded_image, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+            //        medianBlur(thresholded_image, thresholded_image, 0);
+            GaussianBlur(thresholded_image, sharpened_image, Size(0,0), 3);
+            addWeighted(thresholded_image, 1.5, sharpened_image, -0.5, 0, sharpened_image);
+            resize(sharpened_image, resized_img, resized_img.size(),5,5,INTER_LINEAR);
+            
+            char *tesseract_text;
+            TessBaseAPI api;
+            
+            if (api.Init(NULL, "eng")) {
+                fprintf(stderr, "Tesseract API not initialised");
+                exit(1);
+            }
+         
+            api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), resized_img.step1());
+            api.Recognize(0);
+            tesseract_text = api.GetUTF8Text();
+            printf("%d. - %s\n",i,tesseract_text);
+            api.End();
+            delete [] tesseract_text;
+            
+        }
+    }
+    
     void Components::mini_ocr(cv::Mat& ocr_image,int j){
         Mat grayscale_image, resized_img,thresholded_image,structure_img,sharpened_image;
         char *tesseract_text;
@@ -787,7 +824,7 @@ namespace ppc {
         
         Magick::Image image;
         
-        string images_path = output_path+ + "/" + to_string(i) + ".jpg";
+        string images_path = output_path + "/" + to_string(i) + ".jpg";
         //        const char *cstr = output_path.c_str();
         //        printf("%s - char",cstr);
         
