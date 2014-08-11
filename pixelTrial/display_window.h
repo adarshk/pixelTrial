@@ -6,14 +6,12 @@
 //  Copyright (c) 2014 Frog. All rights reserved.
 //
 
-#ifndef __pixelTrial__display_window__
-#define __pixelTrial__display_window__
+#pragma once
 
 #include <iostream>
 #include <string>
 #include <opencv2/opencv.hpp>
 
-#endif /* defined(__pixelTrial__display_window__) */
 
 namespace ppc {
     class DisplayWindow{
@@ -25,15 +23,18 @@ namespace ppc {
         
         //Need to implement drag_bar  - createTrackbar
         void drag_bar();
+   
     public:
-        
-        DisplayWindow(const std::string& name,cv::Mat image_to_show,int flags CV_DEFAULT(CV_WINDOW_AUTOSIZE)) : window_name(name),window_size(flags),query_img(image_to_show){
-        }
+        DisplayWindow();
+        DisplayWindow(cv::Mat& image_to_show);
+        DisplayWindow(const std::string& name,cv::Mat& image_to_show,int flags CV_DEFAULT(CV_WINDOW_AUTOSIZE));
         ~DisplayWindow();
         
         void set_window_name(const std::string& swn);
         std::string get_window_name() const;
         void show();
+        void show_with_random_name();
+        void set_image(cv::Mat& q_img);
 
     };
 }

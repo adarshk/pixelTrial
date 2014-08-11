@@ -15,7 +15,7 @@ namespace ppc {
         
     public:
         Threshold();
-        Threshold(cv::Mat query, cv::Mat thresholded,const int& set_min,const int& set_max,const int& set_type);
+        Threshold(cv::Mat& query, cv::Mat& thresholded,const int& set_min,const int& set_max,const int& set_type);
         Threshold(const int& set_min,const int& set_max,const int& set_type);
         ~Threshold();
         void set_minimum_threshold(const int& set_min);

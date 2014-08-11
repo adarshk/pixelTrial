@@ -23,7 +23,7 @@ namespace ppc {
         
     }
     
-    Threshold::Threshold(cv::Mat query, cv::Mat thresholded,const int& set_min,const int& set_max,const int& set_type) : source(query),thresholded_image(thresholded),minimum_threshold(set_min),maximum_threshold(set_max),type(set_type){
+    Threshold::Threshold(cv::Mat& query, cv::Mat& thresholded,const int& set_min,const int& set_max,const int& set_type) : source(query),thresholded_image(thresholded),minimum_threshold(set_min),maximum_threshold(set_max),type(set_type){
         
     }
     

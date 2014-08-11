@@ -15,13 +15,13 @@ namespace ppc {
     class FeatureExtractor{
     public:
         FeatureExtractor();
-        FeatureExtractor(cv::Mat query,int no_of_detector_points);
+        FeatureExtractor(cv::Mat& query,int no_of_detector_points);
         ~FeatureExtractor();
         void detect_orb();
         void extract_orb();
         std::vector<cv::KeyPoint> get_keypoints();
         cv::Mat get_descriptors();
-        void set_source_image(cv::Mat query);
+        void set_source_image(cv::Mat& query);
         void set_no_of_detector_points(int no_of_detector_points);
         int get_no_of_detector_points() const;
     private:

@@ -27,7 +27,7 @@ namespace ppc{
         
     public:
         Contours();
-        Contours(cv::Mat query,int set_mode,int set_aproximation);
+        Contours(cv::Mat& query,int set_mode,int set_aproximation);
         Contours(int set_mode,int set_aproximation);
         ~Contours();
         

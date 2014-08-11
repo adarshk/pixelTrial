@@ -17,7 +17,7 @@
 namespace ppc {
     
     Contours::Contours():mode(0),approximation(0){}
-    Contours::Contours(cv::Mat query,int set_mode,int set_aproximation):source(query),mode(0),approximation(0){}
+    Contours::Contours(cv::Mat& query,int set_mode,int set_aproximation):source(query),mode(0),approximation(0){}
     Contours::Contours(int set_mode,int set_aproximation) : mode(set_mode),approximation(set_aproximation){}
     Contours::~Contours(){}
     

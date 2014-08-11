@@ -15,13 +15,13 @@
 
 namespace ppc {
     
-    LoadImage::LoadImage():directory_path(""),image_name(""){
+    LoadImage::LoadImage():directory_path(""),image_name(""),current_window_size(CV_WINDOW_AUTOSIZE){
         
     }
-    LoadImage::LoadImage(const std::string& query_path,const std::string& name) : directory_path(query_path),image_name(name){
+    LoadImage::LoadImage(const std::string& query_path,const std::string& name) : directory_path(query_path),image_name(name),current_window_size(CV_WINDOW_AUTOSIZE){
         source = cv::imread(directory_path);
     }
-    LoadImage::LoadImage(cv::Mat query_image,const std::string& name) : source(query_image),image_name(name){
+    LoadImage::LoadImage(cv::Mat& query_image,const std::string& name) : source(query_image),image_name(name){
         
     }
     
@@ -46,7 +46,7 @@ namespace ppc {
         source = cv::imread(directory_path);
     }
     
-    void LoadImage::set_image(cv::Mat query_image){
+    void LoadImage::set_image(cv::Mat& query_image){
         source = query_image;
     }
     
@@ -61,7 +61,7 @@ namespace ppc {
     
     void LoadImage::show(int window_size){
         
-        CheckWithMessage(std::string("Set window name before displaying image"), image_name!="");
+        CheckWithMessage(std::string("Set window name using 'set_image_name' before displaying image"), image_name!="");
         
         cv::namedWindow(image_name,window_size);
         cv::imshow(image_name, source);

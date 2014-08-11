@@ -579,8 +579,8 @@ namespace ppc {
         }
         
         for (size_t i=0; i<squares.size(); i++) {
-            const Point* p = &squares[i][0];
-            int n = (int)squares[i].size();
+//            const Point* p = &squares[i][0];
+//            int n = (int)squares[i].size();
             //polylines(source_image_resized, &p, &n, 1, true, Scalar(0,255,0),3,CV_AA);
         }
         

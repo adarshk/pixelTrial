@@ -16,7 +16,7 @@
 namespace ppc {
     
     FeatureExtractor::FeatureExtractor():detector_points(5000){}
-    FeatureExtractor::FeatureExtractor(cv::Mat query,int no_of_detector_points):source(query),detector_points(no_of_detector_points){}
+    FeatureExtractor::FeatureExtractor(cv::Mat& query,int no_of_detector_points):source(query),detector_points(no_of_detector_points){}
     FeatureExtractor::~FeatureExtractor(){}
     
     void FeatureExtractor::set_no_of_detector_points(int no_of_detector_points){
@@ -27,7 +27,7 @@ namespace ppc {
         return detector_points;
     }
     
-    void FeatureExtractor::set_source_image(cv::Mat query){
+    void FeatureExtractor::set_source_image(cv::Mat& query){
         source = query;
     }
     
