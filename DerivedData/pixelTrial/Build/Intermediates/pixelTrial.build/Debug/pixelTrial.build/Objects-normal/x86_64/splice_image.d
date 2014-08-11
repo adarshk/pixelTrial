@@ -199,6 +199,22 @@ dependencies: \
   /usr/local/Cellar/imagemagick/6.8.9-1/include/ImageMagick-6/Magick++/STL.h \
   /usr/local/Cellar/imagemagick/6.8.9-1/include/ImageMagick-6/Magick++/CoderInfo.h \
   /usr/local/Cellar/imagemagick/6.8.9-1/include/ImageMagick-6/Magick++/Montage.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/document.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/reader.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/rapidjson.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/allocators.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/encodings.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/internal/pow10.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/internal/stack.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/error/error.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/internal/strfunc.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/internal/meta.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/filestream.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/filewritestream.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/prettywriter.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/writer.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/internal/itoa.h \
+  /Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include/rapidjson/stringbuffer.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/load_image.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/find_edges.h \
   /Users/adarsh.kosuru/Desktop/pixelTrial/pixelTrial/../detect_contours.h \

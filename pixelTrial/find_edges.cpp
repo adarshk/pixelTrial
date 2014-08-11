@@ -19,7 +19,7 @@ namespace ppc {
     Edges::Edges(const int& set_lower,const int& set_upper) : lower_threshold(set_lower),upper_threshold(set_upper),aperture_size(3){
         
     }
-    Edges::Edges(cv::Mat query,cv::Mat result_image,const int& set_lower,const int& set_upper):source(query),result(result_image),lower_threshold(set_lower),upper_threshold(set_upper){
+    Edges::Edges(cv::Mat& query,cv::Mat& result_image,const int& set_lower,const int& set_upper):source(query),result(result_image),lower_threshold(set_lower),upper_threshold(set_upper){
         
     }
     Edges::~Edges(){}
@@ -54,13 +54,13 @@ namespace ppc {
     }
     
     Edges& Edges::applyCanny(){
-        CheckWithMessage(std::string("No image data available"), source.data);
+        CheckWithMessage(std::string("No image data available. Set source image using set_source_image before finding edges"), source.data);
         
         cv::Canny(source, result, lower_threshold, upper_threshold,this->aperture_size);
         return *this;
     }
     
-    Edges& Edges::applyCanny(cv::Mat query,cv::Mat result_image,const int& set_lower,const int& set_upper){
+    Edges& Edges::applyCanny(cv::Mat& query,cv::Mat& result_image,const int& set_lower,const int& set_upper){
         
         source = query;
         result = result_image;

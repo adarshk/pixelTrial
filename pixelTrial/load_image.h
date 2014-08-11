@@ -17,7 +17,7 @@ namespace ppc {
         
     public:
         LoadImage(const std::string& query_path,const std::string& name);
-        LoadImage(cv::Mat query_image,const std::string& name);
+        LoadImage(cv::Mat& query_image,const std::string& name);
         LoadImage();
         ~LoadImage();
         const cv::Mat get_image() const;
@@ -25,9 +25,9 @@ namespace ppc {
         void set_path(const std::string& query_path);
         void set_path_and_load_image(const std::string& query_path);
         void load_image_from_path();
-        void set_image(cv::Mat query_image);
-        void show(const std::string& name,int window_size = cv::WINDOW_AUTOSIZE);
-        void show(int window_size = cv::WINDOW_AUTOSIZE);
+        void set_image(cv::Mat& query_image);
+        void show(const std::string& name,int window_size = CV_WINDOW_AUTOSIZE);
+        void show(int window_size = CV_WINDOW_AUTOSIZE);
         void set_image_name(const std::string& name);
         void set_window_size(int window_size);
         std::string get_image_name() const;

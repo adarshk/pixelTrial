@@ -22,7 +22,7 @@ namespace ppc {
     public:
         Edges();
         Edges(const int& set_lower,const int& set_upper);
-        Edges(cv::Mat query,cv::Mat result_image,const int& set_lower,const int& set_upper);
+        Edges(cv::Mat& query,cv::Mat& result_image,const int& set_lower,const int& set_upper);
         ~Edges();
         Edges& set_source_image(cv::Mat query);
         const cv::Mat get_source_image() const;
@@ -33,7 +33,7 @@ namespace ppc {
         int get_upper_threshold() const;
         Edges& set_aperture_size(int aperture);
         Edges& applyCanny();
-        Edges& applyCanny(cv::Mat query,cv::Mat result_image,const int& set_lower,const int& set_upper);
+        Edges& applyCanny(cv::Mat& query,cv::Mat& result_image,const int& set_lower,const int& set_upper);
     };
 }
 

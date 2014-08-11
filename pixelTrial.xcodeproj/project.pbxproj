@@ -332,8 +332,6 @@
 				85F654CA1965E8BC00DE2AD9 /* watershed_marker.h */,
 				85F159F9196305AF0088725E /* find_components.cpp */,
 				85F159FA196305AF0088725E /* find_components.h */,
-				85A24CBE194894DF00784F91 /* k_nearest_neighbor.cpp */,
-				85A24CBF194894DF00784F91 /* k_nearest_neighbor.h */,
 				85CFABC419544987005D027B /* feature_extractor.cpp */,
 				85CFABC519544987005D027B /* feature_extractor.h */,
 				85A24CB81947965100784F91 /* detect_contours.cpp */,
@@ -346,6 +344,8 @@
 				85A24D89194F847A00784F91 /* display_window.h */,
 				85A24CB519475CFB00784F91 /* find_edges.cpp */,
 				85A24CB619475CFB00784F91 /* find_edges.h */,
+				85A24CBE194894DF00784F91 /* k_nearest_neighbor.cpp */,
+				85A24CBF194894DF00784F91 /* k_nearest_neighbor.h */,
 				859ADC601946151700F5C586 /* contoursWorking.cpp */,
 				8595772319422F5A00B33C5C /* HomoGraphyWorking.cpp */,
 				859577251942333300B33C5C /* backup.cpp */,
@@ -583,6 +583,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
 					"/usr/local/Cellar/imagemagick/6.8.9-1/include/ImageMagick-6",
+					/Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include,
 				);
 				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -624,6 +625,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
 					"/usr/local/Cellar/imagemagick/6.8.9-1/include/ImageMagick-6",
+					/Users/adarsh.kosuru/Desktop/rapidjson/rapidjson/include,
 				);
 				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
