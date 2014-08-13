@@ -26,6 +26,7 @@
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
 #include <ImageMagick-6/Magick++.h>
+#include <magick/MagickCore.h>
 #include <rapidjson/document.h>
 #include <rapidjson/filestream.h>
 #include <rapidjson/filewritestream.h>
@@ -41,7 +42,7 @@ using namespace cv;
 using namespace tesseract;
 using namespace Magick;
 using namespace rapidjson;
-
+using namespace MagickCore;
 
 namespace ppc {
     class Splice{
@@ -60,11 +61,10 @@ namespace ppc {
         void image_magick();
         void image_magick_cleanup(string path);
         void run_script();
-        void squares_method(const Mat& original_image,string image_pth,string components_path,string contours_path);
         void squares_method2(const Mat& original_image,string image_pth,string components_path,string contours_path);
         static bool mysortfunction(Rect r1,Rect r2);
         static double angle(Point pt1,Point pt2,Point pt0);
-        void find_squares( const Mat& original_image,const Mat& image, vector<vector<Point> >& squares,string components_path,string contours_path );
+        void find_squares( const Mat& original_image,const string& image_path, string components_path,string contours_path );
         void tesseract(string path);
         void tesseract_with_dictionary(string path);
         void keypoint_matching();
@@ -78,9 +78,12 @@ namespace ppc {
         void counter_inc();
         Mat opencv2imagemagick(Mat& im,string save_dir);
         Mat opencv2imagemagick(Mat& im);
+        size_t levenshtein_distace(const string& original_word, const string& from_tesseract);
         
         void opencv2imagemagick_test(string p);
         void tesseract_direct(Mat& tm);
+        void magiccore();
+        bool is_background_present();
         
         std::string path;
         Mat saved;
