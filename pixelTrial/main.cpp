@@ -30,7 +30,7 @@ int main(int argc,char** argv){
     
     //Splice method
     
-    char * dir = getcwd(NULL, 0);
+//    char * dir = getcwd(NULL, 0);
 //    string path =  string(dir) + "/red2.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/canonphotos/IMG_1515.jpg";
     string path = "/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/IMG_1938.JPG";

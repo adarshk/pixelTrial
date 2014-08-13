@@ -721,7 +721,7 @@ namespace ppc {
                 exit(1);
             }
          
-            api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), resized_img.step1());
+            api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), int(resized_img.step1()));
             api.Recognize(0);
             tesseract_text = api.GetUTF8Text();
             printf("%d. - %s\n",i,tesseract_text);
@@ -758,7 +758,7 @@ namespace ppc {
             exit(1);
         }
         
-        api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), resized_img.step1());
+        api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), int(resized_img.step1()));
         api.Recognize(0);
         tesseract_text = api.GetUTF8Text();
         printf("%d. - %s\n",j,tesseract_text);
@@ -768,7 +768,7 @@ namespace ppc {
     
     void Components::ocr(){
         
-        int expanded_size=10;  //7 works for Hello //10 for text //20 for box panel
+//        int expanded_size=10;  //7 works for Hello //10 for text //20 for box panel
         //        int i=3;
         
         
@@ -802,7 +802,7 @@ namespace ppc {
         }
         
 //        api.SetImage((uchar*)extracted_images[0].data, extracted_images[0].size().width, extracted_images[0].size().height, extracted_images[0].channels(), extracted_images[0].step1());
-        api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), resized_img.step1());
+        api.SetImage((uchar*)resized_img.data, resized_img.size().width, resized_img.size().height, resized_img.channels(), int(resized_img.step1()));
         api.Recognize(0);
         output_text = api.GetUTF8Text();
         printf("%d. - %s",i,output_text);
