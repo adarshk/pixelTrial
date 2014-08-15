@@ -33,12 +33,14 @@ int main(int argc,char** argv){
 //    char * dir = getcwd(NULL, 0);
 //    string path =  string(dir) + "/red2.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/canonphotos/IMG_1515.jpg";
-    string path = "/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/IMG_1938.JPG";
+    string path = "/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground";
+    string img_name = "IMG_1938.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/photo1.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/Tearsheet_black1.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/printedTearsheet_mac.JPG";
-    Splice s(path);
-    s.init();
+    Splice s;
+    s.init("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug",img_name,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/word_list.txt");
+//    s.init(path,img_name);
 //    s.save_image(string(dir));
     
 //    waitKey(0);
