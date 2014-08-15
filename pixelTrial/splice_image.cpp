@@ -11,7 +11,7 @@
 #define CheckWithMessage(str,x) assert((str,x))
 #endif
 
-#define SHELLSCRIPT "\
+#define IMAGEMAGICKBASH "\
 #/bin/bash \n\
 echo \"Bash says hello\" \n\
 /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/convert -type grayscale -normalize -negate -lat 15x15+5% \
@@ -19,92 +19,217 @@ echo \"Bash says hello\" \n\
 /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg \n\
 "
 
+
+
+    /*
+      ____                           ____  _           __   ______          __
+     / __ \____ _____  ___  _____   / __ \(_)  _____  / /  / ____/___  ____/ /__
+    / /_/ / __ `/ __ \/ _ \/ ___/  / /_/ / / |/_/ _ \/ /  / /   / __ \/ __  / _ \
+   / ____/ /_/ / /_/ /  __/ /     / ____/ />  </  __/ /  / /___/ /_/ / /_/ /  __/
+  /_/    \__,_/ .___/\___/_/     /_/   /_/_/|_|\___/_/   \____/\____/\__,_/\___/
+             /_/
+ */
+
+
 #include "splice_image.h"
 
 namespace ppc{
     
-    Splice::Splice():path(""),thresh(50),N(1),counter(0),rng(12345),write_output(true),cwd(""){
+    Splice::Splice():thresh(50),N(1),rng(12345),write_output(true),cwd(""),show_windows(false),no_of_components(0){
         
     }
     
-    Splice::Splice(const string& dir_path):thresh(50),N(1),counter(0),rng(12345),write_output(true),cwd(""){
-        path = dir_path;
-    }
+//    Splice::Splice(const string& dir_path):thresh(50),N(1),rng(12345),write_output(true),cwd(""),show_windows(false),no_of_components(0){
+//        path = dir_path;
+//    }
     
     Splice::~Splice(){
         
     }
     
-    void Splice::counter_inc(){
-        no_of_components++;
-    }
     
-    void Splice::init(){
+    /* CORE FUNCTIONS
+      ____                   _____                 _   _
+     / ___|___  _ __ ___    |  ___|   _ _ __   ___| |_(_) ___  _ __  ___
+    | |   / _ \| '__/ _ \   | |_ | | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+    | |__| (_) | | |  __/   |  _|| |_| | | | | (__| |_| | (_) | | | \__ \
+     \____\___/|_|  \___|   |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+     
+     1. init() - The method to be called after object initialization
+     2. is_background_present() - Checks for background
+     3. watershed() - removes background if present
+     4. image_cleaner() - cleans up and binarizes the image(black and white)
+     5. find_squares() - Finds bounding boxes around the text boxes - calls imagemagick and tesseract and writes a JSON file to disk
+     */
+    
+    
+    
+    /*!
+     To be called after object initialization
+     1. Initializes the dictionary from file
+     2. Calls all core functions
+     */
+    void Splice::init(string working_dir,string img_name,string word_list_file_name){
         
-        /*
-          ____                           ____  _           __   ______          __
-         / __ \____ _____  ___  _____   / __ \(_)  _____  / /  / ____/___  ____/ /__
-        / /_/ / __ `/ __ \/ _ \/ ___/  / /_/ / / |/_/ _ \/ /  / /   / __ \/ __  / _ \
-       / ____/ /_/ / /_/ /  __/ /     / ____/ />  </  __/ /  / /___/ /_/ / /_/ /  __/
-      /_/    \__,_/ .___/\___/_/     /_/   /_/_/|_|\___/_/   \____/\____/\__,_/\___/
-                 /_/
-         */
         
+        string split_name;
+        if(working_dir == ""){
         
-        
+        CheckWithMessage(string("Set image name in init"), img_name != "");
         
         dir = getcwd(NULL, 0);
         cwd = string(dir);
+        split_name = img_name;
+        }
+        else if(last4chars(working_dir) == ".jpg" ||  last4chars(working_dir) == ".JPG" || last4chars(working_dir) == ".png"){
+            size_t position = working_dir.find_last_of("/");
+            
+            if(position != working_dir.length()){
+                split_name = working_dir.substr(position);
+            }
+            
+            cwd = working_dir.substr(0,position);
+        }
+        else{
+        CheckWithMessage(string("Set image name in init"), img_name != "");
+        cwd = working_dir;
+        split_name = img_name;
+        }
+        
+//        cout << "Working dir - " <<cwd << ", image name - " << split_name << endl;
+        
+        
+        CheckWithMessage(string("Set word list name in init"), word_list_file_name != "");
+        init_dictionary(word_list_file_name);
+        //        this->opencv2imagemagick_test(cwd + "/red2.jpg");
+        
+        
+        bool val = is_background_present(split_name);
+        if(val){
+            
+            watershed();
+            
+            //Bash script for cleaning up the text
+            image_cleaner(); //Input - saved , output - saved_run_script.jpg
 
-       // Call only watershed. No Need to call others. Watershed calls the rest.
+        }
+        else{
+            
+            save_image(cwd,"saved.jpg",src_image);
+
+            //Bash script for cleaning up the text
+            image_cleaner(); //Input - saved , output - saved_run_script.jpg
+        }
         
-        no_of_components=0;
-        init_dictionary();
-        this->opencv2imagemagick_test(cwd + "/red2.jpg");
         
-/*
-        bool val = this->is_background_present();
-        if(val == true)
-        cout << "Val - true" << endl;
-        else
-        cout << "Val - false" << endl;
- */
-        this->watershed();
-//        this->text_cleaner();
-//        this->squares_method();
+
+        
+        
+        // Three methods for replicating results of the bash script using opencv, iamgemagick C/c++ API
+        // Currently none of them are being used as they dont give the same results
+        
+        /*
+        this->thresholding_image(); //output - saved_run_script_opencv.jpg
+        this->image_magick_cpp_api(); //ImageMagick C++ API, bash version gives better resutls. Output - saved_run_script_api.jpg
+        this->magiccore(); //Imagemagick C API, Does not work & does not write to output currently
+        */
+        
+        
+        Mat saved_run_script = load_image(cwd + string("/saved_run_script.jpg"),"SquaresImage");
+        
+        json_init();
+        this->find_squares(saved_run_script,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours.jpg");
+        
+        
+        //        this->image_magick_cleanup("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/");
+        //        this->tesseract("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/");
+        
+        json_write_to_file();
+        
+        
+        
+        json_init();
+        this->find_squares(saved,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours_original_image.jpg");
+        
+        
+        //        this->image_magick2("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/");
+        
+        //        this->tesseract("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/");
+        
+        
+        //        this->image_magick_cleanup("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/");
+        //        this->tesseract_with_dictionary("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/");
+        
+        
+        json_write_to_file();
+        
+        
+        //        this->keypoint_matching();
+         
+        
+        
     }
     
-    bool Splice::is_background_present(){
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*!
+     Uses bounding box technique to check if the image has background.
+     Returns true if image has background, else returns false.
+     
+     For more information refer to
+     http://docs.opencv.org/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html
+     */
+     bool Splice::is_background_present(const string& img_name){
         
-        
-        Mat grayscale, noise, thresholded_image,contours_image,source_image_copy;
+        Mat src_image_copy,grayscale_image, denoised_image, thresholded_image,contours_image;
         vector<vector<Point> > contours;
         vector<cv::Vec4i> hierarchy;
         int highest_area = 0;
         int bounding_rect_index = -1;
         
         
-        CheckWithMessage(std::string("Set path during initialization before finding components"), path != "");
-        LoadImage load_source_image(this->path,"SquaresImage");
-        Mat source_image = load_source_image.get_image();
-        CheckWithMessage(std::string("Image loaded incorrectly"), source_image.data);
+        //Loads image from path given during object initialization
+         string full_path;
+         full_path = join_path(cwd, img_name);
+        src_image = load_image(full_path,"src_image");
+    
+        src_image.copyTo(src_image_copy);
         
-//        Mat source_image = imread("/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/Tearsheet.png");
-        source_image.copyTo(source_image_copy);
         
-        cvtColor( source_image, grayscale, CV_RGB2GRAY );
-        blur(grayscale,grayscale,Size(3,3));
+        /*
+         1. Converts to grayscale
+         2. Denoise the image
+         3. Finds contours to check for the biggest contour
+         */
         
-        fastNlMeansDenoising(grayscale, noise);
+        cvtColor(src_image_copy, grayscale_image, CV_RGB2GRAY );
+        blur(grayscale_image,grayscale_image,Size(3,3));
         
-//        adaptiveThreshold(noise, thresholded_image, 255, ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 7, 5);
-        threshold(noise, thresholded_image, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+        fastNlMeansDenoising(grayscale_image, denoised_image);
+        
+        //        adaptiveThreshold(noise, thresholded_image, 255, ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 7, 5);
+        threshold(denoised_image, thresholded_image, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
         
         findContours(thresholded_image, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE,Point(0,0));
+        
+        if(contours.size() == 0){
+            cerr << "No contours found on the image" << endl;
+        }
         
         vector<vector<Point> > contours_poly(contours.size());
         vector<Rect> boundRect(contours.size());
         vector<Point2f> center(contours.size());
+        
+        
+        //Forms an approximate polygon(rectangle) around each contour and finds the biggest contour
         
         for(int i=0;i<contours.size();i++){
             approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
@@ -116,67 +241,74 @@ namespace ppc{
             }
         }
         
-        Size s = source_image_copy.size();
+        Size s = src_image_copy.size();
         int image_area = s.width * s.height;
-//        cout << "Image area - " << image_area <<  endl;
-//        cout << "highest area - " << highest_area <<  endl;
+        //        cout << "Image area - " << image_area <<  endl;
+        //        cout << "highest area - " << highest_area <<  endl;
         
-        cout << "x - " << boundRect[bounding_rect_index].tl().x << endl;
-        cout << "x + height - " << boundRect[bounding_rect_index].br().x - boundRect[bounding_rect_index].width<< endl;
+        //        cout << "x - " << boundRect[bounding_rect_index].tl().x << endl;
+        //        cout << "x + height - " << boundRect[bounding_rect_index].br().x - boundRect[bounding_rect_index].width<< endl;
         
-        if(bounding_rect_index != -1){
         
+        CheckWithMessage(string("No bounding boxes found"), bounding_rect_index != -1);
+        
+        
+        /* Performs basic filtering on the image to see if the area of the biggest contour is approximately the area of the source image
+         or if the contour stretches along the full width of the source image
+         
+         If the contour has one of the above properties, then most likely it doesnt have a background - so it returns false
+         */
+         
         if(image_area % highest_area < 0.05 * image_area ||
            (boundRect[bounding_rect_index].width >= s.width && boundRect[bounding_rect_index].height >= s.height) ||
            ((boundRect[bounding_rect_index].tl().x < 5 && boundRect[bounding_rect_index].br().x - boundRect[bounding_rect_index].width < 5) &&
-           (boundRect[bounding_rect_index].tl().x + boundRect[bounding_rect_index].width > s.width - 5 && boundRect[bounding_rect_index].br().x > s.width - 5) ))
+            (boundRect[bounding_rect_index].tl().x + boundRect[bounding_rect_index].width > s.width - 5 && boundRect[bounding_rect_index].br().x > s.width - 5) ))
         {
             return false;
         }
         
-        }
-        else{
-            if(contours.size() ==0){
-                cerr << "No contours found" << endl;
-            }
-            else{
-                cerr << "No bounding boxes found, bounding_rect_index = -1" << endl;
-            }
-        }
         
         //Uncomment for debugging
         /*
-        Mat drawing = Mat::zeros(thresholded_image.size(),CV_8UC3);
-        
-//        for(int i=0;i<contours.size();i++){
-        Scalar color(0,255,0);
-        
-            drawContours(source_image_copy, contours_poly, bounding_rect_index, color);
-            rectangle(source_image_copy, boundRect[bounding_rect_index].tl(), boundRect[bounding_rect_index].br(), color);
-
-//        }
-
-        imwrite("/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/result.jpg", source_image_copy);
+         Mat drawing = Mat::zeros(thresholded_image.size(),CV_8UC3);
+         
+         //        for(int i=0;i<contours.size();i++){
+         Scalar color(0,255,0);
+         
+         drawContours(src_image_copy, contours_poly, bounding_rect_index, color);
+         rectangle(src_image_copy, boundRect[bounding_rect_index].tl(), boundRect[bounding_rect_index].br(), color);
+         
+         //        }
+         
+         imwrite("/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/result.jpg", source_image_copy);
          */
         
         return true;
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    /*!
+     Removes background from image using watershed technique
+     For more info on watershed, check any/all of these
+     1. An example in the opnecv source code folder in opencv_source_code/samples/cpp/watershed.cpp
+     2. Chapter 5 - OpenCV 2 Computer Vision Application Programming Cookbook by Robert Laganiere
+     3. http://docs.opencv.org/trunk/doc/py_tutorials/py_imgproc/py_watershed/py_watershed.html
+     4. OpenCV docs
+     */
     void Splice::watershed(){
         
-        bool show_windows = false;
+        
         
         Mat source_image_resized,binary,image_for_saving;
         
-        CheckWithMessage(std::string("Set path during initialization before finding components"), path != "");
-        LoadImage load_source_image(this->path,"SquaresImage");
-        Mat source_image = load_source_image.get_image();
-        CheckWithMessage(std::string("Image loaded incorrectly"), source_image.data);
-        
-//        source_image.copyTo(source_image_resized);
-        //load_source_image.set_image(source_image_resized);
-        //source_image_resized = load_source_image.get_image();
-        cv::resize(source_image, source_image_resized, cv::Size(0,0), 0.5,0.5 );
+        cv::resize(src_image, source_image_resized, cv::Size(0,0), 0.5,0.5 );
         source_image_resized.copyTo(image_for_saving);
         
         cvtColor(source_image_resized, binary, CV_BGR2GRAY);
@@ -186,6 +318,7 @@ namespace ppc{
             imshow("binary", binary);
         }
         
+        //Separates foreground and background by eroding and dilating the image
         Mat fg,bg;
         erode(binary, fg, Mat(),Point(-1,-1),3);
         if (show_windows) {
@@ -216,10 +349,10 @@ namespace ppc{
         Canny(res, res_canny, 100, 255);
         
         Mat image_contours;
-        std::vector<std::vector<cv::Point> > main_contours;
-        std::vector<std::vector<cv::Point> > needed_contours;
-        vector<cv::Vec4i> squares_hierarchy;
-        vector<cv::Vec4i> hierarchy;
+        vector<vector<Point> > main_contours;
+        vector<vector<Point> > needed_contours;
+        vector<Vec4i> squares_hierarchy;
+        vector<Vec4i> hierarchy;
         vector<int> indexes;
         Scalar color(0,255,0);
         findContours(res_canny, main_contours, squares_hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
@@ -232,10 +365,10 @@ namespace ppc{
         if (show_windows) {
             imshow("resOutput", res_output);
         }
-
         
+        //Finds only the parent contours and filters out the rest
         for (int i=0; i<squares_hierarchy.size(); i++) {
-            //        std::cout  << hierarchy[i] << std::endl;
+            //        cout  << hierarchy[i] << endl;
             if (squares_hierarchy[i][3] == -1) {
                 hierarchy.push_back(squares_hierarchy[i]);
                 indexes.push_back(i);
@@ -249,10 +382,15 @@ namespace ppc{
         drawContours(image_for_saving, main_contours, -1, color,2,8,squares_hierarchy,0,Point());
         
         if(write_output){
-//            imwrite(cwd + "/saved_watershed.jpg", image_for_saving);
+            //            imwrite(cwd + "/saved_watershed.jpg", image_for_saving);
             save_image(cwd, "saved_watershed.jpg", image_for_saving);
         }
         
+        
+        /*
+         Finds the contours with the biggest areas to get only the image and not the background
+         The contour with the second biggest area is taken because the one with the biggest area is the whole image
+         */
         int highest_area = 0,second_highest_area=0;
         Rect main_rect,second_highest_area_rect;
         vector<Rect> all_rectangles;
@@ -275,91 +413,52 @@ namespace ppc{
             
         }
         
-        for (vector<Rect>::iterator rect_iterator = all_rectangles.begin(); rect_iterator!=all_rectangles.end(); ++rect_iterator) {
-            
-            if (inserted_areas.size()==0) {
-                inserted_areas.push_back(rect_iterator->area());
-                sorted_rectangles.push_back(*rect_iterator);
-            }
-            
-            else{
-                
-                
-                for (int sr=0; sr<sorted_rectangles.size(); sr++) {
-                    if (rect_iterator->area() > sorted_rectangles[sr].area() && sr!=sorted_rectangles.size()-1) {
-                        continue;
-                    }
-                    
-                    else{
-                        sorted_rectangles.insert(sorted_rectangles.begin() + sr, *rect_iterator);
-                        break;
-                    }
-                }
-                
-            }
-            
-        }
         
-        sort(areas.begin(), areas.end());
-        sort(all_rectangles.begin(),all_rectangles.end(),mysortfunction);
+        //For debugging
         
+        /*
+         for (vector<Rect>::iterator sr=sorted_rectangles.begin(); sr!=sorted_rectangles.end(); ++sr) {
+         cout << "sorted_rectangles_area[" << sr-sorted_rectangles.begin() <<"] - " <<sr->area() <<endl;
+         }
+         
+         for (vector<Rect>::iterator ar=all_rectangles.begin(); ar!=all_rectangles.end(); ++ar) {
+         cout << "all_rectangles_area[" << ar-all_rectangles.begin() <<"] - " <<ar->area() <<endl;
+         }
+         
+         for (vector<int>::iterator areas_vector = areas.begin(); areas_vector!=areas.end(); ++areas_vector) {
+         cout << "areas[" << areas_vector-areas.begin() <<"]- " << *areas_vector <<endl;
+         }
+         
+         cout << "Watershed rectangles - " <<all_rectangles.size()<<endl;
+         */
         
-        for (vector<Rect>::iterator sr=sorted_rectangles.begin(); sr!=sorted_rectangles.end(); ++sr) {
-//            cout << "sorted_rectangles_area[" << sr-sorted_rectangles.begin() <<"] - " <<sr->area() <<endl;
-        }
+        //Copies the contour(rectangle) into another image
         
-        for (vector<Rect>::iterator ar=all_rectangles.begin(); ar!=all_rectangles.end(); ++ar) {
-//            cout << "all_rectangles_area[" << ar-all_rectangles.begin() <<"] - " <<ar->area() <<endl;
-        }
-        
-        for (vector<int>::iterator areas_vector = areas.begin(); areas_vector!=areas.end(); ++areas_vector) {
-//            cout << "areas[" << areas_vector-areas.begin() <<"]- " << *areas_vector <<endl;
-        }
-        
-        cout << "Watershed rectangles - " <<all_rectangles.size()<<endl;
         Mat cop = source_image_resized(second_highest_area_rect);
         cop.copyTo(saved);
         
-        this->save_image(cwd,"saved.jpg",saved);
-//        this->image_magick();  //saved_result
-        this->thresholding_image(); //saved_run_script_opencv.jpg
-        this->text_cleaner(); //Input - saved , output - saved_run_script.jpg
-        this->run_script(); //ImageMagick c++ api - not used but only for comparison, bash version gives better resutls
-        this->magiccore();
         
-        
-        
-        
-        
-//        this->squares_method(saved,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_result.jpg","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_contours.jpg");
-        
-        LoadImage load_saved_run_script(cwd + "/saved_run_script.jpg","SquaresImage");
-        Mat saved_run_script = load_saved_run_script.get_image();
-        CheckWithMessage(std::string("Image loaded incorrectly"), saved_run_script.data);
-        
-        this->find_squares(saved_run_script,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours.jpg");
-        
-        
-//        this->image_magick_cleanup("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/");
-//        this->tesseract("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/");
-        
-        no_of_components =0;
-        this->find_squares(saved,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours_original_image.jpg");
-        
-        
-//        this->image_magick2("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/");
-        
-//        this->tesseract("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/");
-        
+        save_image(cwd,"saved.jpg",saved);
 
-//        this->image_magick_cleanup("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/");
-//        this->tesseract_with_dictionary("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/");
         
         
-//        this->keypoint_matching();
-     
-        
-        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*!
+     Reads image, calls ImageMagick bash script to enhance (binarize) the image and writes the image to disk
+     */
+    void Splice::image_cleaner(){
+        system(IMAGEMAGICKBASH);
     }
     
     void Splice::thresholding_image(){
@@ -394,81 +493,8 @@ namespace ppc{
         Splice::save_image(cwd, "saved_run_script_opencv.jpg", eroded);
     }
     
-    void Splice::save_image(const string& save_dir,string save_name,Mat& image_name){
-        
-        char last_slash = save_dir.back();
-        char first_slash = save_name.at(0);
-        
-        if (last_slash == '/' || first_slash=='/') {
-            imwrite(save_dir + save_name, image_name);
-        }
-        else{
-        imwrite(save_dir + "/" + save_name, image_name);
-        }
-    }
-    
-    
-    bool Splice::mysortfunction(Rect r1, Rect r2){
-        
-        
-        return r1.area()<r2.area();
-    }
-    
-    void Splice::text_cleaner(){
-        
-        system(SHELLSCRIPT);
-        
-        /*
-        char command[50];
-        string inputFile="/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved.jpg";
-        string outputFile="/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/fred_result.jpg";
-        
 
-        
-        system("chmod 777 /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/textcleaner.sh");
-        system("chmod 777 /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/Components/cop.jpg");
-        system("chmod 777 /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/Components/");
-        system("chmod 777 /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/convert");
-        system("chmod 777 /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved.jpg");
-
-            sprintf(command,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/textcleaner.sh -g -e normalize %s %s",inputFile.c_str(),outputFile.c_str());
-        
-        system(command);
-        
-//        system("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/textcleaner.sh -g -e normalize /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/Components/0.jpg /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/Components/0_result.jpg");
-        
-               
-               
-               
-//                /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/cop.jpg /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/cop_result.jpg");
-        
-        cout << "Done" <<endl;
-         
-         */
-    }
-    
-    void Splice::image_magick(){
-        
-        Magick::InitializeMagick("");
-        
-        Magick::Image image;
-        string images_path = string("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved.jpg");
-        
-        try{
-            
-            image.read(images_path);
-            image.type(GrayscaleType);
-            image.normalize();
-            image.write("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_result.jpg");
-            
-        }
-        catch(Magick::Exception &err){
-            cout << "Exception" << err.what() << endl;
-        }
-        
-    }
-    
-    void Splice::run_script(){
+    void Splice::image_magick_cpp_api(){
         
         Magick::InitializeMagick("");
         
@@ -544,33 +570,43 @@ namespace ppc{
         
     }
     
-
-    void Splice::squares_method2(const Mat& original_image,string image_pth,string components_path,string contours_path){
-        
-        
-            vector<vector<Point> > squares;
-        
-
-            Mat image = imread(image_pth);
-            CheckWithMessage(std::string("Image loaded incorrectly"), image.data);
-            
-//            find_squares(original_image,image, squares,components_path,contours_path);
-        
-    }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*!
+     original_image - the source image, used at the end of the function to copy parts of the image based on found bounding boxes.
+     image_path -  Image used to find the bounding boxes. This binary image is cleaned up version from the bash script or imagemagick/opencv
+     components_path - Optional. Default value is "". Path to save the individual components on disk
+     contours_path - Optional. Default value is "". Path to save the original image with bounding boxes drawn on top. Saves to disk.
+     
+     For more information refer to Squares based approach in the opencv source code folder, in opencv_source_code/samples/cpp/squares.cpp
+     
+     1. Finds all the contours i.e. rectangle bounding boxes in the image
+     2. Checks if the rectangles intersect and if they do, only considers one of them
+     3. Filters unwanted rectangles based on area, width and height
+     4. For each rectangle (i.e. component), imagemagick is called which enhances the image and then OCR is performed on this enhanced image using tesseract
+     */
     void Splice::find_squares( const Mat& original_image,const string& image_path,string components_path,string contours_path )
     {
         
         vector<vector<Point> > squares;
         
-        
-        Mat image = imread(image_path);
-        CheckWithMessage(std::string("Image loaded incorrectly"), image.data);
+        Mat image = load_image(image_path);
         
         squares.clear();
         all_rects.clear();
         coordinates.clear();
-        counter=0;
+        no_of_components = 0;
         Mat image_for_saving;
         original_image.copyTo(image_for_saving);
         
@@ -592,8 +628,7 @@ namespace ppc{
             // try several threshold levels
             for( int l = 0; l < N; l++ )
             {
-                // hack: use Canny instead of zero threshold level.
-                // Canny helps to catch squares with gradient shading
+                
                 if( l == 0 )
                 {
                     // apply Canny. Take the upper threshold from slider
@@ -652,25 +687,19 @@ namespace ppc{
                         rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color);
                         
                         
-                        /*
-                        Mat im(original_image,boundRect[i]);
-                        //                    imwrite("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/" + to_string((int)c) +"-"+ to_string((int)l) +"-"+ to_string((int)i) + ".jpg", im);
-                        imwrite("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/" +to_string(c) +"-"+ to_string(counter) + ".jpg", im);
-                        counter++;
-                         */
                         // if cosines of all angles are small
                         // (all angles are ~90 degree) then write quandrange
                         // vertices to resultant sequence
                         if( maxCosine < 0.3 )
-                        squares.push_back(approx);
+                            squares.push_back(approx);
                     }
                 }
             }
         }
-      
         
         
         
+        //Checks if rectangles intersect and if they do then only considers one of the rectangles
         for( size_t i = 0; i < squares.size(); i++ )
         {
             Rect rt = boundingRect(Mat(squares[i]));
@@ -678,7 +707,7 @@ namespace ppc{
             
             for (vector<Rect>::iterator rect_iterator=all_rects.begin(); rect_iterator!=all_rects.end(); ++rect_iterator) {
                 
-               intersect =   rect_intersect(rt, *rect_iterator);
+                intersect =   rect_intersect(rt, *rect_iterator);
                 
                 if (intersect) {
                     break;
@@ -686,7 +715,7 @@ namespace ppc{
                 else{
                     continue;
                 }
-
+                
             }
             
             if (intersect == false) {
@@ -696,359 +725,140 @@ namespace ppc{
                 continue;
             }
             
-            coordinates.push_back(make_pair(rt.x, rt.y));
+            
             Size s = image.size();
-//            cout << "img_area - " << s.area() << " rt.area - " << rt.area()<<endl;
-//            if (rt.area() < 3*s.area() / 4) {
-                if (rt.area() < 3*s.area() / 4 && rt.width < (s.width/2) && rt.height<(s.height/2)) {
+            //            cout << "img_area - " << s.area() << " rt.area - " << rt.area()<<endl;
+            //            if (rt.area() < 3*s.area() / 4) {
+            
+            
+            
+            //Filters rectangles based on area, width and height
+            if (rt.area() < 3*s.area() / 4 && rt.width < (s.width/2) && rt.height<(s.height/2)) {
                 
                 drawContours(image_for_saving, squares, (int)i, Scalar(0,255,0),2,8, vector<Vec4i>(), 0, Point());
                 
                 Mat im(original_image,rt);
-            imwrite(components_path + to_string(no_of_components) + ".jpg", im);
-                    Mat ml;
-//                    ml = opencv2imagemagick(im,cwd +"/basic_thresholding/converted/" + to_string(no_of_components) + "_gray.jpg");
-                ml = opencv2imagemagick(im,components_path + to_string(no_of_components) + "_gray.jpg");
-                    tesseract_direct(ml);
-//                imwrite("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/" + to_string(counter) + ".jpg", im);
-//                counter++;
+                if(write_output){
+                    imwrite(components_path + to_string(no_of_components) + ".jpg", im);
+                }
+                
+                coordinates.push_back(make_pair(rt.x, rt.y));
+//                cout << "Json x - " << rt.x << ", Json y - " << rt.y <<endl;
+//                Mat ml;
+                Mat ml = opencv2imagemagick(im,components_path + to_string(no_of_components) + "_gray.jpg");
+                string matched_word = opencv2tesseract(ml);
+                pair<int, int> p(rt.x,rt.y);
+                form_json(matched_word, p);
+                
                 counter_inc();
             }
             
+            
+        }
+        
+        if(write_output){
+        imwrite(contours_path, image_for_saving);
+        }
+        
+        
+    }
+    
 
+    
+    
+    
+    
+    /* UTILITY FUNCTIONS
+     _   _ _   _ _ _ _             _____                 _   _
+    | | | | |_(_) (_) |_ _   _    |  ___|   _ _ __   ___| |_(_) ___  _ __  ___
+    | | | | __| | | | __| | | |   | |_ | | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+    | |_| | |_| | | | |_| |_| |   |  _|| |_| | | | | (__| |_| | (_) | | | \__ \
+     \___/ \__|_|_|_|\__|\__, |   |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+                         |___/
+     1. load_image() - Loads image and check if the image is valid
+     2. save_image() - Saves image to disk
+     3. init_dictionary - Initializes  the dictioanry of words
+     4. levenshtein_distace() - Calculates the differce between 2 strings
+     5. dictionary_comparision() - matches strings to see if the words are in the dictionary
+     */
+    
+    
+    /*!
+     Load image and check if the image is valid i.e. assert if the image has any data using image.data
+     image_path - image load path directory
+     window_name - name of the window when the image is displayed. No need to explicitly define. Default is "Image".
+     */
+    Mat Splice::load_image(string image_path,string window_name){
+        
+        LoadImage l(image_path,window_name);
+        Mat m = l.get_image();
+        CheckWithMessage(string("Image loaded incorrectly"), m.data);
+        
+        return m;
+    }
+    
+    /*!
+     Saves image to disk
+     save_dir - The directory path the image will be written to
+     save_name - Name of the image
+     saved_img - Image to be saved
+     */
+    void Splice::save_image(const string& save_dir,string save_name,Mat& saved_img){
+        
+        char last_slash = save_dir.back();
+        char first_slash = save_name.at(0);
+        
+        if (last_slash == '/' || first_slash=='/') {
+            imwrite(save_dir + save_name, saved_img);
         }
-  
-            imwrite(contours_path, image_for_saving);
-        
-//        imwrite("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_contours.jpg", image_for_saving);
-        //imshow("drawing", drawing);
-        
-        
-        rapidjson::Document document;
-
-        string json_string = string("{");
-//          for (size_t js=0; js<1; js++) {
-        for (size_t js=0; js<squares.size(); js++) {
-            
-            json_string += string("\"x\":") + "\"" + to_string(coordinates[js].first) + "\"";
-            json_string += string(",\"y\":") + "\"" + to_string(coordinates[js].second) + "\"";
-            
-            if (js != squares.size()-1) {
-                json_string += string(",");
-            }
-
-//            cout << "Coordinates:" << "\n{\n" <<"\"x\":"<<"\""<<coordinates[js].first << "\"\n"<< "\"y\":"<<"\""<< coordinates[js].second<<"\""<<"\n}" << endl;
-        }
-        
-        json_string += string("}");
-        
-        
-        char json[json_string.size() + 1];
-        strcpy(json, json_string.c_str());
-        cout << "JSON - " <<json << endl;
-        document.Parse(json);
-        if (document.Parse(json).HasParseError()) {
-            cout << "Parsing error" << endl;
-        }
-        
-        
-        FILE * output_file = fopen(string(cwd + "/output.json").c_str(), "w");
-        char writeBuffer[65536];
-        
-        rapidjson:FileWriteStream os(output_file,writeBuffer,sizeof(writeBuffer));
-        Writer<FileWriteStream> writer(os);
-        document.Accept(writer);
-        fclose(output_file);
-    }
-    
-    bool Splice::rect_intersect(Rect r1, Rect r2){
-
-        bool x_overlap = overlap(r1.x, r2.x, r2.x+ r2.width)  || overlap(r2.x, r1.x, r1.x+ r1.width);
-        bool y_overlap = overlap(r1.y, r2.y, r2.y+ r2.height) || overlap(r2.y, r1.y, r1.y+ r1.height);
-        
-        return x_overlap && y_overlap;
-    }
-    
-    bool Splice::overlap(int value, int min, int max){
-        
-        return (value >= min) && (value <= max);
-    }
-    
-    double Splice::angle( Point pt1, Point pt2, Point pt0 )
-    {
-        double dx1 = pt1.x - pt0.x;
-        double dy1 = pt1.y - pt0.y;
-        double dx2 = pt2.x - pt0.x;
-        double dy2 = pt2.y - pt0.y;
-        return (dx1*dx2 + dy1*dy2)/sqrt((dx1*dx1 + dy1*dy1)*(dx2*dx2 + dy2*dy2) + 1e-10);
-    }
-    
-    void Splice::image_magick_cleanup(string path){
-        
-        Magick::InitializeMagick("");
-        
-        for (int i=0; i<no_of_components; i++) {
-//                for (int i=0; i<30; i++) {
-        
-            Magick::Image image;
-            string images_path = path + to_string(i) + ".jpg";
-            
-            try{
-                
-                image.read(images_path);
-                image.type(GrayscaleType);
-                image.normalize();
-//                image.sharpen();
-                image.resize("300%");
-                image.write(path + to_string(i) + "_gray.jpg") ;
-                
-            }
-            catch(Magick::Exception &err){
-                cout << "Exception" << err.what() << endl;
-            }
-            
+        else{
+            imwrite(save_dir + "/" + save_name, saved_img);
         }
     }
     
-    
-    void Splice::tesseract(string path){
+    /*!
+     Init_dictioanry - initialises the dictionary from a file with the words from the file
+     */
+    void Splice::init_dictionary(string word_list){
         
-    cout << "-------------------- Tesseract on original image --------------------" << endl;
-
-//    for (int i=0; i<30; i++) {
-        for (int i=0; i<no_of_components; i++) {
-            TessBaseAPI api;
-            char *result;
-            
-            if (api.Init(NULL, "eng")) {
-                fprintf(stderr, "Tesseract API not initialised");
-                exit(1);
-            }
-            
-            string read_path = path + to_string(i) + "_gray.jpg";
-            Pix *image = pixRead(read_path.c_str());
-            api.SetImage(image);
-            
-            result = api.GetUTF8Text();
-            cout << i << " - " << result << endl;
-            
-            api.End();
-            delete [] result;
-            pixDestroy(&image);
+//        string file_path = join_path(cwd, word_list);
+        
+//        cout << "file path - " << word_list << endl;
+        
+        ifstream file(word_list);
+        
+        string word;
+        
+        if(file.good()){
+        
+        while(getline(file,word)){
+//            cout << "word - " << word<<endl;
+            all_words.push_back(word);
         }
-    }
-    
-    
-    void Splice::tesseract_with_dictionary(string path){
-        
-        
-        cout << "-------------------- Tesseract after running script on original image--------------------" << endl;
-        
-        string res;
-        
-//        for (int i=0; i<30; i++) {
-        for (int i=0; i<no_of_components; i++) {
-            TessBaseAPI *api = new TessBaseAPI();
-            
-            
-            if (api->Init(NULL, "eng")) {
-                fprintf(stderr, "Tesseract API not initialised");
-                exit(1);
-            }
-            
-            string read_path = path + to_string(i) + "_gray.jpg";
-            Pix *image = pixRead(read_path.c_str());
-            api->SetImage(image);
-            
-            const char *result = api->GetUTF8Text();
-            size_t size = strlen(result) + 1;
-            wchar_t w_result[size];
-            mbstowcs(w_result, result, size);
-//            printf("Wide char - %ls",w_result);
-//            res.clear();
-            res = string(result);
-//            res.erase(remove_if(res.begin(), res.end(), this->choose_char), res.end());
-            string st("Text Input");
-//            printf("tess result - %s",result);
-//            cout << "tesseract result - " << res << endl;
-//            parse_word(res);
-            string returned_string = dictionary_comparision(res);
-            
-            
-            
-            /*
-            map<string,int>::iterator it = tearsheet_words.find(res);
-            
-            if (tearsheet_words.count(res)) {
-                cout << "word found - " <<res << endl;
-            }
-            
-
-//            assert(it!=tearsheet_words.end());
-//            cout << "Key - " << it->first << " value - " << it->second << endl;
-            if (it!=tearsheet_words.end()) {
-                
-                cout << "map contains key" << endl;
-                cout << "Key - " << it->first << " value - " << it->second << endl;
-            }
-             
-             */
-        
-            cout << "Dictionary" << " - " << returned_string << ", Input - "<< i << " - " << result << endl;
-            
-            
-            api->End();
-            delete [] result;
-            pixDestroy(&image);
         }
-    }
-    
-    void Splice::tesseract_direct(cv::Mat &tm){
-        
-        
-        cout << "-------------------- Tesseract on the fly--------------------" << endl;
-        
-        string res;
-        
-        //        for (int i=0; i<30; i++) {
-            TessBaseAPI *api = new TessBaseAPI();
-            
-            
-            if (api->Init(NULL, "eng")) {
-                fprintf(stderr, "Tesseract API not initialised");
-                exit(1);
-            }
-        
-//            Pix *image = pixRead(read_path.c_str());
-            api->SetImage((uchar*)tm.data,int(tm.size().width),int(tm.size().height),tm.channels(),int(tm.step1()));
-            
-            const char *result = api->GetUTF8Text();
-            res = string(result);
-
-            string returned_string = dictionary_comparision(res);
-        
-            string delimiter = "\n";
-        
-            string delimited_string = res.substr(0,res.find(delimiter));
-            vector<size_t> temp_distances;
-            size_t lowest_distance = 100;
-            string matched_string;
-        
-            for (vector<string>::iterator aw_it=all_words.begin();aw_it != all_words.end();++aw_it){
-                
-                size_t dist = levenshtein_distace(*aw_it, delimited_string);
-                
-                if(dist <= 5){
-                    if(dist < lowest_distance){
-                        lowest_distance = dist;
-                        matched_string = *aw_it;
-                    }
-                }
-                
-                temp_distances.push_back(dist);
-//                cout << "Levenshtein dist - " << dist << ", Original - " << *aw_it << ", From_tesseract - "<< res<< endl;
-        
-            }
-        
-        
-            if(!matched_string.empty()){
-                cout << "Distance - " << lowest_distance << ", Matched word - " << matched_string << endl;
-            }
-            
-            
-            /*
-             map<string,int>::iterator it = tearsheet_words.find(res);
-             
-             if (tearsheet_words.count(res)) {
-             cout << "word found - " <<res << endl;
-             }
-             
-             
-             //            assert(it!=tearsheet_words.end());
-             //            cout << "Key - " << it->first << " value - " << it->second << endl;
-             if (it!=tearsheet_words.end()) {
-             
-             cout << "map contains key" << endl;
-             cout << "Key - " << it->first << " value - " << it->second << endl;
-             }
-             
-             */
-            
-            cout << "Dictionary" << " - " << returned_string << ", Input - " << result << endl;
-            
-            
-            api->End();
-            delete [] result;
-       
-    }
-    
-    bool Splice::choose_char(char c){
-        
-        if (c != ' ' || c!= '/' || c != '~' || c != '.' || c != ',' || c != ';' || c != '"') {
-            return false;
-        }
-        else {
-            return true;
+        else{
+            cerr << "File not found" << endl;
         }
         
-    }
-    
-    void Splice::parse_word(string &word){
-        
-        regex r("\\b(Nav)([^ ]*)");
-        smatch sm;
-        
-        regex_search(word,sm,r);
-        
-        for(auto x:sm){
-            cout << x << " regex found" << endl;
+        if(all_words.size() == 0 ){
+            cerr << "No words found in file" << endl;
         }
-    }
-    
-    void Splice::init_dictionary(){
+        
+//        string dictionary_words[] = {"Navigation","Panel","BUTTON","PRIMARY BUTTON","DISABLED BUTTON","LINK 01","LINK 02","LINK 03","LINK 04","LINK 05","LINK 06","search","Text Input","Select","World"};
         
         
-        string dictionary_words[] = {"Navigation","Panel","BUTTON","PRIMARY BUTTON","DISABLED BUTTON","LINK 01","LINK 02","LINK 03","LINK 04","LINK 05","LINK 06","search","Text Input","Select","World"};
+//        int dictionary_keys[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
         
-        
-        int dictionary_keys[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
-        
-//        tearsheet_words[0] = "Navigation";
-        
-        
+        //Enable for debugging
         /*
-        tearsheet_words.insert(make_pair("Navigation", 0));
-        tearsheet_words.insert(make_pair("Panel", 1));
+        map<string,int>::iterator it;
+        it = tearsheet_words.find("Select");
         
-        tearsheet_words.insert(make_pair("BUTTON", 2));
-        tearsheet_words.insert(make_pair("PRIMARY BUTTON", 3));
-        tearsheet_words.insert(make_pair("DISABLED BUTTON", 4));
-        
-        tearsheet_words.insert(make_pair("LINK 01", 5));
-        tearsheet_words.insert(make_pair("LINK 02", 6));
-        tearsheet_words.insert(make_pair("LINK 03", 7));
-        tearsheet_words.insert(make_pair("LINK 04", 8));
-        tearsheet_words.insert(make_pair("LINK 05", 9));
-        tearsheet_words.insert(make_pair("LINK 06", 10));
-        
-        tearsheet_words.insert(make_pair("search", 11));
-        tearsheet_words.insert(make_pair("Text Input", 12));
-        tearsheet_words.insert(make_pair("Select", 13));
-        tearsheet_words.insert(make_pair("World", 14));
-
-        
-        dictionary_comparision("Select");
-        */
+        if (it!=tearsheet_words.end()) {
+            int m = it->second++;
+            cout << "m - " << m << endl;
+        }
          
-//        map<string,int>::iterator it;
-//        it = tearsheet_words.find("Select");
-//        
-//        if (it!=tearsheet_words.end()) {
-//            int m = it->second++;
-//            cout << "m - " << m << endl;
-//        }
-        
-        
         vector<string> words;
         vector<int> keys;
         
@@ -1061,102 +871,14 @@ namespace ppc{
         for (int k=0;k<sizeof(dictionary_keys)/sizeof(*dictionary_keys);k++) {
 //            keys.push_back(t_keys[k]);
         }
-        
-        
-        all_words.insert(all_words.end(), words.begin(),words.end());
-        
-        for (vector<string>::iterator i= all_words.begin(); i!=all_words.end();i++) {
-//            cout << "all words - " << *i << endl;
-         }
-        
-    }
-    
-    string Splice::dictionary_comparision(string word){
-        
-        
-        string rt;
-//        for (vector<string>::iterator i= all_words.begin(); i!=all_words.end();i++) {
-        
-            //            if (strcmp(result, i->c_str()) ==0) {
-            
-            //            cout << "compare - " << strcmp(result, "search") << " ,result - "<< result<< endl;
-            
-            
-            string delimiter = "\n";
-            
-            string delimited_string = word.substr(0,word.find(delimiter));
-            
-            
-            if(find(all_words.begin(), all_words.end(), delimited_string) != all_words.end()){
-                
-                return delimited_string;
-                
-            }
-            
-            else{
-                
-                return "Not found";
-            }
-            
-            
-            //              if (strcmp(result, "Text Input") ==0) {
-            //                cout << "yes - " <<endl;
-            //            }
-            
-//        }
-        
-//        return "Not found";
-        
-        // vector method
-
-        /*
-        
-        for (vector<string>::iterator i= all_words.begin(); i!=all_words.end();i++) {
-                        cout << "all words - " << *i << endl;
-        }
-        
-        
-        if(find(all_words.begin(), all_words.end(), word) != all_words.end()){
-            
-            cout << word << " found" <<endl;
-            
-        }
-         
         */
-        /*
-        else{
-            cout << word << " not found" <<endl ;
-        }
+    
         
-       */
-        
-        
-        // Map method
-        
-        
-        /*
-        cout << "word passed - " << word << endl;
-        
-        map<string,int>::iterator it;
-        it = tearsheet_words.find(word);
-        
-        if (tearsheet_words.count(word)) {
-            cout << "word found - " <<word << endl;
-        }
-        
-        
-        if (it!=tearsheet_words.end()) {
-            int m = it->second;
-//            cout << word << " in dictionary" << endl;
-            cout << "m - " << m << endl;
-        }
-        
-//        else{
-//            cout << word << " not in dictionary" << endl;
-//        }
-         */
     }
     
+    /*!
+     levenshtein_distace - Calculates the distance between 2 strings. For example the distance between 'Select' and 'Select 3' is 2(space and number 3).
+     */
     size_t Splice::levenshtein_distace(const string &original, const string &from_tesseract){
         
         const size_t m(original.size());
@@ -1170,13 +892,13 @@ namespace ppc{
         for( size_t k=0; k<=n; k++ ) costs[k] = k;
         
         size_t i = 0;
-        for ( std::string::const_iterator it1 = original.begin(); it1 != original.end(); ++it1, ++i )
+        for ( string::const_iterator it1 = original.begin(); it1 != original.end(); ++it1, ++i )
         {
             costs[0] = i+1;
             size_t corner = i;
             
             size_t j = 0;
-            for ( std::string::const_iterator it2 = from_tesseract.begin(); it2 != from_tesseract.end(); ++it2, ++j )
+            for ( string::const_iterator it2 = from_tesseract.begin(); it2 != from_tesseract.end(); ++it2, ++j )
             {
                 size_t upper = costs[j+1];
                 if( *it1 == *it2 )
@@ -1200,30 +922,190 @@ namespace ppc{
         
     }
     
-    void Splice::opencv2imagemagick_test(string p){
+    
+    /*!
+     Compares the words in the dictionary
+     */
+    string Splice::dictionary_comparision(string word){
         
         
-        Mat om = imread(p);
-        Size s = om.size();
+        string rt;
+        //        for (vector<string>::iterator i= all_words.begin(); i!=all_words.end();i++) {
+        
+        //            if (strcmp(result, i->c_str()) ==0) {
+        
+        //            cout << "compare - " << strcmp(result, "search") << " ,result - "<< result<< endl;
         
         
-        Magick::InitializeMagick("");
+        string delimiter = "\n";
+        
+        string delimited_string = word.substr(0,word.find(delimiter));
+        
+        
+        if(find(all_words.begin(), all_words.end(), delimited_string) != all_words.end()){
             
-            Magick::Image image(s.width,s.height,"BGR",CharPixel,(char *)om.data);
+            return delimited_string;
             
-            try{
-                
-                image.write(cwd + "/opencv2imagemagick.jpg") ;
-                
-            }
-            catch(Magick::Exception &err){
-                cout << "Exception" << err.what() << endl;
-            }
+        }
+        
+        else{
+            
+            return "Not found";
+        }
+        
+        
+        //              if (strcmp(result, "Text Input") ==0) {
+        //                cout << "yes - " <<endl;
+        //            }
+        
+        //        }
+        
+        //        return "Not found";
+        
+        // vector method
+        
+        /*
          
+         for (vector<string>::iterator i= all_words.begin(); i!=all_words.end();i++) {
+         cout << "all words - " << *i << endl;
+         }
+         
+         
+         if(find(all_words.begin(), all_words.end(), word) != all_words.end()){
+         
+         cout << word << " found" <<endl;
+         
+         }
+         
+         */
+        /*
+         else{
+         cout << word << " not found" <<endl ;
+         }
+         
+         */
+        
+        
+        // Map method
+        
+        
+        /*
+         cout << "word passed - " << word << endl;
+         
+         map<string,int>::iterator it;
+         it = tearsheet_words.find(word);
+         
+         if (tearsheet_words.count(word)) {
+         cout << "word found - " <<word << endl;
+         }
+         
+         
+         if (it!=tearsheet_words.end()) {
+         int m = it->second;
+         //            cout << word << " in dictionary" << endl;
+         cout << "m - " << m << endl;
+         }
+         
+         //        else{
+         //            cout << word << " not in dictionary" << endl;
+         //        }
+         */
+    }
+    
+    
+    /*!
+     Clears and initializes JSON string
+     */
+    void Splice::json_init(){
+        json_string.clear();
+        json_string = string("{");
+    }
+    
+    /*!
+     Forms JSON. Appends strings to json_string
+     word - word to be added to JSON
+     pos - position of the word on the image
+     */
+    void Splice::form_json(string word, pair<int, int> pos){
+        
+        //        cout << "pos x - " << pos.first << "," << pos.second <<endl;
+        
+        if(no_of_components == 0){
+            json_string += string("\"Component\":") + "\"" + word + "\"";
+        }
+        else if(no_of_components > 0){
+            json_string += string(",\"Component\":") + "\"" + word + "\"";
+        }
+        json_string += string(",\"x\":") + "\"" + to_string(pos.first) + "\"";
+        json_string += string(",\"y\":") + "\"" + to_string(pos.second) + "\"";
+    }
+    
+    /*!
+     Writes JSON to file
+     */
+    void Splice::json_write_to_file(){
+        
+        json_string += string("}");
+        
+        char json[json_string.size() + 1];
+        strcpy(json, json_string.c_str());
+        cout << "JSON - " <<json << endl;
+        document.Parse(json);
+        if (document.Parse(json).HasParseError()) {
+            cerr << "JSON parsing error" << endl;
+        }
+        
+        
+        FILE * output_file = fopen(string(cwd + "/output.json").c_str(), "w");
+        char writeBuffer[65536];
+        
+    rapidjson:FileWriteStream os(output_file,writeBuffer,sizeof(writeBuffer));
+        Writer<FileWriteStream> writer(os);
+        document.Accept(writer);
+        fclose(output_file);
     }
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /* HELPER FUNCTIONS
+      _   _      _                     _____                 _   _
+     | | | | ___| |_ __   ___ _ __    |  ___|   _ _ __   ___| |_(_) ___  _ __  ___
+     | |_| |/ _ \ | '_ \ / _ \ '__|   | |_ | | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+     |  _  |  __/ | |_) |  __/ |      |  _|| |_| | | | | (__| |_| | (_) | | | \__ \
+     |_| |_|\___|_| .__/ \___|_|      |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+                  |_|
+     1. opencv2imagemagick(Mat, string) - converts image from opencv to imagegick, enhances the image and converts it back to opencv
+     2. opencv2imagemagick(Mat) - converts image from opencv to imagegick, enhances the image and converts it back to opencv
+     3. opencv2tesseract() - Converts image from opnecv to tesseract and performs OCR on it
+     4. opencv2imagemagick_test - Test function to convert opencv image to imagemagick image format. Use opnecv2imagemagick() instead
+     5. image_magick_cleanup() - Helper function to test imageMagick C++ api enhance features. Use opencv2imagemagick() instead.
+     6. tesseract_test() - Helper function to test tesseract. Use opencv2tesseract instead for converting image from opencv to tesseract
+     7. tesseract_with_dictionary() - tesseract test helper funciton to read image from disk and perform dictionary matching.
+        Use opencv2tesseract() instead.
+     8. rect_intersect() - Checks if 2 rectangles intersect
+     9. overlap() - Checks to see if a value is greater than minimum and less than maximum. Used by rect_intersect to check if rectangles intersect
+     10. angle() - Finds the angle between the points
+     */
+    
+    
+    /*!
+     im - image to enhance
+     save_dir - Directory to save the image in (Use opencv2imagemagick(Mat& im) if theres no need to save to dir)
+     1. Converts opencv image to ImageMagick image format
+     2. Enhances the ImageMagick image by cconverting to grayscale,normalizing and upscaling by 300%.
+     3. Converts it back again to opencv
+     */
     Mat Splice::opencv2imagemagick(Mat& im, string save_dir){
         
         
@@ -1238,37 +1120,44 @@ namespace ppc{
         Magick::Image image(om.cols,om.rows,"BGR",CharPixel,(char *)om.data);
         
         try{
-        
-        image.type(GrayscaleType);
-        image.normalize();
-//        image.sharpen();
-        image.resize("300%");
             
-        width = image.columns();
-        height = image.rows();
-
-        block = (char*)malloc(width*height*3);
-        image.write(0,0, width, height, "BGR", CharPixel, block);
+            image.type(GrayscaleType);
+            image.normalize();
+            //        image.sharpen();
+            image.resize("300%");
+            
+            width = image.columns();
+            height = image.rows();
+            
+            block = (char*)malloc(width*height*3);
+            image.write(0,0, width, height, "BGR", CharPixel, block);
         }
         
         catch(Magick::Exception &err){
             cout << "Exception - " <<err.what()<<endl;
         }
-            
-            
-
-//        Mat cv_im(int(height),int(width),CV_8U,3);
+        
+        
+        
+        //        Mat cv_im(int(height),int(width),CV_8U,3);
         Mat cv_im(int(image.rows()),int(image.columns()),CV_8UC3);
         memcpy(cv_im.data, block, width*height*3 );
-
-//        if(write_output){
-        imwrite(save_dir, cv_im);
-//        }
+        
+        if(write_output){
+            imwrite(save_dir, cv_im);
+        }
         return cv_im;
         
     }
     
-    
+    /*!
+     im - image to enhance
+     Use opencv2imagemagick(Mat& im,string save_dir) if theres a need to save to dir
+     
+     1. Converts opencv image to ImageMagick image format
+     2. Enhances the ImageMagick image by cconverting to grayscale,normalizing and upscaling by 300%.
+     3. Converts it back again to opencv
+     */
     Mat Splice::opencv2imagemagick(Mat& im){
         
         
@@ -1297,14 +1186,352 @@ namespace ppc{
         
         
         
-//        Mat cv_im(int(height),int(width),CV_8U,3);
+        //        Mat cv_im(int(height),int(width),CV_8U,3);
         Mat cv_im(int(image.rows()),int(image.columns()),CV_8UC3);
         memcpy(cv_im.data, block, width*height*3 );
-
+        
         return cv_im;
         
     }
     
+    
+    /*!
+     im - Image to perform OCR on
+     Helper function to convert opencv image format to tesseract image format and perform OCR on that image.
+     */
+    
+    string Splice::opencv2tesseract(cv::Mat &tm){
+        
+        
+        cout << "-------------------- Tesseract on the fly--------------------" << endl;
+        
+        string res;
+        
+        TessBaseAPI *api = new TessBaseAPI();
+        
+        
+        if (api->Init(NULL, "eng")) {
+            cerr << "Tesseract API not initialised" << endl;
+            exit(1);
+        }
+        
+        //            Pix *image = pixRead(read_path.c_str());
+        api->SetImage((uchar*)tm.data,int(tm.size().width),int(tm.size().height),tm.channels(),int(tm.step1()));
+        
+        const char *result = api->GetUTF8Text();
+        res = string(result);
+        
+        string returned_string = dictionary_comparision(res);
+        
+        string delimiter = "\n";
+        
+        string delimited_string = res.substr(0,res.find(delimiter));
+        vector<size_t> temp_distances;
+        size_t lowest_distance = 100;
+        string matched_string;
+        
+        for (vector<string>::iterator aw_it=all_words.begin();aw_it != all_words.end();++aw_it){
+            
+            size_t dist = levenshtein_distace(*aw_it, delimited_string);
+            
+            if(dist <= 5){
+                if(dist < lowest_distance){
+                    lowest_distance = dist;
+                    matched_string = *aw_it;
+                }
+            }
+            
+            temp_distances.push_back(dist);
+            //                cout << "Levenshtein dist - " << dist << ", Original - " << *aw_it << ", From_tesseract - "<< res<< endl;
+            
+        }
+        
+        
+        if(!matched_string.empty()){
+            cout << "Distance - " << lowest_distance << ", Matched word - " << matched_string << endl;
+        }
+        else{
+            cerr << "No matched string" << endl;
+        }
+        
+        
+        /*
+         map<string,int>::iterator it = tearsheet_words.find(res);
+         
+         if (tearsheet_words.count(res)) {
+         cout << "word found - " <<res << endl;
+         }
+         
+         
+         //            assert(it!=tearsheet_words.end());
+         //            cout << "Key - " << it->first << " value - " << it->second << endl;
+         if (it!=tearsheet_words.end()) {
+         
+         cout << "map contains key" << endl;
+         cout << "Key - " << it->first << " value - " << it->second << endl;
+         }
+         
+         */
+        
+        cout << "Dictionary" << " - " << returned_string << ", Input - " << result << endl;
+        
+        
+        api->End();
+        delete [] result;
+        
+        return matched_string;
+        
+    }
+    
+    string Splice::last4chars(string& dir_path){
+        return dir_path.substr(dir_path.size() - 4);
+    }
+    
+    string Splice::join_path(const string& path1,const string& path2){
+        string full_path;
+        char last_slash = path1.back();
+        char first_slash = path2.at(0);
+        
+        if (last_slash == '/' || first_slash=='/') {
+            full_path = path1 + path2;
+        }
+        else{
+            full_path = path1 + "/" + path2;
+        }
+        
+        return full_path;
+    }
+    
+    /*!
+     opencv2imagemagick_test - Test function to convert opencv image to imagemagick image format. Use opencv2imagemagick() instead. This function is only for testing.
+     */
+    void Splice::opencv2imagemagick_test(string p){
+        
+        
+        Mat om = imread(p);
+        Size s = om.size();
+        
+        
+        Magick::InitializeMagick("");
+        
+        Magick::Image image(s.width,s.height,"BGR",CharPixel,(char *)om.data);
+        
+        try{
+            
+            image.write(cwd + "/opencv2imagemagick.jpg") ;
+            
+        }
+        catch(Magick::Exception &err){
+            cout << "Exception" << err.what() << endl;
+        }
+        
+    }
+    
+    
+    
+    /*!
+     Helper function to test imageMagick C++ api enhance features. Use opencv2imagemagick instead.
+     */
+    void Splice::image_magick_cleanup(string image_path){
+        
+        Magick::InitializeMagick("");
+        
+        for (int i=0; i<no_of_components; i++) {
+            //                for (int i=0; i<30; i++) {
+            
+            Magick::Image image;
+            string images_path = image_path + to_string(i) + ".jpg";
+            
+            try{
+                
+                image.read(images_path);
+                image.type(GrayscaleType);
+                image.normalize();
+                //                image.sharpen();
+                image.resize("300%");
+                image.write(cwd + to_string(i) + "_gray.jpg") ;
+                
+            }
+            catch(Magick::Exception &err){
+                cout << "Exception" << err.what() << endl;
+            }
+            
+        }
+    }
+    
+    /*!
+     Helper function to test tesseract. Use opencv2tesseract instead for converting image from opencv to tesseract
+     */
+    
+    void Splice::tesseract_test(string image_path){
+        
+        cout << "-------------------- Tesseract on original image --------------------" << endl;
+        
+        //    for (int i=0; i<30; i++) {
+        for (int i=0; i<no_of_components; i++) {
+            TessBaseAPI api;
+            char *result;
+            
+            if (api.Init(NULL, "eng")) {
+                fprintf(stderr, "Tesseract API not initialised");
+                exit(1);
+            }
+            
+            string read_path = image_path + to_string(i) + "_gray.jpg";
+            Pix *image = pixRead(read_path.c_str());
+            api.SetImage(image);
+            
+            result = api.GetUTF8Text();
+            cout << i << " - " << result << endl;
+            
+            api.End();
+            delete [] result;
+            pixDestroy(&image);
+        }
+    }
+    
+    /*!
+     Tesseract test helper funciton to read image from disk and perform dictionary matching.
+     Use opencv2tesseract instead.
+     */
+    
+    void Splice::tesseract_with_dictionary(string image_path){
+        
+        
+        cout << "-------------------- Tesseract after running script on original image--------------------" << endl;
+        
+        string res;
+        
+        //        for (int i=0; i<30; i++) {
+        for (int i=0; i<no_of_components; i++) {
+            TessBaseAPI *api = new TessBaseAPI();
+            
+            
+            if (api->Init(NULL, "eng")) {
+                fprintf(stderr, "Tesseract API not initialised");
+                exit(1);
+            }
+            
+            string read_path = image_path + to_string(i) + "_gray.jpg";
+            Pix *image = pixRead(read_path.c_str());
+            api->SetImage(image);
+            
+            const char *result = api->GetUTF8Text();
+            size_t size = strlen(result) + 1;
+            wchar_t w_result[size];
+            mbstowcs(w_result, result, size);
+            //            printf("Wide char - %ls",w_result);
+            //            res.clear();
+            res = string(result);
+            //            res.erase(remove_if(res.begin(), res.end(), this->choose_char), res.end());
+            string st("Text Input");
+            //            printf("tess result - %s",result);
+            //            cout << "tesseract result - " << res << endl;
+            //            parse_word(res);
+            string returned_string = dictionary_comparision(res);
+            
+            
+            
+            /*
+             map<string,int>::iterator it = tearsheet_words.find(res);
+             
+             if (tearsheet_words.count(res)) {
+             cout << "word found - " <<res << endl;
+             }
+             
+             
+             //            assert(it!=tearsheet_words.end());
+             //            cout << "Key - " << it->first << " value - " << it->second << endl;
+             if (it!=tearsheet_words.end()) {
+             
+             cout << "map contains key" << endl;
+             cout << "Key - " << it->first << " value - " << it->second << endl;
+             }
+             
+             */
+            
+            cout << "Dictionary" << " - " << returned_string << ", Input - "<< i << " - " << result << endl;
+            
+            
+            api->End();
+            delete [] result;
+            pixDestroy(&image);
+        }
+    }
+    
+    
+    /*!
+     Checks if 2 rectangles intersect
+     */
+    bool Splice::rect_intersect(Rect r1, Rect r2){
+        
+        bool x_overlap = overlap(r1.x, r2.x, r2.x+ r2.width)  || overlap(r2.x, r1.x, r1.x+ r1.width);
+        bool y_overlap = overlap(r1.y, r2.y, r2.y+ r2.height) || overlap(r2.y, r1.y, r1.y+ r1.height);
+        
+        return x_overlap && y_overlap;
+    }
+    
+    /*!
+     Checks to see if a value is greater than minimum and less than maximum. Used by rect_intersect to check if rectangles intersect
+     */
+    bool Splice::overlap(int value, int min, int max){
+        
+        return (value >= min) && (value <= max);
+    }
+    
+    /*!
+     Finds the angle between the points
+     */
+    double Splice::angle( Point pt1, Point pt2, Point pt0 )
+    {
+        double dx1 = pt1.x - pt0.x;
+        double dy1 = pt1.y - pt0.y;
+        double dx2 = pt2.x - pt0.x;
+        double dy2 = pt2.y - pt0.y;
+        return (dx1*dx2 + dy1*dy2)/sqrt((dx1*dx1 + dy1*dy1)*(dx2*dx2 + dy2*dy2) + 1e-10);
+    }
+    
+    
+    bool Splice::choose_char(char c){
+        
+        if (c != ' ' || c!= '/' || c != '~' || c != '.' || c != ',' || c != ';' || c != '"') {
+            return false;
+        }
+        else {
+            return true;
+        }
+        
+    }
+    
+    /*!
+     Parse word using regex
+     */
+    void Splice::parse_word(string &word){
+        
+        regex r("\\b(Nav)([^ ]*)");
+        smatch sm;
+        
+        regex_search(word,sm,r);
+        
+        for(auto x:sm){
+            cout << x << " regex found" << endl;
+        }
+    }
+    
+    
+    void Splice::counter_inc(){
+        no_of_components++;
+    }
+    
+    
+    
+    
+    
+    
+    /*!
+     Keypoint matching using homography
+     Refer to homography example in opencv source code in opencv_source_code/samples/cpp/tutorial_code/features2D/SURF_Homography.cpp
+     */
     void Splice::keypoint_matching(){
         
         
@@ -1320,14 +1547,14 @@ namespace ppc{
 //        resize(img_scene,img_scene,Size(0,0),0.8,0.8);
         
         if( !img_object.data || !img_scene.data )
-        { std::cout<< " --(!) Error reading images " << std::endl; }
+        { cout<< " --(!) Error reading images " << endl; }
         
         //-- Step 1: Detect the keypoints using SURF Detector
         int minHessian = 400;
         
         SurfFeatureDetector detector( minHessian );
         
-        std::vector<KeyPoint> keypoints_object, keypoints_scene;
+        vector<KeyPoint> keypoints_object, keypoints_scene;
         
         detector.detect( img_object, keypoints_object );
         detector.detect( img_scene, keypoints_scene );
@@ -1342,7 +1569,7 @@ namespace ppc{
         
         //-- Step 3: Matching descriptor vectors using FLANN matcher
         FlannBasedMatcher matcher;
-        std::vector< DMatch > matches;
+        vector< DMatch > matches;
         matcher.match( descriptors_object, descriptors_scene, matches );
         
         double max_dist = 0; double min_dist = 100;
@@ -1358,7 +1585,7 @@ namespace ppc{
         printf("-- Min dist : %f \n", min_dist );
         
         //-- Draw only "good" matches (i.e. whose distance is less than 3*min_dist )
-        std::vector< DMatch > good_matches;
+        vector< DMatch > good_matches;
         
         for( int i = 0; i < descriptors_object.rows; i++ )
         { if( matches[i].distance < 3*min_dist )
@@ -1372,8 +1599,8 @@ namespace ppc{
         
         
         //-- Localize the object from img_1 in img_2
-        std::vector<Point2f> obj;
-        std::vector<Point2f> scene;
+        vector<Point2f> obj;
+        vector<Point2f> scene;
         
         for( size_t i = 0; i < good_matches.size(); i++ )
         {
@@ -1385,10 +1612,10 @@ namespace ppc{
         Mat H = findHomography( obj, scene, CV_RANSAC );
         
         //-- Get the corners from the image_1 ( the object to be "detected" )
-        std::vector<Point2f> obj_corners(4);
+        vector<Point2f> obj_corners(4);
         obj_corners[0] = Point(0,0); obj_corners[1] = Point( img_object.cols, 0 );
         obj_corners[2] = Point( img_object.cols, img_object.rows ); obj_corners[3] = Point( 0, img_object.rows );
-        std::vector<Point2f> scene_corners(4);
+        vector<Point2f> scene_corners(4);
         
         perspectiveTransform( obj_corners, scene_corners, H);
         
@@ -1400,10 +1627,13 @@ namespace ppc{
         line( img_matches, scene_corners[2] + offset, scene_corners[3] + offset, Scalar( 0, 255, 0), 4 );
         line( img_matches, scene_corners[3] + offset, scene_corners[0] + offset, Scalar( 0, 255, 0), 4 );
         
-            
-            imwrite("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/keypoints/" + to_string(hm) + ".jpg", img_matches);
+            if(write_output){
+            imwrite(cwd + "/keypoints/" + to_string(hm) + ".jpg", img_matches);
+            }
         //-- Show detected matches
-        imshow( "Good Matches & Object detection", img_matches );
+            if(show_windows){
+//        imshow( "Good Matches & Object detection", img_matches );
+            }
       }
     }
 
