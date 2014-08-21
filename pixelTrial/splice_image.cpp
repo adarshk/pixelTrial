@@ -14,11 +14,21 @@
 #define IMAGEMAGICKBASH "\
 #/bin/bash \n\
 echo \"Bash says hello\" \n\
-/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/convert -type grayscale -normalize -negate -lat 15x15+5% \
--negate /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved.jpg \
-/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg \n\
+path_to_imagemagick_bash_convert_lib_here -type grayscale -normalize -negate -lat 15x15+5% \
+-negate path_to_source_image_here \
+path_to_result_after_imagemagick_here \n\
 "
 
+//Example bash script
+/*
+ #define IMAGEMAGICKBASH "\
+ #/bin/bash \n\
+ echo \"Bash says hello\" \n\
+ /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/convert -type grayscale -normalize -negate -lat 15x15+5% \
+ -negate /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved.jpg \
+ /Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script_bash.jpg \n\
+ "
+ */
 
 
     /*
@@ -35,7 +45,22 @@ echo \"Bash says hello\" \n\
 
 namespace ppc{
     
-    Splice::Splice():thresh(50),N(1),rng(12345),write_output(true),cwd(""),show_windows(false),no_of_components(0){
+    enum settings {
+        wr_output,
+        sh_windows,
+        thresholds,
+        background_threshold,
+        watershed_rectangle_filter,
+        watershed_lower_threshold,
+        use_bash,
+        adaptive_threshold_blockSize,
+        adaptive_threshold_lower_limit,
+        adaptive_threshold_upper_limit,
+        word_distance
+        
+    };
+    
+    Splice::Splice(string working_dir,string img_name,string word_list_file_name,string settings_file):working_dir(working_dir),img_name(img_name),word_list_file_name(word_list_file_name),settings_file(settings_file),thresh(50),Num_of_thresholds(1),rng(12345),write_output(false),cwd(""),show_windows(false),no_of_components(0),use_bash(false),background_threshold(0),watershed_lower_threshold(100),watershed_rectangle_filter(2), adaptive_threshold_lower_limit(3),adaptive_threshold_upper_limit(15),adaptive_threshold_blockSize(0),word_distance(5){
         
     }
     
@@ -65,17 +90,24 @@ namespace ppc{
     
     
     /*!
+     working_dir - The assests directory for laoding source image and word list. 
+                    Can also give the direct path to the image and it will automatically parse the image name
+     img_name -   Name of the image. Can be ""(blank) if the working_dir has the direct path to the image
+     word_list_file_name - path to the word list
+     
      To be called after object initialization
      1. Initializes the dictionary from file
      2. Calls all core functions
      */
-    void Splice::init(string working_dir,string img_name,string word_list_file_name){
+    void Splice::init(){
+        
+        load_settings(settings_file);
         
         
         string split_name;
         if(working_dir == ""){
         
-        CheckWithMessage(string("Set image name in init"), img_name != "");
+        CheckWithMessage(string("Error - Set image name during object initilialization"), img_name != "");
         
         dir = getcwd(NULL, 0);
         cwd = string(dir);
@@ -91,7 +123,7 @@ namespace ppc{
             cwd = working_dir.substr(0,position);
         }
         else{
-        CheckWithMessage(string("Set image name in init"), img_name != "");
+        CheckWithMessage(string("Error - Set image name during object initilialization"), img_name != "");
         cwd = working_dir;
         split_name = img_name;
         }
@@ -99,43 +131,55 @@ namespace ppc{
 //        cout << "Working dir - " <<cwd << ", image name - " << split_name << endl;
         
         
-        CheckWithMessage(string("Set word list name in init"), word_list_file_name != "");
+        CheckWithMessage(string("Set path to word list name during object initialization"), word_list_file_name != "");
         init_dictionary(word_list_file_name);
         //        this->opencv2imagemagick_test(cwd + "/red2.jpg");
         
         
         bool val = is_background_present(split_name);
+        Mat saved_inc;
         if(val){
             
-            watershed();
+            saved_inc = watershed();
             
             //Bash script for cleaning up the text
+            if(use_bash){
             image_cleaner(); //Input - saved , output - saved_run_script.jpg
+            }
 
         }
         else{
             
+            saved_inc = src_image;
             save_image(cwd,"saved.jpg",src_image);
 
             //Bash script for cleaning up the text
+            if(use_bash){
             image_cleaner(); //Input - saved , output - saved_run_script.jpg
+            }
         }
         
         
-
-        
+        CheckWithMessage(string("Image data not available"), saved_inc.data);
+        Mat saved_run_script = this->opencv_cleanup(saved_inc);
+//        CheckWithMessage(string("Image data not available"), saved_run_script.data);
         
         // Three methods for replicating results of the bash script using opencv, iamgemagick C/c++ API
         // Currently none of them are being used as they dont give the same results
         
         /*
-        this->thresholding_image(); //output - saved_run_script_opencv.jpg
         this->image_magick_cpp_api(); //ImageMagick C++ API, bash version gives better resutls. Output - saved_run_script_api.jpg
         this->magiccore(); //Imagemagick C API, Does not work & does not write to output currently
         */
         
         
-        Mat saved_run_script = load_image(cwd + string("/saved_run_script.jpg"),"SquaresImage");
+        
+        
+        
+        
+        /*
+        
+//        Mat saved_run_script = load_image(cwd + string("/saved_run_script.jpg"),"SquaresImage");
         
         json_init();
         this->find_squares(saved_run_script,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours.jpg");
@@ -145,11 +189,30 @@ namespace ppc{
         //        this->tesseract("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/");
         
         json_write_to_file();
+         
+         */
+        
+        
+        
+        
+        CheckWithMessage(string("Image data not available"), adaptive_thresholded.data);
+        
+        Mat at;
+        adaptive_thresholded.copyTo(at);
+        
+        
+        /*
+        json_init();
+        this->find_squares(adaptive_thresholded,at,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours.jpg");
+        
+        json_write_to_file();
+         */
         
         
         
         json_init();
-        this->find_squares(saved,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours_original_image.jpg");
+        this->find_squares(saved_inc,adaptive_thresholded,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours_original_image.jpg");
+//        this->find_squares(saved_inc,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_script.jpg","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/compsFromImageMagick_originalImage/","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/saved_run_contours_original_image.jpg");
         
         
         //        this->image_magick2("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/basic_thresholding/comps/");
@@ -174,13 +237,131 @@ namespace ppc{
     
     
     
+    void Splice::load_settings(string file_path){
+        
+        CheckWithMessage(string("Path to settings file not set"), file_path != "");
+        
+        ifstream file(file_path);
+        
+        string word,value,parameter;
+        
+        if(file.good()){
+            
+            while(getline(file,word)){
+                
+                size_t position = word.find_last_of("=");
+                
+                if(position != word.length()){
+                    value = word.substr(position + 1);
+                }
+                
+                parameter = word.substr(0,position);
+                
+                cout << "parameter - " << parameter << ", value - " << value <<endl;
+                return_settings(parameter, value);
+                
+                
+//                cout << "word - " << word<<endl;
+//                all_words.push_back(word);
+            }
+        }
+        else{
+            cerr << "File not found" << endl;
+        }
+        
+    }
     
+    void Splice::return_settings(const string& parm,const string& value){
+        if (parm == "write_output") {
+            bool v = return_true_or_false(value);
+            write_output = v;
+//            cout << "write_output - " << write_output << endl;
+        }
+        else if(parm == "show_windows"){
+            bool v = return_true_or_false(value);
+            show_windows = v;
+//            cout << "show_windows - " << show_windows << endl;
+        }
+        else if(parm == "thresholds"){
+            int v = convert_string_to_number<int>(value);
+            CheckWithMessage(string(parm + "value incorrect"), v!=-1);
+            Num_of_thresholds = v;
+//            cout << "Num_of_thresholds - " << Num_of_thresholds << endl;
+        }
+        else if(parm == "background_threshold"){
+            int v = convert_string_to_number<int>(value);
+            CheckWithMessage(string(parm + "value incorrect"), v!=-1);
+            background_threshold = v;
+//            cout << "background_thresholds - " << background_threshold << endl;
+        }
+        else if(parm == "watershed_rectangle_filter"){
+            int v = convert_string_to_number<int>(value);
+            CheckWithMessage(string(parm + "value incorrect"), v!=-1);
+            watershed_rectangle_filter = v;
+//            cout << "watershed_rectangle_filter - " << watershed_rectangle_filter << endl;
+        }
+        else if(parm == "watershed_lower_threshold"){
+            int v = convert_string_to_number<int>(value);
+            CheckWithMessage(string(parm + "value incorrect"), v!=-1);
+            watershed_lower_threshold = v;
+//            cout << "watershed_lower_threshold - " << watershed_lower_threshold << endl;
+        }
+        else if(parm == "use_bash"){
+            bool v = return_true_or_false(value);
+            use_bash = v;
+//            cout << "use_bash - " << use_bash << endl;
+        }
+        else if(parm == "adaptive_threshold_blockSize"){
+            int v = convert_string_to_number<int>(value);
+            CheckWithMessage(string(parm + "value incorrect"), v!=-1);
+            adaptive_threshold_blockSize = v;
+//            cout << "adaptive_threshold_blockSize - " << adaptive_threshold_blockSize << endl;
+        }
+        else if(parm == "adaptive_threshold_lower_limit"){
+            int v = convert_string_to_number<int>(value);
+            CheckWithMessage(string(parm + "value incorrect"), v!=-1);
+            adaptive_threshold_lower_limit = v;
+//            cout << "adaptive_threshold_lower_limit - " << adaptive_threshold_lower_limit <<endl;
+        }
+        else if(parm == "adaptive_threshold_upper_limit"){
+            int v = convert_string_to_number<int>(value);
+            CheckWithMessage(string(parm + "value incorrect"), v!=-1);
+            adaptive_threshold_upper_limit = v;
+//            cout << "adaptive_threshold_upper_limit - " << adaptive_threshold_upper_limit << endl;
+        }
+        else if(parm == "word_distance"){
+            int v = convert_string_to_number<int>(value);
+            CheckWithMessage(string(parm + "value incorrect"), v!=-1);
+            word_distance = v;
+//            cout << "word_distance - " <<word_distance <<endl;
+        }
+        else {
+            cerr << "Setting not available" << endl;
+        }
+        
+        
+    }
     
-    
+    bool Splice::return_true_or_false(const string& value){
+        bool v;
+        if(value == "true"){
+            v = true;
+        }
+        else if(value == "false"){
+            v = false;
+        }
+        else{
+            cerr << "Value not true or false" << endl;
+        }
+        
+        return v;
+    }
     
     
     
     /*!
+     img_name - path to the image to check for background
+     
      Uses bounding box technique to check if the image has background.
      Returns true if image has background, else returns false.
      
@@ -216,7 +397,7 @@ namespace ppc{
         fastNlMeansDenoising(grayscale_image, denoised_image);
         
         //        adaptiveThreshold(noise, thresholded_image, 255, ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 7, 5);
-        threshold(denoised_image, thresholded_image, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+        threshold(denoised_image, thresholded_image, background_threshold, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
         
         findContours(thresholded_image, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE,Point(0,0));
         
@@ -302,7 +483,7 @@ namespace ppc{
      3. http://docs.opencv.org/trunk/doc/py_tutorials/py_imgproc/py_watershed/py_watershed.html
      4. OpenCV docs
      */
-    void Splice::watershed(){
+    Mat Splice::watershed(){
         
         
         
@@ -312,7 +493,7 @@ namespace ppc{
         source_image_resized.copyTo(image_for_saving);
         
         cvtColor(source_image_resized, binary, CV_BGR2GRAY);
-        threshold(binary, binary, 100, 255, CV_THRESH_BINARY);
+        threshold(binary, binary, watershed_lower_threshold, 255, CV_THRESH_BINARY);
         
         if (show_windows) {
             imshow("binary", binary);
@@ -433,14 +614,24 @@ namespace ppc{
          */
         
         //Copies the contour(rectangle) into another image
+        Mat cop;
         
-        Mat cop = source_image_resized(second_highest_area_rect);
+        if(watershed_rectangle_filter ==1){
+            cop = source_image_resized(main_rect);
+        }
+        else if(watershed_rectangle_filter == 2){
+        cop = source_image_resized(second_highest_area_rect);
+        }
+        else{
+        cerr << "Using 2 by default. Warning-Choose only between 1 or 2 for watershed_rectangle_filter" << endl;
+        cop = source_image_resized(second_highest_area_rect);
+        }
         cop.copyTo(saved);
         
         
         save_image(cwd,"saved.jpg",saved);
 
-        
+        return saved;
         
     }
     
@@ -461,21 +652,79 @@ namespace ppc{
         system(IMAGEMAGICKBASH);
     }
     
-    void Splice::thresholding_image(){
+    Mat Splice::opencv_cleanup(Mat& img_load){
         
-        Mat src_gray,adaptive_thresholded_image,noise,eroded,dilated;
+        bool temp_write_output = write_output;
+        write_output = false;
+        
+        Mat src_gray,noise,canny,eroded,dilated;
         Mat pyr_down,pyr_up;
 //        int erosion_type = MORPH_RECT;
 //        Mat element = getStructuringElement(erosion_type, Size(2*1 + 1,2*1 + 1),Point(1,1));
         
-        Mat src = imread(cwd + "/saved.jpg", 1 );
+        
+        Mat src;
+        img_load.copyTo(src);
+//        Mat src = imread(cwd + "/saved.jpg", 1 );
         
         cvtColor( src, src_gray, CV_RGB2GRAY );
         
         fastNlMeansDenoising(src_gray, noise);
         
-        adaptiveThreshold(noise, adaptive_thresholded_image, 255, ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 7, 5);
+        Mat atm;
+        
+        CheckWithMessage(string("adaptive_threshold_blockSize cannot be negative"), adaptive_threshold_blockSize>=0);
+        
+        
+        
+        if(adaptive_threshold_blockSize > 0){
+        adaptiveThreshold(noise, atm, 255, ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, adaptive_threshold_blockSize, 5);
+        cvtColor(atm, atm, CV_GRAY2RGB);
+        }
+        
+        else if(adaptive_threshold_blockSize ==0){
+        int highest_components=0;
+        int correct_threshold = 0;
+        
+        for(int th = adaptive_threshold_lower_limit; th<=adaptive_threshold_upper_limit;th+=2){
+        
+        Mat adaptive_thresholded_image;
+            
+        adaptiveThreshold(noise, adaptive_thresholded_image, 255, ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, th, 5);
 //        threshold(noise, adaptive_thresholded_image, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+        
+        cvtColor(adaptive_thresholded_image, adaptive_thresholded_image, CV_GRAY2RGB);
+            
+            Mat at_copy;
+            adaptive_thresholded_image.copyTo(at_copy);
+         
+            
+            find_squares(adaptive_thresholded_image, at_copy);
+            
+            cout << "get components - " << get_no_of_components() << endl;
+            
+            if (get_no_of_components() >= highest_components) {
+                highest_components = get_no_of_components();
+//                cout << "highest components - " << highest_components << endl;
+                correct_threshold = th;
+            }
+            
+        }
+        
+        
+        
+        if (correct_threshold == 0) {
+            correct_threshold = 9;
+        }
+        
+        
+        
+        adaptiveThreshold(noise, atm, 255, ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, correct_threshold, 5);
+        cvtColor(atm, atm, CV_GRAY2RGB);
+        }
+        
+        
+        
         
 //        pyrDown(adaptive_thresholded_image, pyr_down, Size(adaptive_thresholded_image.cols/2, adaptive_thresholded_image.rows/2));
 //        pyrUp(pyr_down, pyr_up, adaptive_thresholded_image.size());
@@ -483,14 +732,24 @@ namespace ppc{
 //        dilate(adaptive_thresholded_image, dilated, Mat(),Point(-1,-1),1);
 //        dilate(eroded, dilated, Mat(),Point(-1,-1),1);
 //        erode(adaptive_thresholded_image, eroded, Mat(),Point(-1,-1));
+//        dilate(eroded, dilated, Mat(),Point(-1,-1),1);
 //        erode(adaptive_thresholded_image, eroded, element);
         
+
+        /*
         int morph_size = 2;
         Mat element = getStructuringElement( MORPH_RECT, Size( 2*morph_size + 1, 2*morph_size+1 ), Point( morph_size, morph_size ) );
         
         morphologyEx(adaptive_thresholded_image, eroded, MORPH_OPEN, element);
+         */
         
-        Splice::save_image(cwd, "saved_run_script_opencv.jpg", eroded);
+//        Splice::save_image(cwd, "saved_run_script.jpg", adaptive_thresholded_image);
+        
+        atm.copyTo(adaptive_thresholded);
+        
+        write_output = temp_write_output;
+        
+        return atm;
     }
     
 
@@ -596,17 +855,25 @@ namespace ppc{
      3. Filters unwanted rectangles based on area, width and height
      4. For each rectangle (i.e. component), imagemagick is called which enhances the image and then OCR is performed on this enhanced image using tesseract
      */
-    void Splice::find_squares( const Mat& original_image,const string& image_path,string components_path,string contours_path )
+    void Splice::find_squares( const Mat& original_image,const Mat& run_script,string components_path,string contours_path )
     {
+        
+        
+        
+        cout << "image type -" << run_script.type() << endl;
+        cout << "no of channels -" << run_script.channels() << endl;
         
         vector<vector<Point> > squares;
         
-        Mat image = load_image(image_path);
+        Mat image;
+        run_script.copyTo(image);
+        //Mat image = load_image(image_path);
         
         squares.clear();
         all_rects.clear();
         coordinates.clear();
-        no_of_components = 0;
+        reset_no_of_components();
+//        no_of_components = 0;
         Mat image_for_saving;
         original_image.copyTo(image_for_saving);
         
@@ -626,7 +893,7 @@ namespace ppc{
             mixChannels(&timg, 1, &gray0, 1, ch, 1);
             
             // try several threshold levels
-            for( int l = 0; l < N; l++ )
+            for( int l = 0; l < Num_of_thresholds; l++ )
             {
                 
                 if( l == 0 )
@@ -642,14 +909,14 @@ namespace ppc{
                 {
                     // apply threshold if l!=0:
                     //     tgray(x,y) = gray(x,y) < (l+1)*255/N ? 255 : 0
-                    gray = gray0 >= (l+1)*255/N;
+                    gray = gray0 >= (l+1)*255/Num_of_thresholds;
                 }
                 
                 // find contours and store them all as a list
                 findContours(gray, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
                 
                 
-                cout << "contours size - " << contours.size() << endl;
+//                cout << "contours size - " << contours.size() << endl;
                 
                 vector<Point> approx;
                 vector<Rect> boundRect( contours.size() );
@@ -747,10 +1014,13 @@ namespace ppc{
 //                Mat ml;
                 Mat ml = opencv2imagemagick(im,components_path + to_string(no_of_components) + "_gray.jpg");
                 string matched_word = opencv2tesseract(ml);
+                
+                if(matched_word != ""){
                 pair<int, int> p(rt.x,rt.y);
                 form_json(matched_word, p);
                 
                 counter_inc();
+                }
             }
             
             
@@ -1018,7 +1288,7 @@ namespace ppc{
      */
     void Splice::json_init(){
         json_string.clear();
-        json_string = string("{");
+        json_string = string("[");
     }
     
     /*!
@@ -1030,14 +1300,25 @@ namespace ppc{
         
         //        cout << "pos x - " << pos.first << "," << pos.second <<endl;
         
+//        if(no_of_components == 0){
+//            json_string += string("\"Component\":") + "\"" + word + "\"";
+//        }
+//        else if(no_of_components > 0){
+//            json_string += string(",\"Component\":") + "\"" + word + "\"";
+//        }
+//        json_string += string(",\"x\":") + "\"" + to_string(pos.first) + "\"";
+//        json_string += string(",\"y\":") + "\"" + to_string(pos.second) + "\"";
+        
+        
+        
         if(no_of_components == 0){
-            json_string += string("\"Component\":") + "\"" + word + "\"";
+            json_string += string("{\"Component\":") + "\"" + word + "\"";
         }
         else if(no_of_components > 0){
-            json_string += string(",\"Component\":") + "\"" + word + "\"";
+            json_string += string(",{\"Component\":") + "\"" + word + "\"";
         }
-        json_string += string(",\"x\":") + "\"" + to_string(pos.first) + "\"";
-        json_string += string(",\"y\":") + "\"" + to_string(pos.second) + "\"";
+        json_string += string(",\"x\":") +  to_string(pos.first);
+        json_string += string(",\"y\":") +  to_string(pos.second) + "}";
     }
     
     /*!
@@ -1045,27 +1326,35 @@ namespace ppc{
      */
     void Splice::json_write_to_file(){
         
-        json_string += string("}");
+        json_string += string("]");
         
         char json[json_string.size() + 1];
         strcpy(json, json_string.c_str());
+        if(write_output){
         cout << "JSON - " <<json << endl;
+        }
         document.Parse(json);
         if (document.Parse(json).HasParseError()) {
             cerr << "JSON parsing error" << endl;
         }
         
         
+    }
+    
+    string Splice::get_json(const string& file_path){
+     
+        if(file_path != ""){
         FILE * output_file = fopen(string(cwd + "/output.json").c_str(), "w");
         char writeBuffer[65536];
         
-    rapidjson:FileWriteStream os(output_file,writeBuffer,sizeof(writeBuffer));
+        rapidjson:FileWriteStream os(output_file,writeBuffer,sizeof(writeBuffer));
         Writer<FileWriteStream> writer(os);
         document.Accept(writer);
         fclose(output_file);
+        }
+        
+        return json_string;
     }
-    
-    
     
     
     
@@ -1203,7 +1492,7 @@ namespace ppc{
     string Splice::opencv2tesseract(cv::Mat &tm){
         
         
-        cout << "-------------------- Tesseract on the fly--------------------" << endl;
+//        cout << "-------------------- Tesseract on the fly--------------------" << endl;
         
         string res;
         
@@ -1227,14 +1516,14 @@ namespace ppc{
         
         string delimited_string = res.substr(0,res.find(delimiter));
         vector<size_t> temp_distances;
-        size_t lowest_distance = 100;
+        size_t lowest_distance = 100; // Initial distance of 100 - a high value so that it doesnt interfere with distance calculation
         string matched_string;
         
         for (vector<string>::iterator aw_it=all_words.begin();aw_it != all_words.end();++aw_it){
             
             size_t dist = levenshtein_distace(*aw_it, delimited_string);
             
-            if(dist <= 5){
+            if(dist <= word_distance){
                 if(dist < lowest_distance){
                     lowest_distance = dist;
                     matched_string = *aw_it;
@@ -1246,12 +1535,14 @@ namespace ppc{
             
         }
         
+        if(write_output){
         
         if(!matched_string.empty()){
             cout << "Distance - " << lowest_distance << ", Matched word - " << matched_string << endl;
         }
         else{
             cerr << "No matched string" << endl;
+        }
         }
         
         
@@ -1273,7 +1564,10 @@ namespace ppc{
          
          */
         
+        
+        if(write_output){
         cout << "Dictionary" << " - " << returned_string << ", Input - " << result << endl;
+        }
         
         
         api->End();
@@ -1520,10 +1814,16 @@ namespace ppc{
     
     
     void Splice::counter_inc(){
-        no_of_components++;
+        ++no_of_components;
     }
     
+    int Splice::get_no_of_components(){
+        return no_of_components;
+    }
     
+    void Splice::reset_no_of_components(){
+        no_of_components = 0;
+    }
     
     
     
