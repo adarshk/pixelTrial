@@ -34,12 +34,15 @@ int main(int argc,char** argv){
 //    string path =  string(dir) + "/red2.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/canonphotos/IMG_1515.jpg";
     string path = "/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground";
-    string img_name = "IMG_1938.JPG";
+    string img_name = "IMG_1937.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/photo1.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/Tearsheets/differentBackground/Tearsheet_black1.JPG";
 //    string path = "/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/printedTearsheet_mac.JPG";
-    Splice s;
-    s.init("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug",img_name,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/word_list.txt");
+    Splice s("/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug",img_name,"/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/word_list.txt","/Users/adarsh.kosuru/Desktop/pixelTrial/DerivedData/pixelTrial/Build/Products/Debug/settings.txt");
+    s.init();
+    
+    string js = s.get_json();
+    cout << "json from main - " << js << endl;
 //    s.init(path,img_name);
 //    s.save_image(string(dir));
     

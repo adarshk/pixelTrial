@@ -49,15 +49,16 @@ namespace ppc {
     class Splice{
         
     public:
-        Splice();
+        Splice(string working_dir,string img_name,string word_list_file_name, string settings_file);
 //        Splice(const std::string& dir_path);
         ~Splice();
         
         //Core Functions
-        void init(string working_dir,string img_name,string word_list_file_name);
+        void init();
         
         //Utility Functions
         void save_image(const std::string& save_dir,string save_name,Mat& saved_img);
+        string get_json(const string& file_path="");
         
         //Variables
         bool write_output;
@@ -75,13 +76,14 @@ namespace ppc {
          */
         
         bool is_background_present(const string& img_name);
-        void watershed();
+        Mat watershed();
         void image_cleaner();
         
-        void thresholding_image();
+        Mat opencv_cleanup(Mat& img_load);
         void image_magick_cpp_api();
         void magiccore();
-        void find_squares( const Mat& original_image,const string& image_path, string components_path="",string contours_path="" );
+        void find_squares( const Mat& original_image,const Mat& run_script, string components_path="",string contours_path="" );
+//        void find_squares( const Mat& original_image,const string& image_path, string components_path="",string contours_path="" );
         
         
         
@@ -105,6 +107,17 @@ namespace ppc {
         void json_init();
         void form_json(string word, pair<int, int> pos);
         void json_write_to_file();
+        void load_settings(string file_path);
+        void return_settings(const string& parm,const string& value);
+        bool return_true_or_false(const string& value);
+        
+        template<typename T>
+        T convert_string_to_number(const string& stn){
+            stringstream input_text(stn);
+            T converted_number;
+            
+            return input_text >> converted_number ? converted_number : -1;
+        }
         
         
         
@@ -143,22 +156,32 @@ namespace ppc {
         void parse_word(string &word);
         static bool choose_char(char c);
         
+        int get_no_of_components();
+        void reset_no_of_components();
+        
         //Other
         void keypoint_matching();
 
 
         //Variables
 //        std::string path;
-        Mat src_image,saved;
-        int thresh, N;
+        Mat src_image,saved,adaptive_thresholded;
+        int thresh;
         int no_of_components;
         RNG rng;
         std::map<int,string> tearsheet_words;
         vector<string> all_words;
         char * dir;
         string cwd,json_string;
+        string working_dir, img_name, word_list_file_name,settings_file;
         vector<cv::Rect> all_rects;
         vector<std::pair<int, int>> coordinates;
+        
+        
+        //Settings file
+        bool use_bash;
+        int Num_of_thresholds,background_threshold,watershed_lower_threshold,watershed_rectangle_filter;
+        int adaptive_threshold_blockSize, adaptive_threshold_lower_limit, adaptive_threshold_upper_limit,word_distance;
         
         rapidjson::Document document;
         
