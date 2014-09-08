@@ -1,1 +1,67 @@
-{"Component":"Select","x":"166","y":"789","Component":"Text Input","x":"167","y":"720","Component":"search","x":"168","y":"652","Component":"LINK 02","x":"242","y":"550","Component":"LINK 01","x":"169","y":"550","Component":"LINK 06","x":"540","y":"549","Component":"LINK 05","x":"466","y":"549","Component":"LINK 04","x":"391","y":"549","Component":"LINK 03","x":"317","y":"550","Component":"DISABLED BUTTON","x":"422","y":"492","Component":"BUTTON","x":"169","y":"492","Component":"PRIMARY BUTTON","x":"258","y":"490","Component":"Panel","x":"177","y":"266","Component":"Navigation","x":"182","y":"159"}
+[
+  {
+    "Component": "Text Input",
+    "x": 195,
+    "y": 766
+  },
+  {
+    "Component": "search",
+    "x": 198,
+    "y": 692
+  },
+  {
+    "Component": "LINK 06",
+    "x": 611,
+    "y": 585
+  },
+  {
+    "Component": "LINK 05",
+    "x": 530,
+    "y": 584
+  },
+  {
+    "Component": "LINK 04",
+    "x": 449,
+    "y": 583
+  },
+  {
+    "Component": "LINK 03",
+    "x": 368,
+    "y": 582
+  },
+  {
+    "Component": "LINK 02",
+    "x": 285,
+    "y": 580
+  },
+  {
+    "Component": "LINK 01",
+    "x": 202,
+    "y": 579
+  },
+  {
+    "Component": "DISABLED BUTTON",
+    "x": 484,
+    "y": 522
+  },
+  {
+    "Component": "PRIMARY BUTTON",
+    "x": 307,
+    "y": 518
+  },
+  {
+    "Component": "BUTTON",
+    "x": 203,
+    "y": 516
+  },
+  {
+    "Component": "Panel",
+    "x": 218,
+    "y": 269
+  },
+  {
+    "Component": "Navigation",
+    "x": 225,
+    "y": 152
+  }
+]

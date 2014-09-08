@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>9BF97106-D89F-476B-9DD8-282061EC4EA9</string>
+	<string>162BEB93-EE72-487A-9296-8211578DABC5</string>
 	<key>IDESourceControlProjectName</key>
 	<string>pixelTrial</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>9D866E38-8457-4891-8935-D32FB5B4FABC</key>
+		<key>E0AB4F33-8E39-41D5-8FEC-B028D64D4514</key>
 		<string>https://gitus.frogdesign.com/scm/~adarsh.kosuru_frogdesign.com/ppcexperimental.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>pixelTrial.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>9D866E38-8457-4891-8935-D32FB5B4FABC</key>
+		<key>E0AB4F33-8E39-41D5-8FEC-B028D64D4514</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>9D866E38-8457-4891-8935-D32FB5B4FABC</string>
+	<string>E0AB4F33-8E39-41D5-8FEC-B028D64D4514</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>9D866E38-8457-4891-8935-D32FB5B4FABC</string>
+			<string>E0AB4F33-8E39-41D5-8FEC-B028D64D4514</string>
 			<key>IDESourceControlWCCName</key>
 			<string>pixelTrial</string>
 		</dict>

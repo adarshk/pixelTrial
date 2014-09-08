@@ -1,0 +1,8 @@
+.DS_Store
+pixelTrial.xcodeproj/project.xcworkspace/xcshareddata/
+pixelTrial.xcodeproj/project.xcworkspace/xcuserdata/
+pixelTrial.xcodeproj/xcuserdata/
+DerivedData/
+*.swp
+*.o
+*.so

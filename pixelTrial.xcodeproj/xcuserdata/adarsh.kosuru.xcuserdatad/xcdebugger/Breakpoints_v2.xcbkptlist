@@ -276,11 +276,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "388"
-            endingLineNumber = "388"
+            startingLineNumber = "553"
+            endingLineNumber = "553"
             landmarkName = "Splice::watershed()"
             landmarkType = "5">
          </BreakpointContent>
@@ -292,11 +292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "391"
-            endingLineNumber = "391"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
             landmarkName = "Splice::watershed()"
             landmarkType = "5">
          </BreakpointContent>
@@ -308,11 +308,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "392"
-            endingLineNumber = "392"
+            startingLineNumber = "557"
+            endingLineNumber = "557"
             landmarkName = "Splice::watershed()"
             landmarkType = "5">
          </BreakpointContent>
@@ -324,11 +324,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
+            startingLineNumber = "565"
+            endingLineNumber = "565"
             landmarkName = "Splice::watershed()"
             landmarkType = "5">
          </BreakpointContent>
@@ -340,12 +340,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "721"
-            endingLineNumber = "721"
-            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const string&amp; image_path,string components_path,string contours_path )"
+            startingLineNumber = "972"
+            endingLineNumber = "972"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -356,12 +356,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "718"
-            endingLineNumber = "718"
-            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const string&amp; image_path,string components_path,string contours_path )"
+            startingLineNumber = "969"
+            endingLineNumber = "969"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -372,12 +372,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "717"
-            endingLineNumber = "717"
-            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const string&amp; image_path,string components_path,string contours_path )"
+            startingLineNumber = "968"
+            endingLineNumber = "968"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -388,12 +388,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "727"
-            endingLineNumber = "727"
-            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const string&amp; image_path,string components_path,string contours_path )"
+            startingLineNumber = "978"
+            endingLineNumber = "978"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -404,74 +404,266 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "753"
-            endingLineNumber = "753"
-            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const string&amp; image_path,string components_path,string contours_path )"
+            startingLineNumber = "1004"
+            endingLineNumber = "1004"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "605"
-            endingLineNumber = "605">
+            startingLineNumber = "848"
+            endingLineNumber = "848">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "622"
-            endingLineNumber = "622"
-            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const string&amp; image_path,string components_path,string contours_path )"
+            startingLineNumber = "873"
+            endingLineNumber = "873"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "709"
-            endingLineNumber = "709"
-            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const string&amp; image_path,string components_path,string contours_path )"
+            startingLineNumber = "960"
+            endingLineNumber = "960"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "pixelTrial/splice_image.cpp"
-            timestampString = "429796503.369059"
+            timestampString = "430259969.96709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "766"
-            endingLineNumber = "766"
-            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const string&amp; image_path,string components_path,string contours_path )"
+            startingLineNumber = "1020"
+            endingLineNumber = "1020"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "862"
+            endingLineNumber = "862"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "863"
+            endingLineNumber = "863"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "870"
+            endingLineNumber = "870"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "874"
+            endingLineNumber = "874"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "Splice::init()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "Splice::init()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "Splice::init()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
+            landmarkName = "Splice::init()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
+            landmarkName = "Splice::init()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "883"
+            endingLineNumber = "883"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430259969.96709"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "875"
+            endingLineNumber = "875"
+            landmarkName = "Splice::find_squares( const Mat&amp; original_image,const Mat&amp; run_script,string components_path,string contours_path )"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "pixelTrial/splice_image.cpp"
+            timestampString = "430260736.536979"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
+            landmarkName = "Splice::init()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
